@@ -1,3 +1,28 @@
+#days {
+  display: block;
+  color: #fffa74;
+  font-size: 14px;
+  margin-top: 15px;
+}
+.header {
+  background: url("../image/header_background.jpg");
+}
+.post {
+  margin-top: 10px;
+  margin-bottom: 40px;
+  padding: 18px;
+  -webkit-box-shadow: 0 0 5px rgba(202,203,203,0.8);
+}
+.menu {
+  margin-top: 20px;
+  padding-left: 0;
+  text-align: center;
+  background: rgba(240,240,240,0.5);
+  margin-left: auto;
+  margin-right: auto;
+  width: 630px;
+  border-radius: initial;
+}
 /* normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 html {
   line-height: 1.15; /* 1 */
@@ -1085,7 +1110,7 @@ pre .javascript .function {
   }
 }
 .header {
-  background: transparent;
+  background: url("../image/avatar03.jpg");
 }
 .header-inner {
   position: relative;
@@ -1765,7 +1790,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #98ff6f;
+  background: #cf8cc2;
 }
 .feed-link,
 .chat {
@@ -2474,16 +2499,28 @@ embed {
 .links-of-blogroll-inline .links-of-blogroll-item {
   display: inline-block;
 }
-.post {
-  margin-top: 60px;
-  margin-bottom: 60px;
-  padding: 25px;
-  -webkit-box-shadow: 0 0 5px rgba(202,203,203,0.5);
-  -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
-}
 #days {
   display: block;
   color: #fffa74;
   font-size: 14px;
   margin-top: 15px;
+}
+.header {
+  background: url("../image/header_background.jpg");
+}
+.post {
+  margin-top: 10px;
+  margin-bottom: 40px;
+  padding: 18px;
+  -webkit-box-shadow: 0 0 5px rgba(202,203,203,0.8);
+}
+.menu {
+  margin-top: 20px;
+  padding-left: 0;
+  text-align: center;
+  background: rgba(240,240,240,0.5);
+  margin-left: auto;
+  margin-right: auto;
+  width: 630px;
+  border-radius: initial;
 }
