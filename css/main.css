@@ -1768,7 +1768,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #f1ff30;
+  background: #2eb11a;
 }
 .feed-link,
 .chat {
@@ -2476,7 +2476,4 @@ embed {
 }
 .links-of-blogroll-inline .links-of-blogroll-item {
   display: inline-block;
-}
-.header {
-  background: url("http://pqvlostjb.bkt.clouddn.com/header_background.jpg");
 }
