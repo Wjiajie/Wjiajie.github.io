@@ -1768,7 +1768,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #67f69e;
+  background: #46ee1b;
 }
 .feed-link,
 .chat {
@@ -2486,4 +2486,12 @@ embed {
 .posts-expand .post-title {
   font-size: 30px;
   font-weight: 700;
+}
+.menu {
+  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 5px;
+  background-color: rgba(255,255,255,0.75);
+  box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.15);
 }
