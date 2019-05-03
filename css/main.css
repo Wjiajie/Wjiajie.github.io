@@ -1774,7 +1774,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #e5ff08;
+  background: #af46f7;
 }
 .feed-link,
 .chat {
@@ -2369,12 +2369,17 @@ ul.breadcrumb li+li:last-child {
   .header-inner,
   .container .main-inner,
   .footer-inner {
-    width: auto;
+    width: 100%;
   }
 }
 embed {
   display: block;
   margin: 0px auto 25px auto;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .content-wrap {
+    float: none;
+  }
 }
 .custom-logo .site-meta-headline {
   text-align: center;
