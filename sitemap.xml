@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jiajiewu.coding.me/about/index.html</loc>
+    
+    <lastmod>2019-05-04T04:42:00.297Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jiajiewu.coding.me/categories/index.html</loc>
+    
+    <lastmod>2019-05-04T04:41:51.729Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jiajiewu.coding.me/link/index.html</loc>
+    
+    <lastmod>2019-05-04T04:41:40.669Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jiajiewu.coding.me/tags/index.html</loc>
+    
+    <lastmod>2019-05-04T04:40:52.871Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://jiajiewu.coding.me/hello-world.html</loc>
     
     <lastmod>2019-05-04T03:29:35.178Z</lastmod>
@@ -9,37 +37,9 @@
   </url>
   
   <url>
-    <loc>https://jiajiewu.coding.me/about/index.html</loc>
-    
-    <lastmod>2019-05-02T16:22:57.863Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://jiajiewu.coding.me/talk/index.html</loc>
     
     <lastmod>2019-05-02T08:39:10.747Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://jiajiewu.coding.me/link/index.html</loc>
-    
-    <lastmod>2019-05-02T07:02:58.121Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://jiajiewu.coding.me/categories/index.html</loc>
-    
-    <lastmod>2019-05-02T06:54:36.734Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://jiajiewu.coding.me/tags/index.html</loc>
-    
-    <lastmod>2019-04-29T10:38:14.000Z</lastmod>
     
   </url>
   
