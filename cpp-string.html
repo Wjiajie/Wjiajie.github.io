@@ -134,7 +134,7 @@
 <meta property="og:site_name" content="jiajie">
 <meta property="og:description" content="本文主要介绍c++标准库中 string 的基本用法。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-05T08:04:32.938Z">
+<meta property="og:updated_time" content="2019-05-05T08:14:10.244Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="标准库类型string笔记">
 <meta name="twitter:description" content="本文主要介绍c++标准库中 string 的基本用法。">
@@ -504,7 +504,7 @@
                 
               
 
-              <time title="创建时间：2019-05-05 11:31:34 / 修改时间：16:04:32" itemprop="dateCreated datePublished" datetime="2019-05-05T11:31:34+08:00">2019-05-05</time>
+              <time title="创建时间：2019-05-05 11:31:34 / 修改时间：16:14:10" itemprop="dateCreated datePublished" datetime="2019-05-05T11:31:34+08:00">2019-05-05</time>
             
 
             
@@ -585,7 +585,7 @@
 <h2 id="标准库类型"><a href="#标准库类型" class="headerlink" title="标准库类型"></a>标准库类型</h2><p><strong>string</strong>表示可变长字符序列，其定义在命名空间<em>std</em>中，使用时记得包含头文件：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br></pre></td></tr></table></figure>
 <h2 id="string常用的操作"><a href="#string常用的操作" class="headerlink" title="string常用的操作"></a><strong>string</strong>常用的操作</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">os&lt;&lt;s <span class="comment">////将s写入到输出流os中，返回os</span></span><br><span class="line">is&gt;&gt;s <span class="comment">////从is中读取字符串到s中，字符串用空白（空格符，换行，制表符）隔开，返回is</span></span><br><span class="line">getline(is,s) <span class="comment">////从is中读取一行赋给s，返回is</span></span><br><span class="line">s.empty() <span class="comment">////判断s是否为空</span></span><br><span class="line">s.size() <span class="comment">////返回s的字符个数</span></span><br><span class="line">s[n] <span class="comment">////返回s中第n+1个字符的引用，使用时需要判断s是否为空！</span></span><br><span class="line">s1+s2 <span class="comment">////连接</span></span><br><span class="line">s1=s2 <span class="comment">////用s2的副本代替掉s1</span></span><br><span class="line">s1==s2 <span class="comment">////等性判断，对大小写敏感</span></span><br><span class="line">s1!=s2 <span class="comment">////等性判断，对大小写敏感</span></span><br><span class="line">&lt;,&lt;=,&gt;,&gt;= <span class="comment">////比较字符串大小关系，对大小写敏感</span></span><br></pre></td></tr></table></figure>
-<h2 id="几个要点："><a href="#几个要点：" class="headerlink" title="几个要点："></a>几个要点：</h2><h3 id="1-cin-gt-gt-s和getline-cin-s"><a href="#1-cin-gt-gt-s和getline-cin-s" class="headerlink" title="1. cin&gt;&gt;s和getline(cin,s)"></a>1. <strong>cin&gt;&gt;s</strong>和<strong>getline(cin,s)</strong></h3><p>输入输出流最常用的还是标准库中的<em>iostream</em>，这里想说<strong>cin&gt;&gt;s</strong>和 <strong>getline(cin,s)</strong> 的区别：</p>
+<h2 id="几个要点"><a href="#几个要点" class="headerlink" title="几个要点"></a>几个要点</h2><h3 id="1-cin-gt-gt-s和getline-cin-s"><a href="#1-cin-gt-gt-s和getline-cin-s" class="headerlink" title="1. cin&gt;&gt;s和getline(cin,s)"></a>1. <strong>cin&gt;&gt;s</strong>和<strong>getline(cin,s)</strong></h3><p>输入输出流最常用的还是标准库中的<em>iostream</em>，这里想说<strong>cin&gt;&gt;s</strong>和 <strong>getline(cin,s)</strong> 的区别：</p>
 <ul>
 <li><strong>cin&gt;&gt;s</strong> 会忽略掉输入开头的空白，从第一个真正字符开始读起，直到遇见下一个空白为止（该空白没被读入）。</li>
 <li><strong>getline(cin,s)</strong>从给定输入流开始读取，直至遇到<strong>换行符</strong>结束，注意<strong>换行符</strong>也被读入，然后将读取的所有内容（除了最后的换行符外）放到s中。（s不包含换行符）。</li>
@@ -870,7 +870,7 @@ show_date_time();
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#标准库类型"><span class="nav-number">1.</span> <span class="nav-text">标准库类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#string常用的操作"><span class="nav-number">2.</span> <span class="nav-text">string常用的操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几个要点："><span class="nav-number">3.</span> <span class="nav-text">几个要点：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-cin-gt-gt-s和getline-cin-s"><span class="nav-number">3.1.</span> <span class="nav-text">1. cin&gt;&gt;s和getline(cin,s)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-s-size-的返回类型"><span class="nav-number">3.2.</span> <span class="nav-text">2. s.size() 的返回类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-auto和-decltype"><span class="nav-number">3.3.</span> <span class="nav-text">3. auto和 decltype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-处理string对象中的字符"><span class="nav-number">3.4.</span> <span class="nav-text">4.处理string对象中的字符</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#标准库类型"><span class="nav-number">1.</span> <span class="nav-text">标准库类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#string常用的操作"><span class="nav-number">2.</span> <span class="nav-text">string常用的操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几个要点"><span class="nav-number">3.</span> <span class="nav-text">几个要点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-cin-gt-gt-s和getline-cin-s"><span class="nav-number">3.1.</span> <span class="nav-text">1. cin&gt;&gt;s和getline(cin,s)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-s-size-的返回类型"><span class="nav-number">3.2.</span> <span class="nav-text">2. s.size() 的返回类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-auto和-decltype"><span class="nav-number">3.3.</span> <span class="nav-text">3. auto和 decltype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-处理string对象中的字符"><span class="nav-number">3.4.</span> <span class="nav-text">4.处理string对象中的字符</span></a></li></ol></li></ol></div>
             
 
           </div>
