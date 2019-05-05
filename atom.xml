@@ -5,9 +5,9 @@
   <subtitle>Cv Learner</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="https://jiajiewu.coding.me/"/>
+  <link href="https://www.jiajiewu.cn/"/>
   <updated>2019-05-05T03:47:17.545Z</updated>
-  <id>https://jiajiewu.coding.me/</id>
+  <id>https://www.jiajiewu.cn/</id>
   
   <author>
     <name>jiajie</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>标准库类型string笔记</title>
-    <link href="https://jiajiewu.coding.me/cpp-string.html"/>
-    <id>https://jiajiewu.coding.me/cpp-string.html</id>
+    <link href="https://www.jiajiewu.cn/cpp-string.html"/>
+    <id>https://www.jiajiewu.cn/cpp-string.html</id>
     <published>2019-05-05T03:31:34.000Z</published>
     <updated>2019-05-05T03:47:17.545Z</updated>
     
@@ -31,19 +31,19 @@
     
     </summary>
     
-      <category term="c++" scheme="https://jiajiewu.coding.me/categories/c/"/>
+      <category term="c++" scheme="https://www.jiajiewu.cn/categories/c/"/>
     
     
-      <category term="c++" scheme="https://jiajiewu.coding.me/tags/c/"/>
+      <category term="c++" scheme="https://www.jiajiewu.cn/tags/c/"/>
     
-      <category term="string" scheme="https://jiajiewu.coding.me/tags/string/"/>
+      <category term="string" scheme="https://www.jiajiewu.cn/tags/string/"/>
     
   </entry>
   
   <entry>
     <title>hello my blog!</title>
-    <link href="https://jiajiewu.coding.me/hello-world.html"/>
-    <id>https://jiajiewu.coding.me/hello-world.html</id>
+    <link href="https://www.jiajiewu.cn/hello-world.html"/>
+    <id>https://www.jiajiewu.cn/hello-world.html</id>
     <published>2019-05-02T16:24:34.000Z</published>
     <updated>2019-05-04T12:38:05.000Z</updated>
     
@@ -56,10 +56,10 @@
     
     </summary>
     
-      <category term="碎碎念" scheme="https://jiajiewu.coding.me/categories/%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
+      <category term="碎碎念" scheme="https://www.jiajiewu.cn/categories/%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
     
     
-      <category term="碎碎念" scheme="https://jiajiewu.coding.me/tags/%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
+      <category term="碎碎念" scheme="https://www.jiajiewu.cn/tags/%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
     
   </entry>
   
