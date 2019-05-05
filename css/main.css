@@ -154,7 +154,7 @@ template {
 body {
   position: relative;
   font-family: "Linux Biolinum", 'Noto Serif SC', sans-serif;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 2;
   color: #555;
   background: #fff;
@@ -166,7 +166,7 @@ body {
 }
 @media (min-width: 1200px) {
   body {
-    font-size: 19px;
+    font-size: 18px;
   }
 }
 h1,
@@ -497,7 +497,7 @@ pre,
   overflow: auto;
   margin: 20px 0;
   padding: 0;
-  font-size: 16px;
+  font-size: 15px;
   color: #4d4d4c;
   background: #f7f7f7;
   line-height: 1.6;
@@ -513,7 +513,7 @@ code {
   color: #555;
   background: #eee;
   border-radius: 3px;
-  font-size: 16px;
+  font-size: 15px;
 }
 pre {
   padding: 10px;
@@ -1235,7 +1235,7 @@ pre .javascript .function {
 .post-body .figure .caption {
   margin: -20px auto 15px;
   text-align: center;
-  font-size: 17px;
+  font-size: 16px;
   color: #999;
   font-weight: bold;
   line-height: 1;
@@ -1768,7 +1768,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #1449ff;
+  background: #4d2b12;
 }
 .feed-link,
 .chat {
@@ -2336,7 +2336,7 @@ ul.breadcrumb {
   margin: 1em 0;
   padding: 0 2em;
   text-align: center;
-  font-size: 15px;
+  font-size: 14px;
 }
 ul.breadcrumb li {
   display: inline;
