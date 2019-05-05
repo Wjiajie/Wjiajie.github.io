@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jiajiewu.cn/talk/index.html</loc>
+    
+    <lastmod>2019-05-05T13:31:30.496Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jiajiewu.cn/cpp-string.html</loc>
     
     <lastmod>2019-05-05T08:14:10.244Z</lastmod>
@@ -40,13 +47,6 @@
     <loc>https://www.jiajiewu.cn/tags/index.html</loc>
     
     <lastmod>2019-05-04T04:40:52.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jiajiewu.cn/talk/index.html</loc>
-    
-    <lastmod>2019-05-02T08:39:10.000Z</lastmod>
     
   </url>
   
