@@ -1,2 +1,4 @@
+https://www.jiajiewu.cn/cuda-practice2.html
+https://www.jiajiewu.cn/cuda-practice1.html
 https://www.jiajiewu.cn/cpp-string.html
 https://www.jiajiewu.cn/hello-world.html
