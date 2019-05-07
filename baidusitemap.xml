@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.jiajiewu.cn/cuda-practice3.html</loc>
+    <lastmod>2019-05-07</lastmod>
+  </url>  <url>
+    <loc>https://www.jiajiewu.cn/cuda-practice4.html</loc>
+    <lastmod>2019-05-07</lastmod>
+  </url>  <url>
     <loc>https://www.jiajiewu.cn/cpp-string.html</loc>
     <lastmod>2019-05-06</lastmod>
   </url>  <url>
@@ -8,9 +14,6 @@
     <lastmod>2019-05-06</lastmod>
   </url>  <url>
     <loc>https://www.jiajiewu.cn/cuda-practice2.html</loc>
-    <lastmod>2019-05-06</lastmod>
-  </url>  <url>
-    <loc>https://www.jiajiewu.cn/cuda-practice3.html</loc>
     <lastmod>2019-05-06</lastmod>
   </url>  <url>
     <loc>https://www.jiajiewu.cn/hello-world.html</loc>
