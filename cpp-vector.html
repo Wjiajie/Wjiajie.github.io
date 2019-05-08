@@ -134,7 +134,7 @@
 <meta property="og:site_name" content="jiajie">
 <meta property="og:description" content="本文主要介绍c++标准库中 vector 的基本用法。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-08T07:30:31.649Z">
+<meta property="og:updated_time" content="2019-05-08T08:04:45.115Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="标准库类型vector笔记">
 <meta name="twitter:description" content="本文主要介绍c++标准库中 vector 的基本用法。">
@@ -504,7 +504,7 @@
                 
               
 
-              <time title="创建时间：2019-05-08 15:21:34 / 修改时间：15:30:31" itemprop="dateCreated datePublished" datetime="2019-05-08T15:21:34+08:00">2019-05-08</time>
+              <time title="创建时间：2019-05-08 15:21:34 / 修改时间：16:04:45" itemprop="dateCreated datePublished" datetime="2019-05-08T15:21:34+08:00">2019-05-08</time>
             
 
             
@@ -619,7 +619,7 @@
 <p>利用迭代器遍历对象中的元素：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> str&#123; <span class="string">"some string"</span> &#125;;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> s = str.begin(); s != str.end(); ++s)</span><br><span class="line">	&#123;</span><br><span class="line">		*s = <span class="built_in">toupper</span>(*s);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; str &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
 <p>若对象只需读操作而不需要写操作，可用 <strong>iter.cbegin()</strong> 和 <strong>iter.cend()</strong> 来访问对象中元素，这样返回的会是一个 <strong>const_iterator</strong> ，不论访问的对象本身是不是常量对象。</p>
-<div class="note danger"><p>注意：但凡使用了迭代器的循环体，都不要向迭代器所属容器添加容器。</p></div>
+<div class="note danger"><p>但凡使用了迭代器的循环体，都不要向迭代器所属容器添加元素！</p></div>
 
 <p>比如不能用 <strong>push_back</strong> 向 <strong>vector</strong>添加元素，该操作会使迭代器失效。</p>
 <p>迭代器运算符:</p>
