@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jiajiewu.cn/cpp-vector.html</loc>
+    
+    <lastmod>2019-05-08T07:30:31.649Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jiajiewu.cn/cpp-string.html</loc>
+    
+    <lastmod>2019-05-08T03:59:19.143Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jiajiewu.cn/link/index.html</loc>
     
     <lastmod>2019-05-07T12:34:52.756Z</lastmod>
@@ -19,13 +33,6 @@
     <loc>https://www.jiajiewu.cn/cuda-practice4.html</loc>
     
     <lastmod>2019-05-07T09:08:03.674Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jiajiewu.cn/cpp-string.html</loc>
-    
-    <lastmod>2019-05-06T07:16:50.598Z</lastmod>
     
   </url>
   
