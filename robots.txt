@@ -13,4 +13,7 @@ Disallow: /css/
 Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox/
-Sitemap: https://jiajiewu.coding.me/sitemap.xml
+Sitemap: https://www.jiajiewu.cn/sitemap.xml
+
+
+Sitemap: https://www.jiajiewu.cn/baidusitemap.xml
