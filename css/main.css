@@ -1768,7 +1768,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #05ffff;
+  background: #95ff93;
 }
 .feed-link,
 .chat {
@@ -2145,6 +2145,10 @@ pre .javascript .function {
   transform: translate(-50%, -50%);
   color: #ccc;
 }
+.has-jax {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
 .page-archive .archive-page-counter {
   position: relative;
   top: 3px;
@@ -2501,7 +2505,7 @@ body {
   background: #fff;
 }
 .headband {
-  background: #9ff;
+  background: #bcf1d3;
 }
 .post {
   margin-bottom: 50px;

@@ -1,21 +1,4 @@
-<!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next muse use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<!DOCTYPE html><html class="theme-next muse use-motion" lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -66,7 +49,7 @@
   
     
     
-    <link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+    <link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&amp;subset=latin,latin-ext">
   
 
 
@@ -163,7 +146,7 @@
 
 
 
-  <script async src="//www.googletagmanager.com/gtag/js?id=UA-139409990-1"></script>
+  <script async="" src="//www.googletagmanager.com/gtag/js?id=UA-139409990-1"></script>
   <script>
     var host = window.location.hostname;
     if (host !== "localhost" || !true) {
@@ -219,7 +202,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -229,7 +212,7 @@
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
     
@@ -456,20 +439,20 @@
 
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/cuda-practice1.html">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <span hidden="" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jiajie">
       <meta itemprop="description" content="我觉得你很像一个终生跋涉的香客，不停地寻找一座可能根本不存在的神庙。">
       <meta itemprop="image" content="/images/avatar.png">
     </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <span hidden="" itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="jiajie">
     </span>
 
@@ -526,7 +509,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/cuda/" itemprop="url" rel="index"><span itemprop="name">cuda</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/cuda/" itemprop="url" rel="index"><span itemprop="name">cuda</span></a></span>
 
                 
                 
@@ -592,7 +575,7 @@
 </ul>
 <h2 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h2><h3 id="主机代码和设备代码"><a href="#主机代码和设备代码" class="headerlink" title="主机代码和设备代码"></a>主机代码和设备代码</h3><p> 在GPU设备上执行的函数称为核函数，NVIDIA工具使用CUDA C编写核函数，CUDA C为标准C增加 <strong><strong>global</strong></strong> 修饰符，这个修饰符将告诉编译器，函数应该编译为设备而不是主机运行。具有该修饰符的函数将作为核函数交给CUDA编译器编译。</p>
 <h3 id="从主机运行设备代码"><a href="#从主机运行设备代码" class="headerlink" title="从主机运行设备代码"></a>从主机运行设备代码</h3><p>如下所示：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cudaError_t err = cudaSuccess;</span><br><span class="line">	<span class="comment">////参数传递</span></span><br><span class="line">	<span class="keyword">int</span> c;</span><br><span class="line">	<span class="keyword">int</span> *dev_c;</span><br><span class="line">	err = cudaMalloc((<span class="keyword">void</span>**)&amp;dev_c, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">	add_kernel &lt;&lt; &lt;<span class="number">1</span>, <span class="number">1</span> &gt;&gt; &gt; (<span class="number">2</span>, <span class="number">7</span>, dev_c); <span class="comment">////核函数处理</span></span><br><span class="line">	<span class="keyword">if</span> (err != cudaSuccess)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Failed to allocate device value dev_c (error code %s)!\n"</span>, cudaGetErrorString(err));</span><br><span class="line">		<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	err = cudaMemcpy(&amp;c, dev_c, <span class="keyword">sizeof</span>(<span class="keyword">int</span>), cudaMemcpyDeviceToHost); <span class="comment">////主机代码中，不能对cudaMalloc()返回的指针进行读取，写入内存操作（即不可修改），但可以作参数传递，执行算术运算。</span></span><br><span class="line">	<span class="keyword">if</span> (err != cudaSuccess)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Failed to copy device value dev_c to c (error code %s)!\n"</span>, cudaGetErrorString(err));</span><br><span class="line">		<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"2+7=%d\n"</span>, c);</span><br><span class="line">	cudaFree(dev_c); <span class="comment">////不可使用free()，因为在主机代码中不可修改该内存的值  ，  总的来说，主机指针只能访问主机代码的内存，设备指针只能访问设备代码的内存</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cudaError_t err = cudaSuccess;</span><br><span class="line">	<span class="comment">////参数传递</span></span><br><span class="line">	<span class="keyword">int</span> c;</span><br><span class="line">	<span class="keyword">int</span> *dev_c;</span><br><span class="line">	err = cudaMalloc((<span class="keyword">void</span>**)&amp;dev_c, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">	add_kernel &lt;&lt; &lt;<span class="number">1</span>, <span class="number">1</span> &gt;&gt; &gt; (<span class="number">2</span>, <span class="number">7</span>, dev_c); <span class="comment">////核函数处理</span></span><br><span class="line">	<span class="keyword">if</span> (err != cudaSuccess)</span><br><span class="line">	{</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Failed to allocate device value dev_c (error code %s)!\n"</span>, cudaGetErrorString(err));</span><br><span class="line">		<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	err = cudaMemcpy(&amp;c, dev_c, <span class="keyword">sizeof</span>(<span class="keyword">int</span>), cudaMemcpyDeviceToHost); <span class="comment">////主机代码中，不能对cudaMalloc()返回的指针进行读取，写入内存操作（即不可修改），但可以作参数传递，执行算术运算。</span></span><br><span class="line">	<span class="keyword">if</span> (err != cudaSuccess)</span><br><span class="line">	{</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Failed to copy device value dev_c to c (error code %s)!\n"</span>, cudaGetErrorString(err));</span><br><span class="line">		<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"2+7=%d\n"</span>, c);</span><br><span class="line">	cudaFree(dev_c); <span class="comment">////不可使用free()，因为在主机代码中不可修改该内存的值  ，  总的来说，主机指针只能访问主机代码的内存，设备指针只能访问设备代码的内存</span></span><br></pre></td></tr></tbody></table></figure>
 <p>从主机运行设备代码，以下几点值得注意：</p>
 <blockquote>
 <p>1.可以像调用C函数那样将参数传递给核函数。<br>2.当设备执行任何有用操作时，都需要分配内存，例如将计算值返回主机。</p>
@@ -602,8 +585,8 @@
 <p>可以将<strong>dev_c</strong>传递给设备上执行的函数。可以在设备代码中使用<strong>dev_c</strong>进行内存读/写操作（修改该内存的值）。可以将<strong>dev_c</strong>传递给主机上执行的函数，但是不能在主机代码中对<strong>dev_c</strong>进行内存读/写操作。因为<strong>dev_c</strong>申请的是设备内存，不能在主机代码中用主机指针访问设备内存，反过来也一样，不能用设备指针访问主机内存。</p>
 </blockquote>
 <p>2.利用<strong>cudaMencpy()</strong>在主机代码中访问设备内存，设备指针用完后用<strong>cudaFree()</strong>释放，不可以直接<strong>Free()</strong>,原因同上，不能在主机代码中直接访问设备内存。</p>
-<h3 id="查询系统中支持CUDA的设备信息"><a href="#查询系统中支持CUDA的设备信息" class="headerlink" title="查询系统中支持CUDA的设备信息"></a>查询系统中支持CUDA的设备信息</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">////查询设备</span></span><br><span class="line">	cudaDeviceProp prop;</span><br><span class="line">	<span class="keyword">int</span> count;</span><br><span class="line">	err = cudaGetDeviceCount(&amp;count);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		err = cudaGetDeviceProperties(&amp;prop, i);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (err != cudaSuccess)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Failed to get device %d properties (error code %s)!\n"</span>, i, cudaGetErrorString(err));</span><br><span class="line">			<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Name: %s\n"</span>, prop.name);<span class="comment">////这里打印设备信息，具体包含哪些信息查看《NVIDIA CUDA Programming Guide》	</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Compute capability: %d . %d\n"</span>, prop.major,prop.minor);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Total global Mem:%lld\n"</span>, prop.totalGlobalMem);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Total constant Mem:%ld\n"</span>, prop.totalConstMem);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="完整代码："><a href="#完整代码：" class="headerlink" title="完整代码："></a>完整代码：</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"cuda_runtime.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"device_launch_parameters.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;helper_cuda.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">__<span class="function">global__ <span class="keyword">void</span> <span class="title">add_kernel</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b, <span class="keyword">int</span> *c)</span> </span>&#123;</span><br><span class="line">	*c = a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	cudaError_t err = cudaSuccess;</span><br><span class="line">	<span class="comment">////参数传递</span></span><br><span class="line">	<span class="keyword">int</span> c;</span><br><span class="line">	<span class="keyword">int</span> *dev_c;</span><br><span class="line">	err = cudaMalloc((<span class="keyword">void</span>**)&amp;dev_c, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">	add_kernel &lt;&lt; &lt;<span class="number">1</span>, <span class="number">1</span> &gt;&gt; &gt; (<span class="number">2</span>, <span class="number">7</span>, dev_c); <span class="comment">////核函数处理</span></span><br><span class="line">	<span class="keyword">if</span> (err != cudaSuccess)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Failed to allocate device value dev_c (error code %s)!\n"</span>, cudaGetErrorString(err));</span><br><span class="line">		<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	err = cudaMemcpy(&amp;c, dev_c, <span class="keyword">sizeof</span>(<span class="keyword">int</span>), cudaMemcpyDeviceToHost); <span class="comment">////主机代码中，不能对cudaMalloc()返回的指针进行读取，写入内存操作（即不可修改），但可以作参数传递，执行算术运算。</span></span><br><span class="line">	<span class="keyword">if</span> (err != cudaSuccess)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Failed to copy device value dev_c to c (error code %s)!\n"</span>, cudaGetErrorString(err));</span><br><span class="line">		<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"2+7=%d\n"</span>, c);</span><br><span class="line">	cudaFree(dev_c); <span class="comment">////不可使用free()，因为在主机代码中不可修改该内存的值  ，  总的来说，主机指针只能访问主机代码的内存，设备指针只能访问设备代码的内存</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">////查询设备</span></span><br><span class="line">	cudaDeviceProp prop;</span><br><span class="line">	<span class="keyword">int</span> count;</span><br><span class="line">	err = cudaGetDeviceCount(&amp;count);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		err = cudaGetDeviceProperties(&amp;prop, i);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (err != cudaSuccess)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Failed to get device %d properties (error code %s)!\n"</span>, i, cudaGetErrorString(err));</span><br><span class="line">			<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Name: %s\n"</span>, prop.name);<span class="comment">////这里打印设备信息，具体包含哪些信息查看《NVIDIA CUDA Programming Guide》	</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Compute capability: %d . %d\n"</span>, prop.major,prop.minor);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Total global Mem:%lld\n"</span>, prop.totalGlobalMem);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Total constant Mem:%ld\n"</span>, prop.totalConstMem);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;	</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="查询系统中支持CUDA的设备信息"><a href="#查询系统中支持CUDA的设备信息" class="headerlink" title="查询系统中支持CUDA的设备信息"></a>查询系统中支持CUDA的设备信息</h3><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">////查询设备</span></span><br><span class="line">	cudaDeviceProp prop;</span><br><span class="line">	<span class="keyword">int</span> count;</span><br><span class="line">	err = cudaGetDeviceCount(&amp;count);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++)</span><br><span class="line">	{</span><br><span class="line">		err = cudaGetDeviceProperties(&amp;prop, i);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (err != cudaSuccess)</span><br><span class="line">		{</span><br><span class="line">			<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Failed to get device %d properties (error code %s)!\n"</span>, i, cudaGetErrorString(err));</span><br><span class="line">			<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">		}</span><br><span class="line"></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Name: %s\n"</span>, prop.name);<span class="comment">////这里打印设备信息，具体包含哪些信息查看《NVIDIA CUDA Programming Guide》	</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Compute capability: %d . %d\n"</span>, prop.major,prop.minor);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Total global Mem:%lld\n"</span>, prop.totalGlobalMem);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Total constant Mem:%ld\n"</span>, prop.totalConstMem);</span><br><span class="line"></span><br><span class="line">	}</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="完整代码："><a href="#完整代码：" class="headerlink" title="完整代码："></a>完整代码：</h3><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"cuda_runtime.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"device_launch_parameters.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;helper_cuda.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">__<span class="function">global__ <span class="keyword">void</span> <span class="title">add_kernel</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b, <span class="keyword">int</span> *c)</span> </span>{</span><br><span class="line">	*c = a + b;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">	cudaError_t err = cudaSuccess;</span><br><span class="line">	<span class="comment">////参数传递</span></span><br><span class="line">	<span class="keyword">int</span> c;</span><br><span class="line">	<span class="keyword">int</span> *dev_c;</span><br><span class="line">	err = cudaMalloc((<span class="keyword">void</span>**)&amp;dev_c, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">	add_kernel &lt;&lt; &lt;<span class="number">1</span>, <span class="number">1</span> &gt;&gt; &gt; (<span class="number">2</span>, <span class="number">7</span>, dev_c); <span class="comment">////核函数处理</span></span><br><span class="line">	<span class="keyword">if</span> (err != cudaSuccess)</span><br><span class="line">	{</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Failed to allocate device value dev_c (error code %s)!\n"</span>, cudaGetErrorString(err));</span><br><span class="line">		<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	err = cudaMemcpy(&amp;c, dev_c, <span class="keyword">sizeof</span>(<span class="keyword">int</span>), cudaMemcpyDeviceToHost); <span class="comment">////主机代码中，不能对cudaMalloc()返回的指针进行读取，写入内存操作（即不可修改），但可以作参数传递，执行算术运算。</span></span><br><span class="line">	<span class="keyword">if</span> (err != cudaSuccess)</span><br><span class="line">	{</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Failed to copy device value dev_c to c (error code %s)!\n"</span>, cudaGetErrorString(err));</span><br><span class="line">		<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"2+7=%d\n"</span>, c);</span><br><span class="line">	cudaFree(dev_c); <span class="comment">////不可使用free()，因为在主机代码中不可修改该内存的值  ，  总的来说，主机指针只能访问主机代码的内存，设备指针只能访问设备代码的内存</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">////查询设备</span></span><br><span class="line">	cudaDeviceProp prop;</span><br><span class="line">	<span class="keyword">int</span> count;</span><br><span class="line">	err = cudaGetDeviceCount(&amp;count);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++)</span><br><span class="line">	{</span><br><span class="line">		err = cudaGetDeviceProperties(&amp;prop, i);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (err != cudaSuccess)</span><br><span class="line">		{</span><br><span class="line">			<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Failed to get device %d properties (error code %s)!\n"</span>, i, cudaGetErrorString(err));</span><br><span class="line">			<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">		}</span><br><span class="line"></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Name: %s\n"</span>, prop.name);<span class="comment">////这里打印设备信息，具体包含哪些信息查看《NVIDIA CUDA Programming Guide》	</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Compute capability: %d . %d\n"</span>, prop.major,prop.minor);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Total global Mem:%lld\n"</span>, prop.totalGlobalMem);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Total constant Mem:%ld\n"</span>, prop.totalConstMem);</span><br><span class="line"></span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;	</span><br><span class="line">	</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
       
     </div>
@@ -714,7 +697,7 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="jiajie">
             
@@ -729,7 +712,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -752,7 +735,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -781,7 +766,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">6</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -811,7 +800,7 @@
                   
                     
                   
-                  <a href="https://github.com/Wjiajie" title="GitHub &rarr; https://github.com/Wjiajie" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  <a href="https://github.com/Wjiajie" title="GitHub → https://github.com/Wjiajie" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
                 </span>
               
                 <span class="links-of-author-item">
@@ -822,7 +811,7 @@
                   
                     
                   
-                  <a href="/3208920286@qq.com" title="E-Mail &rarr; 3208920286@qq.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  <a href="/3208920286@qq.com" title="E-Mail → 3208920286@qq.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                 </span>
               
             </div>
@@ -900,7 +889,7 @@ show_date_time();
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">© <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
@@ -921,7 +910,7 @@ show_date_time();
 
         
 <div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async="" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
     <span class="post-meta-item-icon">
@@ -1444,6 +1433,13 @@ show_date_time();
   
 
   
+  
+
+  
+  
+
+  
+
 
   
 
@@ -1483,5 +1479,6 @@ show_date_time();
   <script type="text/javascript" color="150,72,0" opacity="0.3" zindex="-2" count="10" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
 
   
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script></body>
-</html>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script>
+
+</body></html>
