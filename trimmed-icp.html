@@ -137,7 +137,7 @@
 <meta property="og:image" content="http://pqvlostjb.bkt.clouddn.com/trimmed1.PNG">
 <meta property="og:image" content="http://pqvlostjb.bkt.clouddn.com/trimmed2.PNG">
 <meta property="og:image" content="http://pqvlostjb.bkt.clouddn.com/trimmed3.PNG">
-<meta property="og:updated_time" content="2019-05-14T17:09:11.811Z">
+<meta property="og:updated_time" content="2019-05-14T19:03:34.785Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于trimmed-icp的一些理解">
 <meta name="twitter:description" content="简介trimmed-icp相较于传统的ICP算法，提升了对噪声的鲁棒性，同时允许两个点云集合具有较差的变换参数初始值。">
@@ -525,7 +525,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-15 01:09:11" itemprop="dateModified" datetime="2019-05-15T01:09:11+08:00">2019-05-15</time>
+                <time title="修改时间：2019-05-15 03:03:34" itemprop="dateModified" datetime="2019-05-15T03:03:34+08:00">2019-05-15</time>
               
             
           </span>
@@ -624,29 +624,35 @@
 <p>ICP采用最小二乘法迭代求解出两个点云集的变换矩阵 $P$ 后，通过SVD分解，单位四元数等方法求出 $R$ 和 $t$ 来。</p>
 <h2 id="trimmed-icp"><a href="#trimmed-icp" class="headerlink" title="trimmed-icp"></a>trimmed-icp</h2><p>trimmed-icp 和 传统ICP算法最大的不同，在于trim-icp对于由以上前三步得到的对应点，并不是直接采用最小二乘法来拟合误差函数，而是采用了一个叫LTS(the least trimmed squares)的方法来拟合误差函数，LTS的思路是，如果直接采用最小二乘法，选取的对应点集中如果存在少数异常值，最后拟合的误差函数受这些异常值影响较大，那为什么不把这些异常值排除在外呢？怎么做到不把这些异常值算进误差函数里面？trim-icp采用的LTS方法是对每组对应点求得的残差做一个升值排序，只截取前面比例为 $\epsilon$ 的对应点拟合误差函数，然后通过迭代让误差函数最小求解 $R$ 和 $t$ 。在论文的细节部分给出了 $\epsilon$ 的自适应方法，不过我没有看，想了解可以戳文章开始的论文链接。</p>
 <h3 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h3><p>定义：</p>
-<p><img src="http://pqvlostjb.bkt.clouddn.com/trimmed1.PNG" width="80%" height="10%" div align="center"></p>
+<p><img src="http://pqvlostjb.bkt.clouddn.com/trimmed1.PNG" width="70%" height="8%" div align="center"></p>
 <p>  其中$\mathbf{p}_{i}(\mathbf{R},\mathbf{t})$为点云集合$\mathscr{P}$ 中某一点转换到点云集合$\mathscr{U}$的对应点。$\mathscr{P}(\mathbf{R},\mathbf{t})$ 是转换后的对应点的集合。需要为$\mathscr{P}(\mathbf{R},\mathbf{t})$中每一点在$\mathscr{U}$中找到对应点，对应点是这样找的：</p>
-<p><img src="http://pqvlostjb.bkt.clouddn.com/trimmed2.PNG" width="80%" height="10%" div align="center"></p>
+<p><img src="http://pqvlostjb.bkt.clouddn.com/trimmed2.PNG" width="70%" height="8%" div align="center"></p>
 <p>  公式说的是距离最近的点为对应点，找到对应点就可以计算每一组对应点的残差了：</p>
-<p><img src="http://pqvlostjb.bkt.clouddn.com/trimmed3.PNG" width="80%" height="10%" div align="center"></p>
+<p><img src="http://pqvlostjb.bkt.clouddn.com/trimmed3.PNG" width="70%" height="8%" div align="center"></p>
 <p>  LTS做的是，对得到的 $d_{i}^{2}(\mathbf{R}, \mathbf{t})$ 做升值排序，然后截取 $N_{\mathrm{po}}=\xi N_{p}$ 个点求和得到误差函数，然后对优化误差函数，最终求解$R$和$t$。</p>
 <p>(这几条公式用mathjax 奇迹般显示不了，好气…)</p>
-<h3 id="算法流程-1"><a href="#算法流程-1" class="headerlink" title="算法流程"></a>算法流程</h3><pre><code>1. 为点集 $\mathscr{P}$ 上每一个点找到它在点集 $\mathscr{U}$ 上的对应点，计算其残差的平方 $d_{i}^{2}$。
-
-2. 对$d_{i}^{2}$ 做升值排序，选择前面的 $N_{\mathrm{po}}$ 点的对应值，求和得到 $S_{\mathrm{TS}}$。
-
-3. 如果满足终止条件，退出迭代，否则把$S_{\mathrm{TS}}$设置为上一轮的对应点数目$S_{\mathrm{TS}}^{\prime}$，开始新一轮迭代。
-
-4. 通过最小化$S_{\mathrm{TS}}$计算一个最优的$(\mathbf{R},\mathbf{t})$。
-
-5. 由得到的 $(\mathbf{R},\mathbf{t})$做对应点的转换，然后回到第1步。
-</code></pre><p>迭代的终止条件是：</p>
-<pre><code>1. 达到了设定的最大迭代次数。
-
-2. trimmed MSE $e=\frac{S_{\mathrm{TS}}}{N_{\mathrm{po}}}$足够小了。
-
-3. trimmed MSE 的前后两次的变换量$\left|e^{\prime}-e\right|$足够小了。
-</code></pre><p>完整的算法流程如上，这样trimmed-icp的大体思路就介绍完了，后面若有机会理解代码实现再补充细节。</p>
+<h3 id="算法流程-1"><a href="#算法流程-1" class="headerlink" title="算法流程"></a>算法流程</h3><ol>
+<li><p>为点集 $\mathscr{P}$ 上每一个点找到它在点集 $\mathscr{U}$ 上的对应点，计算其残差的平方 $d_{i}^{2}$。</p>
+</li>
+<li><p>对$d_{i}^{2}$ 做升值排序，选择前面的 $N_{\mathrm{po}}$ 点的对应值，求和得到 $S_{\mathrm{TS}}$。</p>
+</li>
+<li><p>如果满足终止条件，退出迭代，否则把$S_{\mathrm{TS}}$设置为上一轮的对应点数目$S_{\mathrm{TS}}^{\prime}$，开始新一轮迭代。</p>
+</li>
+<li><p>通过最小化$S_{\mathrm{TS}}$计算一个最优的$(\mathbf{R},\mathbf{t})$。</p>
+</li>
+<li><p>由得到的 $(\mathbf{R},\mathbf{t})$做对应点的转换，然后回到第1步。</p>
+</li>
+</ol>
+<p>迭代的终止条件是：</p>
+<ol>
+<li><p>达到了设定的最大迭代次数。</p>
+</li>
+<li><p>trimmed MSE $e=\frac{S_{\mathrm{TS}}}{N_{\mathrm{po}}}$足够小了。</p>
+</li>
+<li><p>trimmed MSE 的前后两次的变换量$\left|e^{\prime}-e\right|$足够小了。</p>
+</li>
+</ol>
+<p>完整的算法流程如上，这样trimmed-icp的大体思路就介绍完了，后面若有机会理解代码实现再补充细节。</p>
 
       
     </div>
