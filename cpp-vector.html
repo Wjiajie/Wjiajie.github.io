@@ -1,4 +1,21 @@
-<!DOCTYPE html><html class="theme-next muse use-motion" lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0">
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -49,7 +66,7 @@
   
     
     
-    <link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&amp;subset=latin,latin-ext">
+    <link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
   
 
 
@@ -146,7 +163,7 @@
 
 
 
-  <script async="" src="//www.googletagmanager.com/gtag/js?id=UA-139409990-1"></script>
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-139409990-1"></script>
   <script>
     var host = window.location.hostname;
     if (host !== "localhost" || !true) {
@@ -202,7 +219,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -212,7 +229,7 @@
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
     
@@ -439,20 +456,20 @@
 
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/cpp-vector.html">
 
-    <span hidden="" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jiajie">
       <meta itemprop="description" content="我觉得你很像一个终生跋涉的香客，不停地寻找一座可能根本不存在的神庙。">
       <meta itemprop="image" content="/images/avatar.png">
     </span>
 
-    <span hidden="" itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="jiajie">
     </span>
 
@@ -521,7 +538,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
 
                 
                 
@@ -584,43 +601,43 @@
 <li>访问 <strong>vector</strong> 的元素</li>
 <li>迭代器<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2>标准库类型 <strong>vector</strong>表示对象的集合，其中的所有对象的类型都相同， <strong>vector</strong> 是一个类模板而不是类型，需要提供额外的信息给编译器将 <strong>vector</strong> 实例化，比如：</li>
 </ul>
-<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; file;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; file;</span><br></pre></td></tr></table></figure>
 <p><strong>vector</strong>  常用操作：</p>
-<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">v.empty()</span><br><span class="line">v.size()</span><br><span class="line">v.push_back(t)</span><br><span class="line">v[n]</span><br><span class="line">v1 = v2 <span class="comment">////拷贝</span></span><br><span class="line">v1 = {a,b,c...}</span><br><span class="line">v1 == v2 <span class="comment">////当且仅当它们元素个数和元素值都相同</span></span><br><span class="line">v1 != v2</span><br><span class="line">&lt; ,V= ,&gt; ,&gt;= <span class="comment">////以字典顺序比较</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">v.empty()</span><br><span class="line">v.size()</span><br><span class="line">v.push_back(t)</span><br><span class="line">v[n]</span><br><span class="line">v1 = v2 <span class="comment">////拷贝</span></span><br><span class="line">v1 = &#123;a,b,c...&#125;</span><br><span class="line">v1 == v2 <span class="comment">////当且仅当它们元素个数和元素值都相同</span></span><br><span class="line">v1 != v2</span><br><span class="line">&lt; ,V= ,&gt; ,&gt;= <span class="comment">////以字典顺序比较</span></span><br></pre></td></tr></table></figure>
 <h2 id="一些要点"><a href="#一些要点" class="headerlink" title="一些要点"></a>一些要点</h2><h3 id="vector-初始化"><a href="#vector-初始化" class="headerlink" title="vector 初始化"></a><strong>vector</strong> 初始化</h3><p>可以对 <strong>vector</strong> 对象直接初始化；或者先定义为一个空的对象，在运行时再用 <em>push_back</em> 添加具体值。前一种情况适用于：</p>
 <ol>
 <li>初始值已知并且数量较少；</li>
 </ol>
-<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>}; <span class="comment">////列表初始化</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;; <span class="comment">////列表初始化</span></span><br></pre></td></tr></table></figure>
 <ol start="2">
 <li>初始值是另一个 <strong>vector</strong> 对象的副本；</li>
 </ol>
-<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec = ivec1;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec = ivec1;</span><br></pre></td></tr></table></figure>
 <ol start="3">
 <li>所有元素的初始值都一样；</li>
 </ol>
-<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec(<span class="number">10</span>,<span class="number">1</span>); <span class="comment">////初始化为10个1</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec(<span class="number">10</span>,<span class="number">1</span>); <span class="comment">////初始化为10个1</span></span><br></pre></td></tr></table></figure>
 <div class="note info"><p>除此之外，建议采用第二种方式初始化。</p></div>
 
 
 
-<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cpp_practice.cpp : 定义控制台应用程序的入口点。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">vector</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; int_str;</span><br><span class="line">	<span class="built_in">string</span> str;</span><br><span class="line">	<span class="keyword">char</span> cont = <span class="string">'y'</span>;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; str)</span><br><span class="line">	{</span><br><span class="line">		int_str.push_back(str);</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"continue ?'y or n'"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cin</span> &gt;&gt; cont;</span><br><span class="line">		<span class="keyword">if</span> (cont == <span class="string">'n'</span> || cont == <span class="string">'N'</span>)</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> i : int_str)</span><br><span class="line">	{</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	}</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cpp_practice.cpp : 定义控制台应用程序的入口点。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">vector</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; int_str;</span><br><span class="line">	<span class="built_in">string</span> str;</span><br><span class="line">	<span class="keyword">char</span> cont = <span class="string">'y'</span>;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; str)</span><br><span class="line">	&#123;</span><br><span class="line">		int_str.push_back(str);</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"continue ?'y or n'"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cin</span> &gt;&gt; cont;</span><br><span class="line">		<span class="keyword">if</span> (cont == <span class="string">'n'</span> || cont == <span class="string">'N'</span>)</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> i : int_str)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="访问-vector-的元素"><a href="#访问-vector-的元素" class="headerlink" title="访问 vector 的元素"></a>访问 <strong>vector</strong> 的元素</h3><ol>
 <li>利用 <strong>范围for</strong> 遍历 <strong>vector</strong> 的所有元素。</li>
 <li>利用下标访问 <strong>vector</strong> 中已经存在的元素。</li>
 </ol>
-<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">vector</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">decltype</span>(ivec.size())ix = <span class="number">0</span>; ix != <span class="number">10</span>; ix++)</span><br><span class="line">	{</span><br><span class="line">		ivec.push_back(ix); <span class="comment">////初始化为空的 vector 用 push_back 添加元素</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : ivec)</span><br><span class="line">	{</span><br><span class="line">		i *= <span class="number">2</span>;  <span class="comment">////范围for,需要用引用的格式修改其中的元素的值。</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">decltype</span>(ivec.size())ix = <span class="number">0</span>; ix != <span class="number">10</span>; ix++)</span><br><span class="line">	{</span><br><span class="line">		ivec[ix] += <span class="number">1</span>; <span class="comment">////利用下标访问已经存在的元素，显然易见，空vector不可使用下标方式访问</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> i : ivec)</span><br><span class="line">	{</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">vector</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">decltype</span>(ivec.size())ix = <span class="number">0</span>; ix != <span class="number">10</span>; ix++)</span><br><span class="line">	&#123;</span><br><span class="line">		ivec.push_back(ix); <span class="comment">////初始化为空的 vector 用 push_back 添加元素</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : ivec)</span><br><span class="line">	&#123;</span><br><span class="line">		i *= <span class="number">2</span>;  <span class="comment">////范围for,需要用引用的格式修改其中的元素的值。</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">decltype</span>(ivec.size())ix = <span class="number">0</span>; ix != <span class="number">10</span>; ix++)</span><br><span class="line">	&#123;</span><br><span class="line">		ivec[ix] += <span class="number">1</span>; <span class="comment">////利用下标访问已经存在的元素，显然易见，空vector不可使用下标方式访问</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> i : ivec)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h3><p>标准库中的所有容器和 <strong>string</strong> 都可以使用迭代器访问对象的元素，迭代器常用的成员：</p>
-<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iter.begin(); <span class="comment">////返回指向对象第一个元素的迭代器</span></span><br><span class="line">iter.end(); <span class="comment">////返回对象尾元素的下一个位置的迭代器，该位置为空，不可对该位置的元素进行解引。</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iter.begin(); <span class="comment">////返回指向对象第一个元素的迭代器</span></span><br><span class="line">iter.end(); <span class="comment">////返回对象尾元素的下一个位置的迭代器，该位置为空，不可对该位置的元素进行解引。</span></span><br></pre></td></tr></table></figure>
 <p>利用迭代器遍历对象中的元素：</p>
-<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> str{ <span class="string">"some string"</span> };</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> s = str.begin(); s != str.end(); ++s)</span><br><span class="line">	{</span><br><span class="line">		*s = <span class="built_in">toupper</span>(*s);</span><br><span class="line">	}</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; str &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> str&#123; <span class="string">"some string"</span> &#125;;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> s = str.begin(); s != str.end(); ++s)</span><br><span class="line">	&#123;</span><br><span class="line">		*s = <span class="built_in">toupper</span>(*s);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; str &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
 <p>若对象只需读操作而不需要写操作，可用 <strong>iter.cbegin()</strong> 和 <strong>iter.cend()</strong> 来访问对象中元素，这样返回的会是一个 <strong>const_iterator</strong> ，不论访问的对象本身是不是常量对象。</p>
 <div class="note danger"><p>但凡使用了迭代器的循环体，都不要向迭代器所属容器添加元素！</p></div>
 
 <p>比如不能用 <strong>push_back</strong> 向 <strong>vector</strong>添加元素，该操作会使迭代器失效。</p>
 <p>迭代器运算符:</p>
 <p>所有的迭代器都支持 <strong>==</strong> ， <strong>！=</strong> 运算符， <strong>vector</strong> 和 <strong>string</strong> 支持更多的运算如下：</p>
-<figure class="highlight armasm"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">iter </span>+ n ////得到当前迭代器位置超前原来迭代器n个位置</span><br><span class="line"><span class="keyword">iter </span>- n</span><br><span class="line"><span class="keyword">iter </span>+= n</span><br><span class="line"><span class="keyword">iter </span>-= n</span><br><span class="line"><span class="keyword">iter1 </span>- <span class="keyword">iter2 </span>////返回两个迭代器的距离，类型是一个带符号类型： difference_type</span><br><span class="line">&gt;, &lt;, &gt;=, &lt;= ////所在位置前后的比较，必须在同一个容器对象中比较才有意义。</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">iter </span>+ n ////得到当前迭代器位置超前原来迭代器n个位置</span><br><span class="line"><span class="keyword">iter </span>- n</span><br><span class="line"><span class="keyword">iter </span>+= n</span><br><span class="line"><span class="keyword">iter </span>-= n</span><br><span class="line"><span class="keyword">iter1 </span>- <span class="keyword">iter2 </span>////返回两个迭代器的距离，类型是一个带符号类型： difference_type</span><br><span class="line">&gt;, &lt;, &gt;=, &lt;= ////所在位置前后的比较，必须在同一个容器对象中比较才有意义。</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -731,7 +748,7 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="jiajie">
             
@@ -746,7 +763,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -771,7 +788,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">4</span>
+                      
+                    
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -804,7 +823,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">8</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -834,7 +859,7 @@
                   
                     
                   
-                  <a href="https://github.com/Wjiajie" title="GitHub → https://github.com/Wjiajie" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  <a href="https://github.com/Wjiajie" title="GitHub &rarr; https://github.com/Wjiajie" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
                 </span>
               
                 <span class="links-of-author-item">
@@ -845,7 +870,7 @@
                   
                     
                   
-                  <a href="/3208920286@qq.com" title="E-Mail → 3208920286@qq.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  <a href="/3208920286@qq.com" title="E-Mail &rarr; 3208920286@qq.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                 </span>
               
             </div>
@@ -923,7 +948,7 @@ show_date_time();
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">© <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
@@ -944,7 +969,7 @@ show_date_time();
 
         
 <div class="busuanzi-count">
-  <script async="" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
     <span class="post-meta-item-icon">
@@ -1513,6 +1538,5 @@ show_date_time();
   <script type="text/javascript" color="150,72,0" opacity="0.3" zindex="-2" count="10" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
 
   
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script>
-
-</body></html>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script></body>
+</html>

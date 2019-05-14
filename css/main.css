@@ -1768,7 +1768,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #95ff93;
+  background: #ffffdf;
 }
 .feed-link,
 .chat {
@@ -2530,6 +2530,13 @@ body {
   color: #fffa74;
   font-size: 14px;
   margin-top: 15px;
+}
+.mjpage__block {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  overflow-x: auto;
+  vertical-align: bottom;
 }
 @media (max-width: 1023px) {
   .container {

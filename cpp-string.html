@@ -1,4 +1,21 @@
-<!DOCTYPE html><html class="theme-next muse use-motion" lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0">
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -49,7 +66,7 @@
   
     
     
-    <link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&amp;subset=latin,latin-ext">
+    <link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
   
 
 
@@ -146,7 +163,7 @@
 
 
 
-  <script async="" src="//www.googletagmanager.com/gtag/js?id=UA-139409990-1"></script>
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-139409990-1"></script>
   <script>
     var host = window.location.hostname;
     if (host !== "localhost" || !true) {
@@ -202,7 +219,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -212,7 +229,7 @@
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta">
     
@@ -439,20 +456,20 @@
 
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/cpp-string.html">
 
-    <span hidden="" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jiajie">
       <meta itemprop="description" content="我觉得你很像一个终生跋涉的香客，不停地寻找一座可能根本不存在的神庙。">
       <meta itemprop="image" content="/images/avatar.png">
     </span>
 
-    <span hidden="" itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="jiajie">
     </span>
 
@@ -521,7 +538,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
 
                 
                 
@@ -580,24 +597,24 @@
       
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本文主要介绍c++标准库中 <strong>string</strong> 的基本用法。<br><a id="more"></a></p>
 <h2 id="标准库类型"><a href="#标准库类型" class="headerlink" title="标准库类型"></a>标准库类型</h2><p><strong>string</strong>表示可变长字符序列，其定义在命名空间<em>std</em>中，使用时记得包含头文件：</p>
-<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
-<h2 id="string常用的操作"><a href="#string常用的操作" class="headerlink" title="string常用的操作"></a><strong>string</strong>常用的操作</h2><figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">os&lt;&lt;s <span class="comment">////将s写入到输出流os中，返回os</span></span><br><span class="line">is&gt;&gt;s <span class="comment">////从is中读取字符串到s中，字符串用空白（空格符，换行，制表符）隔开，返回is</span></span><br><span class="line">getline(is,s) <span class="comment">////从is中读取一行赋给s，返回is</span></span><br><span class="line">s.empty() <span class="comment">////判断s是否为空</span></span><br><span class="line">s.size() <span class="comment">////返回s的字符个数</span></span><br><span class="line">s[n] <span class="comment">////返回s中第n+1个字符的引用，使用时需要判断s是否为空！</span></span><br><span class="line">s1+s2 <span class="comment">////连接</span></span><br><span class="line">s1=s2 <span class="comment">////用s2的副本代替掉s1</span></span><br><span class="line">s1==s2 <span class="comment">////等性判断，对大小写敏感</span></span><br><span class="line">s1!=s2 <span class="comment">////等性判断，对大小写敏感</span></span><br><span class="line">&lt;,&lt;=,&gt;,&gt;= <span class="comment">////比较字符串大小关系，对大小写敏感</span></span><br></pre></td></tr></tbody></table></figure>
-<h2 id="几个要点"><a href="#几个要点" class="headerlink" title="几个要点"></a>几个要点</h2><h3 id="cin-gt-gt-s和getline-cin-s"><a href="#cin-gt-gt-s和getline-cin-s" class="headerlink" title="cin>>s和getline(cin,s)"></a><strong>cin&gt;&gt;s</strong>和<strong>getline(cin,s)</strong></h3><p>输入输出流最常用的还是标准库中的<em>iostream</em>，这里想说<strong>cin&gt;&gt;s</strong>和 <strong>getline(cin,s)</strong> 的区别：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="string常用的操作"><a href="#string常用的操作" class="headerlink" title="string常用的操作"></a><strong>string</strong>常用的操作</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">os&lt;&lt;s <span class="comment">////将s写入到输出流os中，返回os</span></span><br><span class="line">is&gt;&gt;s <span class="comment">////从is中读取字符串到s中，字符串用空白（空格符，换行，制表符）隔开，返回is</span></span><br><span class="line">getline(is,s) <span class="comment">////从is中读取一行赋给s，返回is</span></span><br><span class="line">s.empty() <span class="comment">////判断s是否为空</span></span><br><span class="line">s.size() <span class="comment">////返回s的字符个数</span></span><br><span class="line">s[n] <span class="comment">////返回s中第n+1个字符的引用，使用时需要判断s是否为空！</span></span><br><span class="line">s1+s2 <span class="comment">////连接</span></span><br><span class="line">s1=s2 <span class="comment">////用s2的副本代替掉s1</span></span><br><span class="line">s1==s2 <span class="comment">////等性判断，对大小写敏感</span></span><br><span class="line">s1!=s2 <span class="comment">////等性判断，对大小写敏感</span></span><br><span class="line">&lt;,&lt;=,&gt;,&gt;= <span class="comment">////比较字符串大小关系，对大小写敏感</span></span><br></pre></td></tr></table></figure>
+<h2 id="几个要点"><a href="#几个要点" class="headerlink" title="几个要点"></a>几个要点</h2><h3 id="cin-gt-gt-s和getline-cin-s"><a href="#cin-gt-gt-s和getline-cin-s" class="headerlink" title="cin&gt;&gt;s和getline(cin,s)"></a><strong>cin&gt;&gt;s</strong>和<strong>getline(cin,s)</strong></h3><p>输入输出流最常用的还是标准库中的<em>iostream</em>，这里想说<strong>cin&gt;&gt;s</strong>和 <strong>getline(cin,s)</strong> 的区别：</p>
 <ul>
 <li><strong>cin&gt;&gt;s</strong> 会忽略掉输入开头的空白，从第一个真正字符开始读起，直到遇见下一个空白为止（该空白没被读入）。</li>
 <li><strong>getline(cin,s)</strong>从给定输入流开始读取，直至遇到<strong>换行符</strong>结束，注意<strong>换行符</strong>也被读入，然后将读取的所有内容（除了最后的换行符外）放到s中。（s不包含换行符）。</li>
 </ul>
 <h3 id="s-size-的返回类型"><a href="#s-size-的返回类型" class="headerlink" title="s.size() 的返回类型"></a><strong>s.size()</strong> 的返回类型</h3><p> <strong>s.size()</strong> 是一个<em>string::size_type</em>类型，把它简单理解为一个无符号整形就好，但特殊的是该类型能够存放任何 <strong>string</strong> 对象的大小（理解为一个很大的值，手动狗头…）</p>
 <h3 id="auto和-decltype"><a href="#auto和-decltype" class="headerlink" title="auto和 decltype"></a><strong>auto</strong>和 <strong>decltype</strong></h3><p>c++11标准中允许用<em>auto</em>和<em>decltype</em>推断一个变量的类型。使用<em>auto</em>必须初始化变量，比如：</p>
-<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> s; <span class="comment">////错误，s没初始化，这让编译器怎么推断...</span></span><br><span class="line"><span class="keyword">auto</span> s = <span class="string">"hello"</span>; <span class="comment">////正确，编译器推断"hello"的类型，并认为也是s的类型。</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> s; <span class="comment">////错误，s没初始化，这让编译器怎么推断...</span></span><br><span class="line"><span class="keyword">auto</span> s = <span class="string">"hello"</span>; <span class="comment">////正确，编译器推断"hello"的类型，并认为也是s的类型。</span></span><br></pre></td></tr></table></figure>
 <p><em>decltype</em>可用于不初始化一个变量这种情况，这样用：</p>
-<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">decltype</span>(s.size()) s1;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">decltype</span>(s.size()) s1;</span><br></pre></td></tr></table></figure>
 <p>其实是编译器从 <em>s.size()</em> 中推断出一个类型，并认为s1也是该类型。</p>
 <h3 id="处理string对象中的字符"><a href="#处理string对象中的字符" class="headerlink" title="处理string对象中的字符"></a>处理<strong>string</strong>对象中的字符</h3><ul>
 <li>遍历处理对象中的字符串</li>
 </ul>
 <p>c++11提供的<strong>范围for</strong>语句很好用，如下：</p>
-<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"hello world!"</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c : s)</span><br><span class="line">{</span><br><span class="line">    c = <span class="built_in">toupper</span>(c);</span><br><span class="line">}</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt; s &lt;&lt;<span class="built_in">endl</span>;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">"hello world!"</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c : s)</span><br><span class="line">&#123;</span><br><span class="line">    c = <span class="built_in">toupper</span>(c);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt; s &lt;&lt;<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
 <p>这里值得注意的是：<strong>若要改变string对象中字符的值，必须把循环变量定义成引用类型。</strong></p>
 <ul>
 <li>只处理一部分字符</li>
@@ -606,12 +623,12 @@
 <ol>
 <li>使用下标：下面的例子是将输入的一行字符串中第二个单词全部大写，最后输出。</li>
 </ol>
-<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">////利用下标运算符处理特定位置的部分字符串</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">	<span class="built_in">string</span> line1;</span><br><span class="line">	getline(<span class="built_in">cin</span>, line1); <span class="comment">/////获取输入第一行</span></span><br><span class="line">	<span class="keyword">if</span> (!line1.empty() &amp;&amp; !<span class="built_in">isspace</span>(line1[<span class="number">0</span>]))</span><br><span class="line">	{</span><br><span class="line">		<span class="keyword">int</span> word_count = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">decltype</span>(line1.size())index = <span class="number">0</span>; index != line1.size(); index++)</span><br><span class="line">		{</span><br><span class="line">			<span class="keyword">if</span> (<span class="built_in">isspace</span>(line1[index]))</span><br><span class="line">				word_count++;</span><br><span class="line">			<span class="keyword">if</span> (word_count == <span class="number">1</span>) <span class="comment">////处理第二个单词</span></span><br><span class="line">			{</span><br><span class="line">				line1[index] = <span class="built_in">toupper</span>(line1[index]); <span class="comment">////将第二个单词大写</span></span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line"></span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; line1 &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"input error"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">////利用下标运算符处理特定位置的部分字符串</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">string</span> line1;</span><br><span class="line">	getline(<span class="built_in">cin</span>, line1); <span class="comment">/////获取输入第一行</span></span><br><span class="line">	<span class="keyword">if</span> (!line1.empty() &amp;&amp; !<span class="built_in">isspace</span>(line1[<span class="number">0</span>]))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> word_count = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">decltype</span>(line1.size())index = <span class="number">0</span>; index != line1.size(); index++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (<span class="built_in">isspace</span>(line1[index]))</span><br><span class="line">				word_count++;</span><br><span class="line">			<span class="keyword">if</span> (word_count == <span class="number">1</span>) <span class="comment">////处理第二个单词</span></span><br><span class="line">			&#123;</span><br><span class="line">				line1[index] = <span class="built_in">toupper</span>(line1[index]); <span class="comment">////将第二个单词大写</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; line1 &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"input error"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>若要用下标的方式访问字符，一定要先检查字符串是否为空，否则容易出现不可预知的结果。</p>
 <ol start="2">
 <li>使用迭代器</li>
 </ol>
-<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> str{ <span class="string">"some string"</span> };</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> s = str.begin(); s != str.end(); ++s)</span><br><span class="line">	{</span><br><span class="line">		*s = <span class="built_in">toupper</span>(*s);</span><br><span class="line">	}</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; str &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> str&#123; <span class="string">"some string"</span> &#125;;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> s = str.begin(); s != str.end(); ++s)</span><br><span class="line">	&#123;</span><br><span class="line">		*s = <span class="built_in">toupper</span>(*s);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; str &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -722,7 +739,7 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="jiajie">
             
@@ -737,7 +754,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -762,7 +779,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">4</span>
+                      
+                    
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -795,7 +814,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">8</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -825,7 +850,7 @@
                   
                     
                   
-                  <a href="https://github.com/Wjiajie" title="GitHub → https://github.com/Wjiajie" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  <a href="https://github.com/Wjiajie" title="GitHub &rarr; https://github.com/Wjiajie" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
                 </span>
               
                 <span class="links-of-author-item">
@@ -836,7 +861,7 @@
                   
                     
                   
-                  <a href="/3208920286@qq.com" title="E-Mail → 3208920286@qq.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  <a href="/3208920286@qq.com" title="E-Mail &rarr; 3208920286@qq.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                 </span>
               
             </div>
@@ -914,7 +939,7 @@ show_date_time();
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">© <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
@@ -935,7 +960,7 @@ show_date_time();
 
         
 <div class="busuanzi-count">
-  <script async="" src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
     <span class="post-meta-item-icon">
@@ -1504,6 +1529,5 @@ show_date_time();
   <script type="text/javascript" color="150,72,0" opacity="0.3" zindex="-2" count="10" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
 
   
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script>
-
-</body></html>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script></body>
+</html>

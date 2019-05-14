@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jiajiewu.cn/"/>
-  <updated>2019-05-13T07:17:59.122Z</updated>
+  <updated>2019-05-14T02:47:55.407Z</updated>
   <id>https://www.jiajiewu.cn/</id>
   
   <author>
@@ -17,20 +17,41 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>关于trimmed-icp的一些理解</title>
+    <link href="https://www.jiajiewu.cn/trimmed-icp.html"/>
+    <id>https://www.jiajiewu.cn/trimmed-icp.html</id>
+    <published>2019-05-14T00:28:29.530Z</published>
+    <updated>2019-05-14T02:47:55.407Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>trimmed-icp相较于传统的ICP算法，提升了对噪声的鲁棒性，同时允许两个点云集合具有较差的变换参数初始值。<a id="more"></a>由于我只是在某程序中用到了trimmed-icp做点云匹配，没有研究它的代码实现和论文的实验细节部分，而且我的理解可能有很多错误的地方，原汁原味的论文在这里：<br><a href="http://xueshu.baidu.com/usercenter/paper/show?paperid=702bcecd744a01e1e666722bce765628&amp;site=xueshu_se" target="_blank" rel="noopener">《Robust Euclidean alignment of 3D point sets: the trimmed<br>iterative closest point algorithm》</a>。</p><p>在介绍trimmed-icp之前我想说说我对ICP算法的一些理解。</p><h2 id="ICP（迭代最近点算法）"><a href="#ICP（迭代最近点算法）" class="headerlink" title="ICP（迭代最近点算法）"></a>ICP（迭代最近点算法）</h2><p>给定两个点云集合，两个集合中有一部分重合点，ICP的目的是求出这两个点云集合的最优的旋转矩阵 $R$ 和 平移矢量 $t$，很容易举个例子：比如用两个RGB-D相机对同一物体在不同角度下拍摄（当然要有重叠的部分），利用获取的信息生成点云后，我们想把同一时刻的两帧点云拼接在一起，得到比较完整的物体的三维模型，这时候就需要知道这两帧点云之间的变换矩阵，ICP可以帮助我们实现这个目标。</p><h3 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h3><p>可以查看<a href="http://xueshu.baidu.com/usercenter/paper/show?paperid=4f7932aff070148568c5c12e0ab6fd3c&amp;site=xueshu_se" target="_blank" rel="noopener">三维点云数据拼接中ICP及其改进算法综述</a>获取更多的了解，下面是我从论文中摘取一些我觉得（对我来说）重要的部分。</p><p>ICP算法对待拼接的2片点云，首先根据一定的准则确立对应点集 $P$ 与 $Q$ ，其中对应点对的个数为 $n$ 。然后通过最小二乘法迭代计算最优的坐标变换 ，即旋转矩阵$R$和平移矢量$t$，使得误差函数<br>$$<br>E(\boldsymbol{R}, \boldsymbol{t})=\frac{1}{n} \sum_{k=1}^{n}\left|q_{k}-\left(\boldsymbol{R} p_{k}+\boldsymbol{t}\right)\right|^{2}<br>$$<br>最小。</p><p>ICP算法计算简便直观且可使拼接具有较好的精度，但是算法的运行速度以及向全局最优的收敛性却在很大程度上依赖于给定的初始变换估计以及在迭代过程中对应关系的确立。各种粗拼接技术可为ICP算法提供较好的初始位置，所以迭代过程中确立正确对应点集以避免迭代陷入局部极值成为各种改进算法的关键 ，决定了算法的收敛速度与最终的拼接精度。</p><h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><p>文中将ICP算法流程分为四部分：</p><ol><li>对原始点云数据进行采样</li></ol><p>常用的是均匀采样法，随机采样法，法矢采样法，其中第三种鲁棒性最好。</p><ol start="2"><li>确定初始对应点集</li></ol><p>确定对应点集的方法，点到点 (point—to—point)、点到投影(point—to-projection)和点到面(point—to—surfaee)。</p><ol start="3"><li>去除错误对应点对</li></ol><p>我粗略看了可以利用 RANSAC 去除错误点，关于RANSAC的介绍戳<a href="https://www.cnblogs.com/weizc/p/5257496.html" target="_blank" rel="noopener">这里</a></p><ol start="4"><li>坐标变换的求解</li></ol><p>ICP采用最小二乘法迭代求解出两个点云集的变换矩阵 $P$ 后，通过SVD分解，单位四元数等方法求出 $R$ 和 $t$ 来。</p><h2 id="trimmed-icp"><a href="#trimmed-icp" class="headerlink" title="trimmed-icp"></a>trimmed-icp</h2><p>trimmed-icp 和 传统ICP算法最大的不同，在于trim-icp对于由以上前三步得到的对应点，并不是直接采用最小二乘法来拟合误差函数，而是采用了一个叫LTS(the least trimmed squares)的方法来拟合误差函数，LTS的思路是，如果直接采用最小二乘法，选取的对应点集中如果存在少数异常值，最后拟合的误差函数受这些异常值影响较大，那为什么不把这些异常值排除在外呢？怎么做到不把这些异常值算进误差函数里面？trim-icp采用的LTS方法是对每组对应点求得的残差做一个升值排序，只截取前面比例为 $\epsilon$ 的对应点拟合误差函数，然后通过迭代让误差函数最小求解 $R$ 和 $t$ 。在论文的细节部分给出了 $\epsilon$ 的自适应方法，不过我没有看，想了解可以戳文章开始的论文链接。</p><h3 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h3><p>首先定义：<br>$$<br>\mathbf{p}<em>{i}(\mathbf{R}, \mathbf{t})=\mathbf{R} \mathbf{p}</em>{i}+\mathbf{t}, \quad \mathscr{P}(\mathbf{R}, \mathbf{t})=\left{\mathbf{p}<em>{i}(\mathbf{R}, \mathbf{t})\right}</em>{1}^{N_{p}}<br>$$<br>其中 $\mathbf{p}<em>{i}(\mathbf{R}, \mathbf{t})$ 为点云集合 $\mathscr{P}$ 中某一点转换到 点云集合 $\mathscr{U}$ ，$\mathscr{P}(\mathbf{R} $ 的对应点, $\mathbf{t})$ 是转换后的对应点的集合。需要为$\mathbf{t})$中每一点在$\mathscr{U}$中找到对应点，对应点是这样找的：<br>$$<br>\mathbf{m}</em>{\mathrm{cl}}(i, \mathbf{R}, \mathbf{t})=\arg \min <em>{\mathbf{m} \in \mathscr{M}}\left|\mathbf{m}-\mathbf{p}</em>{i}(\mathbf{R}, \mathbf{t})\right|<br>$$<br>公式说的是距离最近的点为对应点，找到对应点就可以计算每一组对应点的残差了：<br>$$<br>d_{i}(\mathbf{R}, \mathbf{t})=\left|\mathbf{m}<em>{\mathrm{cl}}(i, \mathbf{R}, \mathbf{t})-\mathbf{p}</em>{i}(\mathbf{R}, \mathbf{t})\right|<br>$$<br>LTS做的是，对得到的 $d_{i}^{2}(\mathbf{R}, \mathbf{t})$ 做升值排序，然后截取 $N_{\mathrm{po}}=\xi N_{p}$ 个点求和得到误差函数，然后对优化误差函数，最终求解$R$和$t$。</p><h3 id="算法流程-1"><a href="#算法流程-1" class="headerlink" title="算法流程"></a>算法流程</h3><ol><li><p>为点集 $\mathscr{P}$ 上每一个点找到它在点集 $\mathscr{U}$ 上的对应点，计算其残差的平方 $d_{i}^{2}$。</p></li><li><p>对$d_{i}^{2}$ 做升值排序，选择前面的 $N_{\mathrm{po}}$ 点的对应值，求和得到 $S_{\mathrm{TS}}$。</p></li><li><p>如果满足终止条件，退出迭代，否则把$S_{\mathrm{TS}}$设置为上一轮的对应点数目$S_{\mathrm{TS}}^{\prime}$，开始新一轮迭代。</p></li><li><p>通过最小化$S_{\mathrm{TS}}$计算一个最优的$(\mathbf{R},\mathbf{t})$。</p></li><li><p>由得到的 $(\mathbf{R},\mathbf{t})$做对应点的转换，然后回到第1步。</p></li></ol><p>迭代的终止条件是：</p><ol><li><p>达到了设定的最大迭代次数。</p></li><li><p>trimmed MSE<br>$$<br>e=\frac{S_{\mathrm{TS}}}{N_{\mathrm{po}}}<br>$$<br>足够小了。</p></li><li><p>trimmed MSE 的前后两次的变换量$\left|e^{\prime}-e\right|$足够小了。</p></li></ol><p>完整的算法流程如上，这样trimmed-icp的大体思路就介绍完了，后面若有机会理解代码实现再补充细节。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;trimmed-icp相较于传统的ICP算法，提升了对噪声的鲁棒性，同时允许两个点云集合具有较差的变换参数初始值。
+    
+    </summary>
+    
+      <category term="点云处理" scheme="https://www.jiajiewu.cn/categories/%E7%82%B9%E4%BA%91%E5%A4%84%E7%90%86/"/>
+    
+    
+      <category term="点云配准" scheme="https://www.jiajiewu.cn/tags/%E7%82%B9%E4%BA%91%E9%85%8D%E5%87%86/"/>
+    
+      <category term="三维重建，论文解读" scheme="https://www.jiajiewu.cn/tags/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%EF%BC%8C%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/"/>
+    
+  </entry>
+  
+  <entry>
     <title>算法复杂度分析</title>
     <link href="https://www.jiajiewu.cn/suanfa1.html"/>
     <id>https://www.jiajiewu.cn/suanfa1.html</id>
     <published>2019-05-13T07:38:57.000Z</published>
-    <updated>2019-05-13T07:17:59.122Z</updated>
+    <updated>2019-05-14T00:27:14.443Z</updated>
     
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>`</p><h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>复杂度也叫渐进复杂度，包括时间复杂度和空间复杂度，用来分析算法执行效率和数据规模之间的增长关系，常见的复杂度有：$ O(1),O(logn),O(n),O(nlogn) , O(n^2) $。</p><h2 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><h3 id="大O符号"><a href="#大O符号" class="headerlink" title="大O符号"></a>大O符号</h3><p>$$<br>T(n)=O(f(n))<br>$$</p><p>表示所有代码的执行时间T(n)与每行代码的执行次数n成正比。大O时间复杂度实际上并不具体代表代码真正执行时间，而是表示代码执行时间随数据增长的变化趋势，也称为渐进时间复杂度，简称时间复杂度。</p><h3 id="时间复杂度分析技巧"><a href="#时间复杂度分析技巧" class="headerlink" title="时间复杂度分析技巧"></a>时间复杂度分析技巧</h3><pre><code>1.只关心循环执行次数最多的一段代码2.加法法则：总复杂度等于量级最大的那段代码的复杂度（当量级不确定时不可简单这样计算）3.乘法法则：（嵌套代码的复杂度等于嵌套内外代码的复杂度的乘积）</code></pre><h3 id="关于时间复杂度的更多内容"><a href="#关于时间复杂度的更多内容" class="headerlink" title="关于时间复杂度的更多内容"></a>关于时间复杂度的更多内容</h3><p>1.最好情况时间复杂度</p><p>   在最理想情况下，执行这段代码的时间复杂度。</p><p>2.最坏情况时间复杂度</p><p>   在最坏情况下，执行这段代码的时间复杂度。</p><p>3.平均情况时间复杂度</p><p>   把每种情况发生的概率考虑进去，对发生的所有情况的耗时做加权平均，得到的期望值，它的量级称为加权平均时间复杂度。</p><p>以上三种时间复杂度，当在同一块代码中不同情况下，时间复杂度有量级的差距，才加以区分。</p><p>4.均摊时间复杂度</p><p>   对于一个数据结构进行一组连续操作中，大部分情况下时间复杂度很低，个别情况下时间复杂度很高，而且这些操作之间存在前后连贯的时序关系，这时可以把这组操作放在一块分析，看能否把较高时间复杂度的操作的耗时均摊到其他的时间复杂度低的操作上。 <strong> 一般均摊时间复杂度等于最好情况时间复杂度 </strong>。</p><h2 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h2><p>空间复杂度全称是渐进空间复杂度，表示算法的存储空间与数据规模之间的增长关系。常见的空间复杂度有 $ O(1),O(n),O(n^2)$</p>]]></content>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>复杂度也叫渐进复杂度，包括时间复杂度和空间复杂度，用来分析算法执行效率和数据规模之间的增长关系，常见的复杂度有：$ O(1),O(logn),O(n),O(nlogn) , O(n^2) $。<br><a id="more"></a></p><h2 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><h3 id="大O符号"><a href="#大O符号" class="headerlink" title="大O符号"></a>大O符号</h3><p>$$<br>T(n)=O(f(n))<br>$$</p><p>表示所有代码的执行时间T(n)与每行代码的执行次数n成正比。大O时间复杂度实际上并不具体代表代码真正执行时间，而是表示代码执行时间随数据增长的变化趋势，也称为渐进时间复杂度，简称时间复杂度。</p><h3 id="时间复杂度分析技巧"><a href="#时间复杂度分析技巧" class="headerlink" title="时间复杂度分析技巧"></a>时间复杂度分析技巧</h3><pre><code>1.只关心循环执行次数最多的一段代码2.加法法则：总复杂度等于量级最大的那段代码的复杂度（当量级不确定时不可简单这样计算）3.乘法法则：（嵌套代码的复杂度等于嵌套内外代码的复杂度的乘积）</code></pre><h3 id="关于时间复杂度的更多内容"><a href="#关于时间复杂度的更多内容" class="headerlink" title="关于时间复杂度的更多内容"></a>关于时间复杂度的更多内容</h3><p>1.最好情况时间复杂度</p><p>   在最理想情况下，执行这段代码的时间复杂度。</p><p>2.最坏情况时间复杂度</p><p>   在最坏情况下，执行这段代码的时间复杂度。</p><p>3.平均情况时间复杂度</p><p>   把每种情况发生的概率考虑进去，对发生的所有情况的耗时做加权平均，得到的期望值，它的量级称为加权平均时间复杂度。</p><p>以上三种时间复杂度，当在同一块代码中不同情况下，时间复杂度有量级的差距，才加以区分。</p><p>4.均摊时间复杂度</p><p>   对于一个数据结构进行一组连续操作中，大部分情况下时间复杂度很低，个别情况下时间复杂度很高，而且这些操作之间存在前后连贯的时序关系，这时可以把这组操作放在一块分析，看能否把较高时间复杂度的操作的耗时均摊到其他的时间复杂度低的操作上。 <strong> 一般均摊时间复杂度等于最好情况时间复杂度 </strong>。</p><h2 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h2><p>空间复杂度全称是渐进空间复杂度，表示算法的存储空间与数据规模之间的增长关系。常见的空间复杂度有 $ O(1),O(n),O(n^2)$</p>]]></content>
     
     <summary type="html">
     
-      
-      
-        &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla
-      
+      &lt;h2 id=&quot;概要&quot;&gt;&lt;a href=&quot;#概要&quot; class=&quot;headerlink&quot; title=&quot;概要&quot;&gt;&lt;/a&gt;概要&lt;/h2&gt;&lt;p&gt;复杂度也叫渐进复杂度，包括时间复杂度和空间复杂度，用来分析算法执行效率和数据规模之间的增长关系，常见的复杂度有：$ O(1),O(logn),O(n),O(nlogn) , O(n^2) $。&lt;br&gt;
     
     </summary>
     
