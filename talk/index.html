@@ -503,10 +503,10 @@
         
         
           <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css">
-        <div id="aplayer-pdSbhxkD" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;"></div>
+        <div id="aplayer-YeIgoJgU" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;"></div>
 			  <script>
 				  var options = {"narrow":false,"autoplay":false,"showlrc":3,"mutex":true,"music":[{"title":"In My Secret Life","author":"Leonard Cohen","url":"http://music.163.com/song/media/outer/url?id=20954450.mp3","pic":""},{"title":"You Belong To Me","author":"Michael Bublé","url":"http://music.163.com/song/media/outer/url?id=1696948.mp3","pic":""},{"title":"Tennessee Waltz","author":"Patti Page","url":"http://music.163.com/song/media/outer/url?id=3230714.mp3","pic":""},{"title":"Fly Me to the Moon","author":"Frank Sinatra / Count Basie","url":"http://music.163.com/song/media/outer/url?id=22174754.mp3","pic":""},{"title":"End of the World","author":"Julie London","url":"http://music.163.com/song/media/outer/url?id=2775190.mp3","pic":""},{"title":"New York City","author":"Norah Jones / Peter Malick","url":"http://music.163.com/song/media/outer/url?id=3164322.mp3","pic":""},{"title":"I Still Feel The Same About You","author":"Ella Fitzgerald","url":"http://music.163.com/song/media/outer/url?id=17893394.mp3","pic":""},{"title":"Kiss to Build a Dream On","author":"Gordon Webster","url":"http://music.163.com/song/media/outer/url?id=28164559.mp3","pic":""}]};
-				  options.element = document.getElementById("aplayer-pdSbhxkD");
+				  options.element = document.getElementById("aplayer-YeIgoJgU");
 				  var ap = new APlayer(options);
 			    window.aplayers || (window.aplayers = []);
 				  window.aplayers.push(ap);
@@ -618,8 +618,6 @@
                     
                   
                     
-                    
-                      
                     
                       
                     
@@ -1292,6 +1290,46 @@ show_date_time();
   
   
 
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
   
 
 
