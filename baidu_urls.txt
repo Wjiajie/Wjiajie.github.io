@@ -1,5 +1,5 @@
-https://www.jiajiewu.cn/cuda-practice5.html
 https://www.jiajiewu.cn/trimmed-icp.html
+https://www.jiajiewu.cn/cuda-practice5.html
 https://www.jiajiewu.cn/suanfa1.html
 https://www.jiajiewu.cn/cpp-vector.html
 https://www.jiajiewu.cn/cuda-practice4.html

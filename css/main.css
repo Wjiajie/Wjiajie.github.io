@@ -1768,7 +1768,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #8eff83;
+  background: #75ffc6;
 }
 .feed-link,
 .chat {
@@ -2553,6 +2553,13 @@ body {
   border: none !important;
   transition-property: unset;
   padding: 0 15px;
+}
+.post-button .btn:hover {
+  color: #fff !important;
+  border-radius: 3px;
+  font-size: 15px;
+  box-shadow: inset 0px 0px 10px 0px rgba(0,0,0,0.35);
+  background-image: linear-gradient(90deg, #555 0%, #555 100%);
 }
 #days {
   display: block;

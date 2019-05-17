@@ -134,7 +134,7 @@
 <meta property="og:site_name" content="jiajie">
 <meta property="og:description" content="本文主要介绍c++标准库中 string 的基本用法。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-08T03:59:19.143Z">
+<meta property="og:updated_time" content="2019-05-08T03:59:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="标准库类型string笔记">
 <meta name="twitter:description" content="本文主要介绍c++标准库中 string 的基本用法。">
@@ -521,7 +521,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-08 11:59:19" itemprop="dateModified" datetime="2019-05-08T11:59:19+08:00">2019-05-08</time>
+                <time title="修改时间：2019-05-08 11:59:18" itemprop="dateModified" datetime="2019-05-08T11:59:18+08:00">2019-05-08</time>
               
             
           </span>
@@ -595,7 +595,7 @@
       
 
       
-        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本文主要介绍c++标准库中 <strong>string</strong> 的基本用法。<br><a id="more"></a></p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本文主要介绍c++标准库中 <strong>string</strong> 的基本用法。<br><a id="more"></a></p>
 <h2 id="标准库类型"><a href="#标准库类型" class="headerlink" title="标准库类型"></a>标准库类型</h2><p><strong>string</strong>表示可变长字符序列，其定义在命名空间<em>std</em>中，使用时记得包含头文件：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br></pre></td></tr></table></figure>
 <h2 id="string常用的操作"><a href="#string常用的操作" class="headerlink" title="string常用的操作"></a><strong>string</strong>常用的操作</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">os&lt;&lt;s <span class="comment">////将s写入到输出流os中，返回os</span></span><br><span class="line">is&gt;&gt;s <span class="comment">////从is中读取字符串到s中，字符串用空白（空格符，换行，制表符）隔开，返回is</span></span><br><span class="line">getline(is,s) <span class="comment">////从is中读取一行赋给s，返回is</span></span><br><span class="line">s.empty() <span class="comment">////判断s是否为空</span></span><br><span class="line">s.size() <span class="comment">////返回s的字符个数</span></span><br><span class="line">s[n] <span class="comment">////返回s中第n+1个字符的引用，使用时需要判断s是否为空！</span></span><br><span class="line">s1+s2 <span class="comment">////连接</span></span><br><span class="line">s1=s2 <span class="comment">////用s2的副本代替掉s1</span></span><br><span class="line">s1==s2 <span class="comment">////等性判断，对大小写敏感</span></span><br><span class="line">s1!=s2 <span class="comment">////等性判断，对大小写敏感</span></span><br><span class="line">&lt;,&lt;=,&gt;,&gt;= <span class="comment">////比较字符串大小关系，对大小写敏感</span></span><br></pre></td></tr></table></figure>
