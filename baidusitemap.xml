@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.jiajiewu.cn/hello-world.html</loc>
+    <lastmod>2019-05-17</lastmod>
+  </url>  <url>
+    <loc>https://www.jiajiewu.cn/cuda-practice5.html</loc>
+    <lastmod>2019-05-17</lastmod>
+  </url>  <url>
     <loc>https://www.jiajiewu.cn/trimmed-icp.html</loc>
     <lastmod>2019-05-16</lastmod>
   </url>  <url>
@@ -23,9 +29,6 @@
     <lastmod>2019-05-06</lastmod>
   </url>  <url>
     <loc>https://www.jiajiewu.cn/cuda-practice2.html</loc>
-    <lastmod>2019-05-06</lastmod>
-  </url>  <url>
-    <loc>https://www.jiajiewu.cn/hello-world.html</loc>
     <lastmod>2019-05-06</lastmod>
   </url>
 </urlset>

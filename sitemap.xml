@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jiajiewu.cn/hello-world.html</loc>
+    
+    <lastmod>2019-05-17T06:36:13.143Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jiajiewu.cn/cuda-practice5.html</loc>
+    
+    <lastmod>2019-05-17T05:47:01.134Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jiajiewu.cn/trimmed-icp.html</loc>
     
     <lastmod>2019-05-16T05:38:02.947Z</lastmod>
@@ -61,13 +75,6 @@
     <loc>https://www.jiajiewu.cn/cuda-practice2.html</loc>
     
     <lastmod>2019-05-06T07:16:07.174Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jiajiewu.cn/hello-world.html</loc>
-    
-    <lastmod>2019-05-06T00:58:24.843Z</lastmod>
     
   </url>
   
