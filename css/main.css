@@ -1768,7 +1768,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #c1cb6e;
+  background: #09ffc3;
 }
 .feed-link,
 .chat {
@@ -2567,9 +2567,6 @@ body {
   .feed-link {
     display: none !important;
   }
-  .footer {
-    box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.5);
-  }
 }
 @media (max-width: 767px) {
   .posts-expand {
@@ -2600,37 +2597,4 @@ body {
   .post-widgets {
     margin-top: 10px;
   }
-  .comments {
-    margin: 40px 0px 40px 0px !important;
-  }
-  .footer {
-    box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.5);
-  }
-}
-.sidebar-active #sidebar-dimmer {
-  opacity: 0;
-}
-@font-face {
-  font-family: 'Linux Biolinum';
-  src: url("/fonts/LinBiolinum_Rah.eot");
-  font-display: swap;
-  src: url("/fonts/LinBiolinum_Rah.eot") format('embedded-opentype'), url("/fonts/LinBiolinum_Rah.woff2") format('woff2'), url("/fonts/LinBiolinum_Rah.woff") format('woff'), url("/fonts/LinBiolinum_Rah.ttf") format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Linux Biolinum';
-  src: url("/fonts/LinBiolinum_RBah.eot");
-  font-display: swap;
-  src: url("/fonts/LinBiolinum_RBah.eot") format('embedded-opentype'), url("/fonts/LinBiolinum_RBah.woff2") format('woff2'), url("/fonts/LinBiolinum_RBah.woff") format('woff'), url("/fonts/LinBiolinum_RBah.ttf") format('truetype');
-  font-weight: bold;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Linux Biolinum';
-  src: url("/fonts/LinBiolinum_RIah.eot");
-  font-display: swap;
-  src: url("/fonts/LinBiolinum_RIah.eot") format('embedded-opentype'), url("/fonts/LinBiolinum_RIah.woff2") format('woff2'), url("/fonts/LinBiolinum_RIah.woff") format('woff'), url("/fonts/LinBiolinum_RIah.ttf") format('truetype');
-  font-weight: normal;
-  font-style: italic;
 }
