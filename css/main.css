@@ -1768,7 +1768,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #09ffc3;
+  background: #455c0d;
 }
 .feed-link,
 .chat {
@@ -2501,12 +2501,11 @@ embed {
   display: inline-block;
 }
 body {
-  color: #000;
-  background: #fff;
-  background-image: url("http://pqvlostjb.bkt.clouddn.com/guanying.jpg");
+  background: url("http://pqvlostjb.bkt.clouddn.com/nijwam-bg.jpg");
+  background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: cover;
+  background-position: 50% 50%;
 }
 .headband {
   background: #bcf1d3;
@@ -2524,11 +2523,14 @@ body {
   font-size: 18px;
   color: #535d54;
 }
+.header-inner {
+  opacity: 0.85;
+}
 .post {
   margin-bottom: 50px;
   padding: 35px 10px 10px 10px;
   box-shadow: inset 0px 0px 15px 2px rgba(0,0,0,0.7);
-  background-color: rgba(247,247,247,0.8);
+  background-color: rgba(255,255,255,0.85);
 }
 .posts-expand .post-title {
   font-size: 30px;
@@ -2539,7 +2541,7 @@ body {
   margin-top: 0px;
   margin-bottom: 0px;
   padding: 5px;
-  background-color: rgba(248,244,238,0.4);
+  background-color: rgba(248,244,238,0.5);
   box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.15);
 }
 #days {
@@ -2548,12 +2550,9 @@ body {
   font-size: 14px;
   margin-top: 15px;
 }
-.mjpage__block {
-  display: inline-block;
-  text-align: center;
-  width: 100%;
-  overflow-x: auto;
-  vertical-align: bottom;
+.footer {
+  font-size: 14px;
+  color: #68476d;
 }
 @media (max-width: 1023px) {
   .container {
