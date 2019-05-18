@@ -603,22 +603,24 @@
 <p>在介绍trimmed-icp之前我想说说我对ICP算法的一些理解。</p>
 <h2 id="ICP（迭代最近点算法）"><a href="#ICP（迭代最近点算法）" class="headerlink" title="ICP（迭代最近点算法）"></a>ICP（迭代最近点算法）</h2><p>给定两个点云集合，两个集合中有一部分重合点，ICP的目的是求出这两个点云集合的最优的旋转矩阵 $R$ 和 平移矢量 $t$，很容易举个例子：比如用两个RGB-D相机对同一物体在不同角度下拍摄（当然要有重叠的部分），利用获取的信息生成点云后，我们想把同一时刻的两帧点云拼接在一起，得到比较完整的物体的三维模型，这时候就需要知道这两帧点云之间的变换矩阵，ICP可以帮助我们实现这个目标。</p>
 <h3 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h3><p>可以查看<a href="http://xueshu.baidu.com/usercenter/paper/show?paperid=4f7932aff070148568c5c12e0ab6fd3c&amp;site=xueshu_se" target="_blank" rel="noopener">三维点云数据拼接中ICP及其改进算法综述</a>获取更多的了解，下面是我从论文中摘取一些我觉得（对我来说）重要的部分。</p>
-<p>ICP算法对待拼接的2片点云，首先根据一定的准则确立对应点集 $P$ 与 $Q$ ，其中对应点对的个数为 $n$ 。然后通过最小二乘法迭代计算最优的坐标变换 ，即旋转矩阵$R$和平移矢量$t$，使得误差函数<br>$$<br>E(\boldsymbol{R}, \boldsymbol{t})=\frac{1}{n} \sum_{k=1}^{n}\left|q_{k}-\left(\boldsymbol{R} p_{k}+\boldsymbol{t}\right)\right|^{2}<br>$$<br>最小。</p>
+<p>ICP算法对待拼接的2片点云，首先根据一定的准则确立对应点集 $P$ 与 $Q$ ，其中对应点对的个数为 $n$ 。然后通过最小二乘法迭代计算最优的坐标变换 ，即旋转矩阵$R$和平移矢量$t$，使得误差函数</p>
+<script type="math/tex; mode=display">
+E(\boldsymbol{R}, \boldsymbol{t})=\frac{1}{n} \sum_{k=1}^{n}\left\|q_{k}-\left(\boldsymbol{R} p_{k}+\boldsymbol{t}\right)\right\|^{2}</script><p>最小。</p>
 <p>ICP算法计算简便直观且可使拼接具有较好的精度，但是算法的运行速度以及向全局最优的收敛性却在很大程度上依赖于给定的初始变换估计以及在迭代过程中对应关系的确立。各种粗拼接技术可为ICP算法提供较好的初始位置，所以迭代过程中确立正确对应点集以避免迭代陷入局部极值成为各种改进算法的关键 ，决定了算法的收敛速度与最终的拼接精度。</p>
 <h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><p>文中将ICP算法流程分为四部分：</p>
 <ol>
 <li>对原始点云数据进行采样</li>
 </ol>
 <p>常用的是均匀采样法，随机采样法，法矢采样法，其中第三种鲁棒性最好。</p>
-<ol start="2">
+<ol>
 <li>确定初始对应点集</li>
 </ol>
 <p>确定对应点集的方法，点到点 (point—to—point)、点到投影(point—to-projection)和点到面(point—to—surfaee)。</p>
-<ol start="3">
+<ol>
 <li>去除错误对应点对</li>
 </ol>
 <p>我粗略看了可以利用 RANSAC 去除错误点，关于RANSAC的介绍戳<a href="https://www.cnblogs.com/weizc/p/5257496.html" target="_blank" rel="noopener">这里</a></p>
-<ol start="4">
+<ol>
 <li>坐标变换的求解</li>
 </ol>
 <p>ICP采用最小二乘法迭代求解出两个点云集的变换矩阵 $P$ 后，通过SVD分解，单位四元数等方法求出 $R$ 和 $t$ 来。</p>
@@ -690,6 +692,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/linear-regression.html" rel="prev" title="Python实现线性回归模型">
+                Python实现线性回归模型 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -764,7 +770,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">12</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -791,7 +797,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -830,7 +840,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">11</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

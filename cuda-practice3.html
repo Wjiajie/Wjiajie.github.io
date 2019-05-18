@@ -598,9 +598,9 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本文介绍如何在GPU上实现多线程块中开多个线程处理任务。<br><a id="more"></a></p>
 <h2 id="单线程块里开启多个线程"><a href="#单线程块里开启多个线程" class="headerlink" title="单线程块里开启多个线程"></a>单线程块里开启多个线程</h2><p>在代码实现上，和开启多个线程块，每个线程块只有一个线程的区别：</p>
 <ul>
-<li>将 <em>add&lt;&lt;&lt;N,1&gt;&gt;&gt;(dev_a,dev_b,dev_c)</em> 改为<em>add&lt;&lt;&lt;1,N&gt;&gt;&gt;(dev_a,dev_b,dev_c)</em>。</li>
+<li>将 <em>add&lt;&lt;<n,1>&gt;&gt;(dev_a,dev_b,dev_c)</n,1></em> 改为<em>add&lt;&lt;<1,n>&gt;&gt;(dev_a,dev_b,dev_c)</1,n></em>。</li>
 </ul>
-<p>容易看出 <em>add&lt;&lt;&lt;N,1&gt;&gt;&gt;</em> 的第一个参数是开启的线程块的数目，第二个参数是一个线程块里的线程数。</p>
+<p>容易看出 <em>add&lt;&lt;<n,1>&gt;&gt;</n,1></em> 的第一个参数是开启的线程块的数目，第二个参数是一个线程块里的线程数。</p>
 <ul>
 <li>将 <em>int tid = blockIdx.x;</em> 改为 <em>int tid = threadIdx.x;</em></li>
 </ul>
@@ -611,7 +611,7 @@
 </ul>
 <p>将：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> tid = threadIdx.x;</span><br></pre></td></tr></table></figure></p>
 <p>改为：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> tid = threadIdx.x + blockIdx.x * blockDim.x;</span><br></pre></td></tr></table></figure></p>
-<p>注意的是， <em>blockDim</em> 其实是一个三维的线程数组，但在例子中只用到一维线程块，故只需要用到 <em>blockIdx.x</em> ，该变量是一个常数，保存的是线程块中每一维的线程数量。索引 <em>tid</em> 的值显然为：<strong>当前线程块中的线程索引</strong> + <strong>每一个线程块中线程数（这里只有一维）</strong> * <strong>当前线程块索引（从0开始）</strong>。</p>
+<p>注意的是， <em>blockDim</em> 其实是一个三维的线程数组，但在例子中只用到一维线程块，故只需要用到 <em>blockIdx.x</em> ，该变量是一个常数，保存的是线程块中每一维的线程数量。索引 <em>tid</em> 的值显然为：<strong>当前线程块中的线程索引</strong> + <strong>每一个线程块中线程数（这里只有一维）</strong> <em> <em>*当前线程块索引（从0开始）</em></em>。</p>
 <ul>
 <li>核函数的调用方式：<br>将：</li>
 </ul>
@@ -760,7 +760,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">12</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -787,7 +787,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -826,7 +830,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">11</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
