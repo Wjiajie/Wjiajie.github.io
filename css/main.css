@@ -1768,7 +1768,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #99ffd9;
+  background: #8cda9f;
 }
 .feed-link,
 .chat {
@@ -2501,7 +2501,7 @@ embed {
   display: inline-block;
 }
 body {
-  background: url("http://pqvlostjb.bkt.clouddn.com/nijwam-bg.jpg");
+  background: url("http://pqvlostjb.bkt.clouddn.com/bgim.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
