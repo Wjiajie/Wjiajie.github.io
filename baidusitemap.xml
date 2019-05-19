@@ -2,7 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.jiajiewu.cn/show-issue.html</loc>
-    <lastmod>2019-05-18</lastmod>
+    <lastmod>2019-05-19</lastmod>
+  </url>  <url>
+    <loc>https://www.jiajiewu.cn/trimmed-icp.html</loc>
+    <lastmod>2019-05-19</lastmod>
   </url>  <url>
     <loc>https://www.jiajiewu.cn/linear-regression.html</loc>
     <lastmod>2019-05-18</lastmod>
@@ -12,9 +15,6 @@
   </url>  <url>
     <loc>https://www.jiajiewu.cn/cuda-practice5.html</loc>
     <lastmod>2019-05-17</lastmod>
-  </url>  <url>
-    <loc>https://www.jiajiewu.cn/trimmed-icp.html</loc>
-    <lastmod>2019-05-16</lastmod>
   </url>  <url>
     <loc>https://www.jiajiewu.cn/suanfa1.html</loc>
     <lastmod>2019-05-14</lastmod>

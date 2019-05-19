@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.jiajiewu.cn/"/>
-  <updated>2019-05-18T15:33:58.213Z</updated>
+  <updated>2019-05-19T02:11:12.266Z</updated>
   <id>https://www.jiajiewu.cn/</id>
   
   <author>
@@ -17,20 +17,43 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>解决hexo渲染mathjax部分公式的问题</title>
-    <link href="https://www.jiajiewu.cn/show-issue.html"/>
-    <id>https://www.jiajiewu.cn/show-issue.html</id>
-    <published>2019-05-18T15:21:57.000Z</published>
-    <updated>2019-05-18T15:33:58.213Z</updated>
+    <title>关于trimmed-icp的一些理解</title>
+    <link href="https://www.jiajiewu.cn/trimmed-icp.html"/>
+    <id>https://www.jiajiewu.cn/trimmed-icp.html</id>
+    <published>2019-05-19T02:11:12.266Z</published>
+    <updated>2019-05-19T02:11:12.266Z</updated>
     
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>markdown的部分转义字符和latex的命令符号意思冲突了，然而我们又要使用latex的数学公式，怎么办，在网上找到两个比较好使的方法：</p><ol><li>将hexo的markdown引擎换成pandoc，由于pandoc没有这个问题。</li></ol><ul><li>首先安装Pandoc，官网提供了Ubuntu的deb安装包，按照官网教程就可以安装完成。</li><li>然后就是卸载hexo默认的markd,再安装新的:<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">uninstall</span> hexo-renderer-marked <span class="comment">--save</span></span><br><span class="line">npm <span class="keyword">install</span> hexo-renderer-pandoc <span class="comment">--save</span></span><br></pre></td></tr></table></figure></li></ul><ol><li>更换hexo的渲染引擎，并修改Hexo渲染源码</li></ol><ul><li><p>卸载默认引擎，并安装这个新的渲染引擎</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">uninstall</span> hexo-renderer-marked <span class="comment">--save</span></span><br><span class="line">npm <span class="keyword">install</span> hexo-renderer-kramed <span class="comment">--save</span></span><br></pre></td></tr></table></figure></li><li><p>修改Hexo渲染源码<br>定位到你的博客根目录，找到../node_modules/kramed/lib/rules/inline.js文件，</p><figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//escape: /^<span class="symbol">\\</span>([<span class="symbol">\\</span>`*&#123;&#125;<span class="symbol">\[</span><span class="symbol">\]</span>()#$+<span class="symbol">\-</span>.!_&gt;])/,      第11行，将其修改为</span><br><span class="line">escape: /^<span class="symbol">\\</span>([`*<span class="symbol">\[</span><span class="symbol">\]</span>()#$+<span class="symbol">\-</span>.!_&gt;])/,</span><br><span class="line">//em: /^<span class="symbol">\b</span>_((?:__|[<span class="symbol">\s</span><span class="symbol">\S</span>])+?)_<span class="symbol">\b</span>|^<span class="symbol">\*</span>((?:<span class="symbol">\*</span><span class="symbol">\*</span>|[<span class="symbol">\s</span><span class="symbol">\S</span>])+?)<span class="symbol">\*</span>(?!<span class="symbol">\*</span>)/,    第20行，将其修改为</span><br><span class="line">em: /^<span class="symbol">\*</span>((?:<span class="symbol">\*</span><span class="symbol">\*</span>|[<span class="symbol">\s</span><span class="symbol">\S</span>])+?)<span class="symbol">\*</span>(?!<span class="symbol">\*</span>)/,</span><br></pre></td></tr></table></figure></li></ul><p>我用的是第二种方法，这时候行间公式应该没有什么问题了，如果行间公式再出现什么问题再手动分析加转义字符好了。</p>]]></content>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>trimmed-icp相较于传统的ICP算法，提升了对噪声的鲁棒性，同时允许两个点云集合具有较差的变换参数初始值。<a id="more"></a>由于我只是在某程序中用到了trimmed-icp做点云匹配，没有研究它的代码实现和论文的实验细节部分，而且我的理解可能有很多错误的地方，原汁原味的论文在这里：<br><a href="http://xueshu.baidu.com/usercenter/paper/show?paperid=702bcecd744a01e1e666722bce765628&amp;site=xueshu_se" target="_blank" rel="noopener">《Robust Euclidean alignment of 3D point sets: the trimmed<br>iterative closest point algorithm》</a>。</p><p>在介绍trimmed-icp之前我想说说我对ICP算法的一些理解。</p><h2 id="ICP（迭代最近点算法）"><a href="#ICP（迭代最近点算法）" class="headerlink" title="ICP（迭代最近点算法）"></a>ICP（迭代最近点算法）</h2><p>给定两个点云集合，两个集合中有一部分重合点，ICP的目的是求出这两个点云集合的最优的旋转矩阵 $R$ 和 平移矢量 $t$，很容易举个例子：比如用两个RGB-D相机对同一物体在不同角度下拍摄（当然要有重叠的部分），利用获取的信息生成点云后，我们想把同一时刻的两帧点云拼接在一起，得到比较完整的物体的三维模型，这时候就需要知道这两帧点云之间的变换矩阵，ICP可以帮助我们实现这个目标。</p><h3 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h3><p>可以查看<a href="http://xueshu.baidu.com/usercenter/paper/show?paperid=4f7932aff070148568c5c12e0ab6fd3c&amp;site=xueshu_se" target="_blank" rel="noopener">三维点云数据拼接中ICP及其改进算法综述</a>获取更多的了解，下面是我从论文中摘取一些我觉得（对我来说）重要的部分。</p><p>ICP算法对待拼接的2片点云，首先根据一定的准则确立对应点集 $P$ 与 $Q$ ，其中对应点对的个数为 $n$ 。然后通过最小二乘法迭代计算最优的坐标变换 ，即旋转矩阵$R$和平移矢量$t$，使得误差函数</p><script type="math/tex; mode=display">E(\boldsymbol{R}, \boldsymbol{t})=\frac{1}{n} \sum_{k=1}^{n}\left\|q_{k}-\left(\boldsymbol{R} p_{k}+\boldsymbol{t}\right)\right\|^{2}</script><p>最小。</p><p>ICP算法计算简便直观且可使拼接具有较好的精度，但是算法的运行速度以及向全局最优的收敛性却在很大程度上依赖于给定的初始变换估计以及在迭代过程中对应关系的确立。各种粗拼接技术可为ICP算法提供较好的初始位置，所以迭代过程中确立正确对应点集以避免迭代陷入局部极值成为各种改进算法的关键 ，决定了算法的收敛速度与最终的拼接精度。</p><h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><p>文中将ICP算法流程分为四部分：</p><ol><li>对原始点云数据进行采样</li></ol><p>常用的是均匀采样法，随机采样法，法矢采样法，其中第三种鲁棒性最好。</p><ol><li>确定初始对应点集</li></ol><p>确定对应点集的方法，点到点 (point—to—point)、点到投影(point—to-projection)和点到面(point—to—surfaee)。</p><ol><li>去除错误对应点对</li></ol><p>我粗略看了可以利用 RANSAC 去除错误点，关于RANSAC的介绍戳<a href="https://www.cnblogs.com/weizc/p/5257496.html" target="_blank" rel="noopener">这里</a></p><ol><li>坐标变换的求解</li></ol><p>ICP采用最小二乘法迭代求解出两个点云集的变换矩阵 $P$ 后，通过SVD分解，单位四元数等方法求出 $R$ 和 $t$ 来。</p><h2 id="trimmed-icp"><a href="#trimmed-icp" class="headerlink" title="trimmed-icp"></a>trimmed-icp</h2><p>trimmed-icp 和 传统ICP算法最大的不同，在于trim-icp对于由以上前三步得到的对应点，并不是直接采用最小二乘法来拟合误差函数，而是采用了一个叫LTS(the least trimmed squares)的方法来拟合误差函数，LTS的思路是，如果直接采用最小二乘法，选取的对应点集中如果存在少数异常值，最后拟合的误差函数受这些异常值影响较大，那为什么不把这些异常值排除在外呢？怎么做到不把这些异常值算进误差函数里面？trim-icp采用的LTS方法是对每组对应点求得的残差做一个升值排序，只截取前面比例为 $\epsilon$ 的对应点拟合误差函数，然后通过迭代让误差函数最小求解 $R$ 和 $t$ 。在论文的细节部分给出了 $\epsilon$ 的自适应方法，不过我没有看，想了解可以戳文章开始的论文链接。</p><h3 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h3><p>定义：</p><script type="math/tex; mode=display">\mathbf{p}_{i}(\mathbf{R}, \mathbf{t})=\mathbf{R} \mathbf{p}_{i}+\mathbf{t}, \quad \mathscr{P}(\mathbf{R}, \mathbf{t})=\left\{\mathbf{p}_{i}(\mathbf{R}, \mathbf{t})\right\}_{1}^{N_{p}}</script><p>  其中$\mathbf{p}_{i}(\mathbf{R},\mathbf{t})$为点云集合$\mathscr{P}$ 中某一点转换到点云集合$\mathscr{U}$的对应点。$\mathscr{P}(\mathbf{R},\mathbf{t})$ 是转换后的对应点的集合。需要为$\mathscr{P}(\mathbf{R},\mathbf{t})$中每一点在$\mathscr{U}$中找到对应点，对应点是这样找的：</p><script type="math/tex; mode=display">\mathbf{m}_{\mathrm{cl}}(i, \mathbf{R}, \mathbf{t})=\arg \min _{\mathbf{m} \in \mathscr{M}}\left\|\mathbf{m}-\mathbf{p}_{i}(\mathbf{R}, \mathbf{t})\right\|</script><p>  公式说的是距离最近的点为对应点，找到对应点就可以计算每一组对应点的残差了：</p><script type="math/tex; mode=display">d_{i}(\mathbf{R}, \mathbf{t})=\left\|\mathbf{m}_{\mathrm{cl}}(i, \mathbf{R}, \mathbf{t})-\mathbf{p}_{i}(\mathbf{R}, \mathbf{t})\right\|</script><p>  LTS做的是，对得到的 $d_{i}^{2}(\mathbf{R}, \mathbf{t})$ 做升值排序，然后截取 $N_{\mathrm{po}}=\xi N_{p}$ 个点求和得到误差函数，然后对优化误差函数，最终求解$R$和$t$。</p><h3 id="算法流程-1"><a href="#算法流程-1" class="headerlink" title="算法流程"></a>算法流程</h3><p>1 . 为点集 $\mathscr{P}$ 上每一个点找到它在点集 $\mathscr{U}$ 上的对应点，计算其残差的平方 $d_{i}^{2}$。</p><p>2 . 对$d_{i}^{2}$ 做升值排序，选择前面的 $N_{\mathrm{po}}$ 点的对应值，求和得到 $S_{\mathrm{TS}}$。</p><p>3 . 如果满足终止条件，退出迭代，否则把$S_{\mathrm{TS}}$设置为上一轮的对应点数目$S_{\mathrm{TS}}^{\prime}$，开始新一轮迭代。</p><p>4 . 通过最小化$S_{\mathrm{TS}}$计算一个最优的$(\mathbf{R},\mathbf{t})$。</p><p>  5 . 由得到的 $(\mathbf{R},\mathbf{t})$做对应点的转换，然后回到第1步。</p><p>迭代的终止条件是：</p><p>1 . 达到了设定的最大迭代次数。</p><p>2 . trimmed MSE $e=\frac{S_{\mathrm{TS}}}{N_{\mathrm{po}}}$足够小了。</p><p>3 . trimmed MSE 的前后两次的变换量$\left|e^{\prime}-e\right|$足够小了。</p><p>完整的算法流程如上，这样trimmed-icp的大体思路就介绍完了，后面若有机会理解代码实现再补充细节。</p>]]></content>
     
     <summary type="html">
     
-      
-      
-        &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
-      
+      &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;trimmed-icp相较于传统的ICP算法，提升了对噪声的鲁棒性，同时允许两个点云集合具有较差的变换参数初始值。
+    
+    </summary>
+    
+      <category term="点云处理" scheme="https://www.jiajiewu.cn/categories/%E7%82%B9%E4%BA%91%E5%A4%84%E7%90%86/"/>
+    
+    
+      <category term="点云配准" scheme="https://www.jiajiewu.cn/tags/%E7%82%B9%E4%BA%91%E9%85%8D%E5%87%86/"/>
+    
+      <category term="三维重建" scheme="https://www.jiajiewu.cn/tags/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/"/>
+    
+      <category term="论文解读" scheme="https://www.jiajiewu.cn/tags/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>解决hexo无法渲染mathjax部分公式的问题</title>
+    <link href="https://www.jiajiewu.cn/show-issue.html"/>
+    <id>https://www.jiajiewu.cn/show-issue.html</id>
+    <published>2019-05-18T15:21:57.000Z</published>
+    <updated>2019-05-19T07:02:51.683Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>markdown的部分转义字符和latex的命令符号意思冲突了，然而我们又要使用latex的数学公式，怎么办，在网上找到两个比较好使的方法：<br><a id="more"></a><br>1 . 将hexo的markdown引擎换成pandoc，pandoc没有这个问题。</p><ul><li>首先安装Pandoc，官网提供了Ubuntu的deb安装包，按照官网教程就可以安装完成。</li><li>然后就是卸载hexo默认的markd,再安装新的:</li></ul><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">uninstall</span> hexo-renderer-marked <span class="comment">--save</span></span><br><span class="line">npm <span class="keyword">install</span> hexo-renderer-pandoc <span class="comment">--save</span></span><br></pre></td></tr></table></figure><p>2 .  更换hexo的渲染引擎，并修改Hexo渲染源码</p><ul><li>卸载默认引擎，并安装这个新的渲染引擎</li></ul><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">uninstall</span> hexo-renderer-marked <span class="comment">--save</span></span><br><span class="line">npm <span class="keyword">install</span> hexo-renderer-kramed <span class="comment">--save</span></span><br></pre></td></tr></table></figure><ul><li>修改Hexo渲染源码<br>定位到你的博客根目录，找到../node_modules/kramed/lib/rules/inline.js文件，</li></ul><figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- escape: /^\\([\\`*&#123;&#125;\[\]()#$+\-.!_&gt;])/,   </span></span><br><span class="line"><span class="addition">+ escape: /^\\([`*\[\]()#$+\-.!_&gt;])/,</span></span><br><span class="line"><span class="deletion">- em: /^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,    </span></span><br><span class="line"><span class="addition">+ em: /^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,</span></span><br></pre></td></tr></table></figure><p>我用的是第二种方法，这时候行间公式应该没有什么问题了，如果行间公式再出现什么问题再手动分析加转义字符好了。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot; title=&quot;原因&quot;&gt;&lt;/a&gt;原因&lt;/h2&gt;&lt;p&gt;markdown的部分转义字符和latex的命令符号意思冲突了，然而我们又要使用latex的数学公式，怎么办，在网上找到两个比较好使的方法：&lt;br&gt;
     
     </summary>
     
@@ -62,32 +85,6 @@
       <category term="python" scheme="https://www.jiajiewu.cn/tags/python/"/>
     
       <category term="dl" scheme="https://www.jiajiewu.cn/tags/dl/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>关于trimmed-icp的一些理解</title>
-    <link href="https://www.jiajiewu.cn/trimmed-icp.html"/>
-    <id>https://www.jiajiewu.cn/trimmed-icp.html</id>
-    <published>2019-05-17T11:29:23.428Z</published>
-    <updated>2019-05-16T05:38:02.000Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>trimmed-icp相较于传统的ICP算法，提升了对噪声的鲁棒性，同时允许两个点云集合具有较差的变换参数初始值。<a id="more"></a>由于我只是在某程序中用到了trimmed-icp做点云匹配，没有研究它的代码实现和论文的实验细节部分，而且我的理解可能有很多错误的地方，原汁原味的论文在这里：<br><a href="http://xueshu.baidu.com/usercenter/paper/show?paperid=702bcecd744a01e1e666722bce765628&amp;site=xueshu_se" target="_blank" rel="noopener">《Robust Euclidean alignment of 3D point sets: the trimmed<br>iterative closest point algorithm》</a>。</p><p>在介绍trimmed-icp之前我想说说我对ICP算法的一些理解。</p><h2 id="ICP（迭代最近点算法）"><a href="#ICP（迭代最近点算法）" class="headerlink" title="ICP（迭代最近点算法）"></a>ICP（迭代最近点算法）</h2><p>给定两个点云集合，两个集合中有一部分重合点，ICP的目的是求出这两个点云集合的最优的旋转矩阵 $R$ 和 平移矢量 $t$，很容易举个例子：比如用两个RGB-D相机对同一物体在不同角度下拍摄（当然要有重叠的部分），利用获取的信息生成点云后，我们想把同一时刻的两帧点云拼接在一起，得到比较完整的物体的三维模型，这时候就需要知道这两帧点云之间的变换矩阵，ICP可以帮助我们实现这个目标。</p><h3 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h3><p>可以查看<a href="http://xueshu.baidu.com/usercenter/paper/show?paperid=4f7932aff070148568c5c12e0ab6fd3c&amp;site=xueshu_se" target="_blank" rel="noopener">三维点云数据拼接中ICP及其改进算法综述</a>获取更多的了解，下面是我从论文中摘取一些我觉得（对我来说）重要的部分。</p><p>ICP算法对待拼接的2片点云，首先根据一定的准则确立对应点集 $P$ 与 $Q$ ，其中对应点对的个数为 $n$ 。然后通过最小二乘法迭代计算最优的坐标变换 ，即旋转矩阵$R$和平移矢量$t$，使得误差函数</p><script type="math/tex; mode=display">E(\boldsymbol{R}, \boldsymbol{t})=\frac{1}{n} \sum_{k=1}^{n}\left\|q_{k}-\left(\boldsymbol{R} p_{k}+\boldsymbol{t}\right)\right\|^{2}</script><p>最小。</p><p>ICP算法计算简便直观且可使拼接具有较好的精度，但是算法的运行速度以及向全局最优的收敛性却在很大程度上依赖于给定的初始变换估计以及在迭代过程中对应关系的确立。各种粗拼接技术可为ICP算法提供较好的初始位置，所以迭代过程中确立正确对应点集以避免迭代陷入局部极值成为各种改进算法的关键 ，决定了算法的收敛速度与最终的拼接精度。</p><h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><p>文中将ICP算法流程分为四部分：</p><ol><li>对原始点云数据进行采样</li></ol><p>常用的是均匀采样法，随机采样法，法矢采样法，其中第三种鲁棒性最好。</p><ol><li>确定初始对应点集</li></ol><p>确定对应点集的方法，点到点 (point—to—point)、点到投影(point—to-projection)和点到面(point—to—surfaee)。</p><ol><li>去除错误对应点对</li></ol><p>我粗略看了可以利用 RANSAC 去除错误点，关于RANSAC的介绍戳<a href="https://www.cnblogs.com/weizc/p/5257496.html" target="_blank" rel="noopener">这里</a></p><ol><li>坐标变换的求解</li></ol><p>ICP采用最小二乘法迭代求解出两个点云集的变换矩阵 $P$ 后，通过SVD分解，单位四元数等方法求出 $R$ 和 $t$ 来。</p><h2 id="trimmed-icp"><a href="#trimmed-icp" class="headerlink" title="trimmed-icp"></a>trimmed-icp</h2><p>trimmed-icp 和 传统ICP算法最大的不同，在于trim-icp对于由以上前三步得到的对应点，并不是直接采用最小二乘法来拟合误差函数，而是采用了一个叫LTS(the least trimmed squares)的方法来拟合误差函数，LTS的思路是，如果直接采用最小二乘法，选取的对应点集中如果存在少数异常值，最后拟合的误差函数受这些异常值影响较大，那为什么不把这些异常值排除在外呢？怎么做到不把这些异常值算进误差函数里面？trim-icp采用的LTS方法是对每组对应点求得的残差做一个升值排序，只截取前面比例为 $\epsilon$ 的对应点拟合误差函数，然后通过迭代让误差函数最小求解 $R$ 和 $t$ 。在论文的细节部分给出了 $\epsilon$ 的自适应方法，不过我没有看，想了解可以戳文章开始的论文链接。</p><h3 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h3><p>定义：</p><p><img src="http://pqvlostjb.bkt.clouddn.com/trimmed1.PNG" width="70%" height="8%" div align="center"></p><p>  其中$\mathbf{p}_{i}(\mathbf{R},\mathbf{t})$为点云集合$\mathscr{P}$ 中某一点转换到点云集合$\mathscr{U}$的对应点。$\mathscr{P}(\mathbf{R},\mathbf{t})$ 是转换后的对应点的集合。需要为$\mathscr{P}(\mathbf{R},\mathbf{t})$中每一点在$\mathscr{U}$中找到对应点，对应点是这样找的：</p><p><img src="http://pqvlostjb.bkt.clouddn.com/trimmed2.PNG" width="70%" height="8%" div align="center"></p><p>  公式说的是距离最近的点为对应点，找到对应点就可以计算每一组对应点的残差了：</p><p><img src="http://pqvlostjb.bkt.clouddn.com/trimmed3.PNG" width="70%" height="8%" div align="center"></p><p>  LTS做的是，对得到的 $d_{i}^{2}(\mathbf{R}, \mathbf{t})$ 做升值排序，然后截取 $N_{\mathrm{po}}=\xi N_{p}$ 个点求和得到误差函数，然后对优化误差函数，最终求解$R$和$t$。</p><p>(这几条公式用mathjax 奇迹般显示不了，好气…)</p><h3 id="算法流程-1"><a href="#算法流程-1" class="headerlink" title="算法流程"></a>算法流程</h3><p>1 . 为点集 $\mathscr{P}$ 上每一个点找到它在点集 $\mathscr{U}$ 上的对应点，计算其残差的平方 $d_{i}^{2}$。</p><p>2 . 对$d_{i}^{2}$ 做升值排序，选择前面的 $N_{\mathrm{po}}$ 点的对应值，求和得到 $S_{\mathrm{TS}}$。</p><p>3 . 如果满足终止条件，退出迭代，否则把$S_{\mathrm{TS}}$设置为上一轮的对应点数目$S_{\mathrm{TS}}^{\prime}$，开始新一轮迭代。</p><p>4 . 通过最小化$S_{\mathrm{TS}}$计算一个最优的$(\mathbf{R},\mathbf{t})$。</p><p>  5 . 由得到的 $(\mathbf{R},\mathbf{t})$做对应点的转换，然后回到第1步。</p><p>迭代的终止条件是：</p><p>1 . 达到了设定的最大迭代次数。</p><p>2 . trimmed MSE $e=\frac{S_{\mathrm{TS}}}{N_{\mathrm{po}}}$足够小了。</p><p>3 . trimmed MSE 的前后两次的变换量$\left|e^{\prime}-e\right|$足够小了。</p><p>完整的算法流程如上，这样trimmed-icp的大体思路就介绍完了，后面若有机会理解代码实现再补充细节。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;trimmed-icp相较于传统的ICP算法，提升了对噪声的鲁棒性，同时允许两个点云集合具有较差的变换参数初始值。
-    
-    </summary>
-    
-      <category term="点云处理" scheme="https://www.jiajiewu.cn/categories/%E7%82%B9%E4%BA%91%E5%A4%84%E7%90%86/"/>
-    
-    
-      <category term="点云配准" scheme="https://www.jiajiewu.cn/tags/%E7%82%B9%E4%BA%91%E9%85%8D%E5%87%86/"/>
-    
-      <category term="三维重建" scheme="https://www.jiajiewu.cn/tags/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/"/>
-    
-      <category term="论文解读" scheme="https://www.jiajiewu.cn/tags/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/"/>
     
   </entry>
   
