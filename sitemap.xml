@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jiajiewu.cn/softmax.html</loc>
+    
+    <lastmod>2019-05-19T11:03:02.042Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jiajiewu.cn/linear-regression.html</loc>
+    
+    <lastmod>2019-05-19T11:02:17.284Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jiajiewu.cn/show-issue.html</loc>
     
-    <lastmod>2019-05-19T07:02:51.683Z</lastmod>
+    <lastmod>2019-05-19T07:28:52.085Z</lastmod>
     
   </url>
   
@@ -12,13 +26,6 @@
     <loc>https://www.jiajiewu.cn/trimmed-icp.html</loc>
     
     <lastmod>2019-05-19T02:11:12.266Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jiajiewu.cn/linear-regression.html</loc>
-    
-    <lastmod>2019-05-18T15:07:09.394Z</lastmod>
     
   </url>
   
