@@ -1,3 +1,4 @@
+https://www.jiajiewu.cn/underfitandoverfit.html
 https://www.jiajiewu.cn/softmax.html
 https://www.jiajiewu.cn/trimmed-icp.html
 https://www.jiajiewu.cn/show-issue.html
@@ -7,4 +8,3 @@ https://www.jiajiewu.cn/suanfa1.html
 https://www.jiajiewu.cn/cpp-vector.html
 https://www.jiajiewu.cn/cuda-practice4.html
 https://www.jiajiewu.cn/cuda-practice3.html
-https://www.jiajiewu.cn/cuda-practice2.html

@@ -126,18 +126,20 @@
 
 
 
-  <meta name="description" content="本文主要介绍c++标准库中 vector 的基本用法。">
-<meta name="keywords" content="c++,vector">
+  <meta name="description" content="记录模型欠拟合和过拟合的原因和实验现象。摘自《动手学深度学习》">
+<meta name="keywords" content="python,dl">
 <meta property="og:type" content="article">
-<meta property="og:title" content="标准库类型vector笔记">
-<meta property="og:url" content="https://www.jiajiewu.cn/cpp-vector.html">
+<meta property="og:title" content="模型欠拟合和过拟合">
+<meta property="og:url" content="https://www.jiajiewu.cn/underfitandoverfit.html">
 <meta property="og:site_name" content="jiajie">
-<meta property="og:description" content="本文主要介绍c++标准库中 vector 的基本用法。">
+<meta property="og:description" content="记录模型欠拟合和过拟合的原因和实验现象。摘自《动手学深度学习》">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-10T02:39:04.000Z">
+<meta property="og:image" content="http://pqvlostjb.bkt.clouddn.com/underfitandoverfit.png">
+<meta property="og:updated_time" content="2019-05-20T10:35:05.306Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="标准库类型vector笔记">
-<meta name="twitter:description" content="本文主要介绍c++标准库中 vector 的基本用法。">
+<meta name="twitter:title" content="模型欠拟合和过拟合">
+<meta name="twitter:description" content="记录模型欠拟合和过拟合的原因和实验现象。摘自《动手学深度学习》">
+<meta name="twitter:image" content="http://pqvlostjb.bkt.clouddn.com/underfitandoverfit.png">
 
 
 
@@ -147,7 +149,7 @@
 
   
   
-  <link rel="canonical" href="https://www.jiajiewu.cn/cpp-vector">
+  <link rel="canonical" href="https://www.jiajiewu.cn/underfitandoverfit">
 
 
 
@@ -157,7 +159,7 @@
   };
 </script>
 
-  <title>标准库类型vector笔记 | jiajie</title>
+  <title>模型欠拟合和过拟合 | jiajie</title>
   
 
 
@@ -461,7 +463,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/cpp-vector.html">
+    <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/underfitandoverfit.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jiajie">
@@ -478,7 +480,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">标准库类型vector笔记
+          <h1 class="post-title" itemprop="name headline">模型欠拟合和过拟合
 
               
             
@@ -504,24 +506,12 @@
                 
               
 
-              <time title="创建时间：2019-05-08 15:21:34" itemprop="dateCreated datePublished" datetime="2019-05-08T15:21:34+08:00">2019-05-08</time>
+              <time title="创建时间：2019-05-20 18:32:57 / 修改时间：18:35:05" itemprop="dateCreated datePublished" datetime="2019-05-20T18:32:57+08:00">2019-05-20</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-10 10:39:04" itemprop="dateModified" datetime="2019-05-10T10:39:04+08:00">2019-05-10</time>
               
             
           </span>
@@ -538,7 +528,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/dl/" itemprop="url" rel="index"><span itemprop="name">dl</span></a></span>
 
                 
                 
@@ -557,8 +547,8 @@
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/cpp-vector.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/cpp-vector.html" itemprop="commentCount"></span>
+                <a href="/underfitandoverfit.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/underfitandoverfit.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -595,49 +585,14 @@
       
 
       
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本文主要介绍c++标准库中 <strong>vector</strong> 的基本用法。<br><a id="more"></a><br>本文主要记录：</p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>记录模型欠拟合和过拟合的原因和实验现象。摘自《动手学深度学习》<br><a id="more"></a><br>网络欠拟合和过拟合</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>在讨论欠拟合和过拟合之前首先需要区分几个概念：<br>1 .  训练误差和泛化误差<br>训练误差（training error）和泛化误差（generalization error）。前者指模型在训练数据集上表现出的误差，后者指模型在任意一个测试数据样本上表现出的误差的期望，并常常通过测试数据集上的误差来近似。由于无法从训练误差估计泛化误差，一味地降低训练误差并不意味着泛化误差一定会降低。<br>2 .  模型选择<br>在机器学习中，通常需要评估若干候选模型的表现并从中选择模型。这一过程称为模型选择（model selection）。可供选择的候选模型可以是有着不同超参数的同类模型。以多层感知机为例，我们可以选择隐藏层的个数，以及每个隐藏层中隐藏单元个数和激活函数。<br>3 .   验证数据集<br>从严格意义上讲，测试集只能在所有超参数和模型参数选定后使用一次。不可以使用测试数据选择模型，如调参。但由于无法从训练误差估计泛化误差，因此也不应只依赖训练数据选择模型。鉴于此，我们可以预留一部分在训练数据集和测试数据集以外的数据来进行模型选择。这部分数据被称为验证数据集，简称验证集（validation set）。然而在实际应用中，由于数据不容易获取，测试数据极少只使用一次就丢弃。一种改善的方法是$K$折交叉验证（$K$-fold cross-validation）。在$K$折交叉验证中，我们把原始训练数据集分割成$K$个不重合的子数据集，然后我们做$K$次模型训练和验证。每一次，我们使用一个子数据集验证模型，并使用其他$K−1$个子数据集来训练模型。在这$K$次训练和验证中，每次用来验证模型的子数据集都不同。最后，我们对这$K$次训练误差和验证误差分别求平均。</p>
+<h3 id="欠拟合和过拟合是什么"><a href="#欠拟合和过拟合是什么" class="headerlink" title="欠拟合和过拟合是什么"></a>欠拟合和过拟合是什么</h3><p>在模型训练中经常出现的两类典型问题：一类是模型无法得到较低的训练误差，我们将这一现象称作欠拟合（underfitting）；另一类是模型的训练误差远小于它在测试数据集上的误差，我们称该现象为过拟合（overfitting）。</p>
+<p>虽然有很多因素可能导致这两种拟合问题，在主要两个因素是：模型复杂度和训练数据集大小。</p>
 <ul>
-<li><strong>vector</strong> 的初始化</li>
-<li>访问 <strong>vector</strong> 的元素</li>
-<li>迭代器<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2>标准库类型 <strong>vector</strong>表示对象的集合，其中的所有对象的类型都相同， <strong>vector</strong> 是一个类模板而不是类型，需要提供额外的信息给编译器将 <strong>vector</strong> 实例化，比如：</li>
+<li>出现过拟合的情况：模型复杂度太高，训练数据集太小</li>
+<li>出现欠拟合的情况：模型复杂度太低<br><img src="http://pqvlostjb.bkt.clouddn.com/underfitandoverfit.png" width="100%" height="50%" div align="center"><br>说一个模型的复杂度高低是和训练数据集的数据特征以及数据规模有关的。如果用一个三阶多项式模型来拟合一个线性模型生成的数据，可以说模型复杂度太高了。在实验中发现，此时虽然网络仍然可以较好拟合出线性模型生成的数据的权重（将高阶权重拟合趋向于0），但此时网络对噪声更加敏感了。当训练数据集规模小于网络模型中的参数时候，这使模型显得过于复杂，以至于容易被训练数据中的噪声影响。而且网络倾向于记住数据的每个特征，这时候容易发生过拟合现象（对训练集的特征学的太好了，泛化能力低），此外，泛化误差不会随训练数据集里样本数量增加而增大。因此，在计算资源允许的范围之内，我们通常希望训练数据集大一些，特别是在模型复杂度较高时，例如层数较多的深度学习模型。相对于欠拟合，我觉得过拟合更容易发生，因为容易设计高复杂度的网络，这时候网络性能瓶颈在于数据规模。<br>下面代码使用多项式拟合实验来测试模型复杂度和训练数据集大小对欠拟合和过拟合的影响，欠拟合是设计一个线性网络拟合一个多项式网络（模型复杂度太低），过拟合是让输入数据规模减小（训练数据集太小）。<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> mxnet <span class="keyword">import</span> autograd, gluon, nd</span><br><span class="line"><span class="keyword">from</span> mxnet.gluon <span class="keyword">import</span> data <span class="keyword">as</span> gdata, loss <span class="keyword">as</span> gloss ,nn</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">n_train, n_test, true_w, true_b = <span class="number">100</span>, <span class="number">100</span>, [<span class="number">1.2</span>, <span class="number">-3.4</span>, <span class="number">5.6</span>], <span class="number">5</span></span><br><span class="line">features = nd.random.normal(shape=(n_train + n_test, <span class="number">1</span>))</span><br><span class="line">poly_features = nd.concat(features, nd.power(features, <span class="number">2</span>),</span><br><span class="line">                          nd.power(features, <span class="number">3</span>))</span><br><span class="line">labels = (true_w[<span class="number">0</span>] * poly_features[:, <span class="number">0</span>] + true_w[<span class="number">1</span>] * poly_features[:, <span class="number">1</span>]</span><br><span class="line">          + true_w[<span class="number">2</span>] * poly_features[:, <span class="number">2</span>] + true_b)</span><br><span class="line">labels += nd.random.normal(scale=<span class="number">0.1</span>, shape=labels.shape)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">semilogy</span><span class="params">(x_vals, y_vals, x_label, y_label, x2_vals=None, y2_vals=None,</span></span></span><br><span class="line"><span class="function"><span class="params">             title = None,num = None)</span>:</span></span><br><span class="line">    plt.figure(num)</span><br><span class="line">    plt.title(title)</span><br><span class="line">    plt.xlabel((x_label))</span><br><span class="line">    plt.ylabel((y_label))</span><br><span class="line">    plt.plot(x_vals, y_vals)</span><br><span class="line">    <span class="keyword">if</span> x2_vals <span class="keyword">and</span> y2_vals:</span><br><span class="line">        plt.plot(x2_vals, y2_vals, linestyle=<span class="string">':'</span>)</span><br><span class="line">    plt.pause(<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">num_epochs, loss = <span class="number">100</span>, gloss.L2Loss()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fit_and_plot</span><span class="params">(train_features, test_features, train_labels, test_labels,title,num)</span>:</span></span><br><span class="line">    net = nn.Sequential()</span><br><span class="line">    net.add(nn.Dense(<span class="number">1</span>))</span><br><span class="line">    net.initialize()</span><br><span class="line">    batch_size = min(<span class="number">10</span>, train_labels.shape[<span class="number">0</span>])</span><br><span class="line">    train_iter = gdata.DataLoader(gdata.ArrayDataset(</span><br><span class="line">        train_features, train_labels), batch_size, shuffle=<span class="literal">True</span>)</span><br><span class="line">    trainer = gluon.Trainer(net.collect_params(), <span class="string">'sgd'</span>,</span><br><span class="line">                            &#123;<span class="string">'learning_rate'</span>: <span class="number">0.01</span>&#125;)</span><br><span class="line">    train_ls, test_ls = [], []</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(num_epochs):</span><br><span class="line">        <span class="keyword">for</span> X, y <span class="keyword">in</span> train_iter:</span><br><span class="line">            <span class="keyword">with</span> autograd.record():</span><br><span class="line">                l = loss(net(X), y)</span><br><span class="line">            l.backward()</span><br><span class="line">            trainer.step(batch_size)</span><br><span class="line">        train_ls.append(loss(net(train_features),</span><br><span class="line">                             train_labels).mean().asscalar())</span><br><span class="line">        test_ls.append(loss(net(test_features),</span><br><span class="line">                            test_labels).mean().asscalar())</span><br><span class="line">    print(<span class="string">'final epoch: train loss'</span>, train_ls[<span class="number">-1</span>], <span class="string">'test loss'</span>, test_ls[<span class="number">-1</span>])</span><br><span class="line">    semilogy(range(<span class="number">1</span>, num_epochs + <span class="number">1</span>), train_ls, <span class="string">'epochs'</span>, <span class="string">'loss'</span>,</span><br><span class="line">             range(<span class="number">1</span>, num_epochs + <span class="number">1</span>), test_ls, title,num)</span><br><span class="line">    print(<span class="string">'weight:'</span>, net[<span class="number">0</span>].weight.data().asnumpy(),</span><br><span class="line">          <span class="string">'\nbias:'</span>, net[<span class="number">0</span>].bias.data().asnumpy())</span><br><span class="line"></span><br><span class="line">fit_and_plot(poly_features[:n_train, :], poly_features[n_train:, :],labels[:n_train], labels[n_train:],<span class="string">'fit'</span>,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">fit_and_plot(features[:n_train, :], features[n_train:, :], labels[:n_train],labels[n_train:],<span class="string">'underfit'</span>,<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">fit_and_plot(poly_features[<span class="number">0</span>:<span class="number">2</span>, :], poly_features[n_train:, :], labels[<span class="number">0</span>:<span class="number">2</span>],labels[n_train:],<span class="string">'overfit'</span>,<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">plt.waitforbuttonpress()</span><br></pre></td></tr></table></figure></li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; file;</span><br></pre></td></tr></table></figure>
-<p><strong>vector</strong>  常用操作：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">v.empty()</span><br><span class="line">v.size()</span><br><span class="line">v.push_back(t)</span><br><span class="line">v[n]</span><br><span class="line">v1 = v2 <span class="comment">////拷贝</span></span><br><span class="line">v1 = &#123;a,b,c...&#125;</span><br><span class="line">v1 == v2 <span class="comment">////当且仅当它们元素个数和元素值都相同</span></span><br><span class="line">v1 != v2</span><br><span class="line">&lt; ,V= ,&gt; ,&gt;= <span class="comment">////以字典顺序比较</span></span><br></pre></td></tr></table></figure>
-<h2 id="一些要点"><a href="#一些要点" class="headerlink" title="一些要点"></a>一些要点</h2><h3 id="vector-初始化"><a href="#vector-初始化" class="headerlink" title="vector 初始化"></a><strong>vector</strong> 初始化</h3><p>可以对 <strong>vector</strong> 对象直接初始化；或者先定义为一个空的对象，在运行时再用 <em>push_back</em> 添加具体值。前一种情况适用于：</p>
-<ol>
-<li>初始值已知并且数量较少；</li>
-</ol>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;; <span class="comment">////列表初始化</span></span><br></pre></td></tr></table></figure>
-<ol>
-<li>初始值是另一个 <strong>vector</strong> 对象的副本；</li>
-</ol>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec = ivec1;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>所有元素的初始值都一样；</li>
-</ol>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec(<span class="number">10</span>,<span class="number">1</span>); <span class="comment">////初始化为10个1</span></span><br></pre></td></tr></table></figure>
-<div class="note info"><p>除此之外，建议采用第二种方式初始化。</p></div>
-
-
-
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cpp_practice.cpp : 定义控制台应用程序的入口点。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">vector</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; int_str;</span><br><span class="line">	<span class="built_in">string</span> str;</span><br><span class="line">	<span class="keyword">char</span> cont = <span class="string">'y'</span>;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; str)</span><br><span class="line">	&#123;</span><br><span class="line">		int_str.push_back(str);</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"continue ?'y or n'"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cin</span> &gt;&gt; cont;</span><br><span class="line">		<span class="keyword">if</span> (cont == <span class="string">'n'</span> || cont == <span class="string">'N'</span>)</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> i : int_str)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="访问-vector-的元素"><a href="#访问-vector-的元素" class="headerlink" title="访问 vector 的元素"></a>访问 <strong>vector</strong> 的元素</h3><ol>
-<li>利用 <strong>范围for</strong> 遍历 <strong>vector</strong> 的所有元素。</li>
-<li>利用下标访问 <strong>vector</strong> 中已经存在的元素。</li>
-</ol>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">vector</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">decltype</span>(ivec.size())ix = <span class="number">0</span>; ix != <span class="number">10</span>; ix++)</span><br><span class="line">	&#123;</span><br><span class="line">		ivec.push_back(ix); <span class="comment">////初始化为空的 vector 用 push_back 添加元素</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : ivec)</span><br><span class="line">	&#123;</span><br><span class="line">		i *= <span class="number">2</span>;  <span class="comment">////范围for,需要用引用的格式修改其中的元素的值。</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">decltype</span>(ivec.size())ix = <span class="number">0</span>; ix != <span class="number">10</span>; ix++)</span><br><span class="line">	&#123;</span><br><span class="line">		ivec[ix] += <span class="number">1</span>; <span class="comment">////利用下标访问已经存在的元素，显然易见，空vector不可使用下标方式访问</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> i : ivec)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h3><p>标准库中的所有容器和 <strong>string</strong> 都可以使用迭代器访问对象的元素，迭代器常用的成员：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iter.begin(); <span class="comment">////返回指向对象第一个元素的迭代器</span></span><br><span class="line">iter.end(); <span class="comment">////返回对象尾元素的下一个位置的迭代器，该位置为空，不可对该位置的元素进行解引。</span></span><br></pre></td></tr></table></figure>
-<p>利用迭代器遍历对象中的元素：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> str&#123; <span class="string">"some string"</span> &#125;;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> s = str.begin(); s != str.end(); ++s)</span><br><span class="line">	&#123;</span><br><span class="line">		*s = <span class="built_in">toupper</span>(*s);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; str &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
-<p>若对象只需读操作而不需要写操作，可用 <strong>iter.cbegin()</strong> 和 <strong>iter.cend()</strong> 来访问对象中元素，这样返回的会是一个 <strong>const_iterator</strong> ，不论访问的对象本身是不是常量对象。</p>
-<div class="note danger"><p>但凡使用了迭代器的循环体，都不要向迭代器所属容器添加元素！</p></div>
-
-<p>比如不能用 <strong>push_back</strong> 向 <strong>vector</strong>添加元素，该操作会使迭代器失效。</p>
-<p>迭代器运算符:</p>
-<p>所有的迭代器都支持 <strong>==</strong> ， <strong>！=</strong> 运算符， <strong>vector</strong> 和 <strong>string</strong> 支持更多的运算如下：</p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">iter </span>+ n ////得到当前迭代器位置超前原来迭代器n个位置</span><br><span class="line"><span class="keyword">iter </span>- n</span><br><span class="line"><span class="keyword">iter </span>+= n</span><br><span class="line"><span class="keyword">iter </span>-= n</span><br><span class="line"><span class="keyword">iter1 </span>- <span class="keyword">iter2 </span>////返回两个迭代器的距离，类型是一个带符号类型： difference_type</span><br><span class="line">&gt;, &lt;, &gt;=, &lt;= ////所在位置前后的比较，必须在同一个容器对象中比较才有意义。</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -661,9 +616,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag"># c++</a>
+            <a href="/tags/python/" rel="tag"># python</a>
           
-            <a href="/tags/vector/" rel="tag"># vector</a>
+            <a href="/tags/dl/" rel="tag"># dl</a>
           
         </div>
       
@@ -676,8 +631,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/cuda-practice4.html" rel="next" title="cuda学习笔记4">
-                <i class="fa fa-chevron-left"></i> cuda学习笔记4
+              <a href="/softmax.html" rel="next" title="Python实现softmax回归分类">
+                <i class="fa fa-chevron-left"></i> Python实现softmax回归分类
               </a>
             
           </div>
@@ -685,10 +640,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/suanfa1.html" rel="prev" title="算法复杂度分析">
-                算法复杂度分析 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -935,7 +886,7 @@ show_date_time();
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些要点"><span class="nav-number">2.</span> <span class="nav-text">一些要点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vector-初始化"><span class="nav-number">2.1.</span> <span class="nav-text">vector 初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问-vector-的元素"><span class="nav-number">2.2.</span> <span class="nav-text">访问 vector 的元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器"><span class="nav-number">2.3.</span> <span class="nav-text">迭代器</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#欠拟合和过拟合是什么"><span class="nav-number">1.1.</span> <span class="nav-text">欠拟合和过拟合是什么</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">2.</span> <span class="nav-text">代码实现</span></a></li></ol></div>
             
 
           </div>
