@@ -136,7 +136,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://pqvlostjb.bkt.clouddn.com/%E5%AF%B9%E6%9E%81%E5%87%A0%E4%BD%95.png">
 <meta property="og:image" content="http://pqvlostjb.bkt.clouddn.com/tuidao.jpg">
-<meta property="og:updated_time" content="2019-05-21T11:20:51.765Z">
+<meta property="og:updated_time" content="2019-05-21T11:55:36.601Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="对极几何和基本矩阵F">
 <meta name="twitter:description" content="本文记录两视图的对极几何的概念和基本矩阵的概念，以及给定第一幅视图的像点$\mathbf{x}$，它怎么约束第二幅视图的对应点$\mathbf{x}^{\prime}$的位置的问题。">
@@ -507,7 +507,7 @@
                 
               
 
-              <time title="创建时间：2019-05-21 17:16:57 / 修改时间：19:20:51" itemprop="dateCreated datePublished" datetime="2019-05-21T17:16:57+08:00">2019-05-21</time>
+              <time title="创建时间：2019-05-21 17:16:57 / 修改时间：19:55:36" itemprop="dateCreated datePublished" datetime="2019-05-21T17:16:57+08:00">2019-05-21</time>
             
 
             
@@ -587,12 +587,12 @@
 
       
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本文记录两视图的对极几何的概念和基本矩阵的概念，以及给定第一幅视图的像点$\mathbf{x}$，它怎么约束第二幅视图的对应点$\mathbf{x}^{\prime}$的位置的问题。<br><a id="more"></a></p>
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>对极几何是两幅视图之间内在的射影几何，它独立于景物结构，只依赖于摄像机的内参数和相对姿态。对极几何可以由3×3矩阵$F$表示，称为基本矩阵，它是一个秩为2的矩阵，如果一个三维空间点$\mathbf{X}$在第一，第二幅视图中的像点为$\mathbf{x}$，$\mathbf{x}^{\prime}$，则这两个图像点满足关系$\mathbf{x}^{\prime T}F\mathbf{x}=0$<br><img src="http://pqvlostjb.bkt.clouddn.com/%E5%AF%B9%E6%9E%81%E5%87%A0%E4%BD%95.png" width="100%" height="50%" div align="center"><br>两幅视图之间的对极几何是图像平面与以基线（连接两摄像机中心的直线）为轴的平面束（极平面束）的交的几何。如上图，确定了两相机的光心$\mathbf{c},\mathbf{c}^{\prime}$和像点$\mathbf{x}$，由于空间点$\mathbf{X}$在过$\mathbf{c},\mathbf{x}$的射线上，该射线被投影到第二幅视图中被影像成一条直线（极线）$\mathbf{I}^{\prime}$，空间点$\mathbf{X}$对应的第二幅视图像点$\mathbf{x}^{\prime}$（极点）就落在直线$\mathbf{I}^{\prime}$上。用公式表示为：</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>对极几何是两幅视图之间内在的射影几何，它独立于景物结构，只依赖于摄像机的内参数和相对姿态。对极几何可以由3×3矩阵$F$表示，称为基本矩阵，它是一个秩为2的矩阵，如果一个三维空间点$\mathbf{X}$在第一，第二幅视图中的像点为$\mathbf{x}$，$\mathbf{x}^{\prime}$，则这两个图像点满足关系$\mathbf{x}^{\prime T}F\mathbf{x}=0$<br><img src="http://pqvlostjb.bkt.clouddn.com/%E5%AF%B9%E6%9E%81%E5%87%A0%E4%BD%95.png" width="80%" height="40%" div align="center"><br>两幅视图之间的对极几何是图像平面与以基线（连接两摄像机中心的直线）为轴的平面束（极平面束）的交的几何。如上图，确定了两相机的光心$\mathbf{c},\mathbf{c}^{\prime}$和像点$\mathbf{x}$，由于空间点$\mathbf{X}$在过$\mathbf{c},\mathbf{x}$的射线上，该射线被投影到第二幅视图中被影像成一条直线（极线）$\mathbf{I}^{\prime}$，空间点$\mathbf{X}$对应的第二幅视图像点$\mathbf{x}^{\prime}$（极点）就落在直线$\mathbf{I}^{\prime}$上。用公式表示为：</p>
 <script type="math/tex; mode=display">
 \mathbf{I}^{\prime}=F \mathbf{x}</script><p>$F$为基本矩阵。</p>
 <h2 id="基本矩阵-F-的代数形式"><a href="#基本矩阵-F-的代数形式" class="headerlink" title="基本矩阵$F$的代数形式"></a>基本矩阵$F$的代数形式</h2><p>F 表征着$\mathbf{I}^{\prime}$与$\mathbf{x}$的关系。在摄像机矩阵$P$作用下，从$\mathbf{x}$反向投影的射线通过解方程$P\mathbf{X}=\mathbf{x}$得到，其解的形式为：</p>
 <script type="math/tex; mode=display">
-\mathbf{X}(\lambda)=P^{+} \mathbf{x}+\lambda \mathbf{C}</script><p>其中$P^{+}$是$P$的伪逆，则$P P^{+}=I$，该射线上有两个特殊的点$P^{+} \mathbf{x}$和$\mathbf{C}$分别被映射到第二幅视图上的点$P^{\prime} P^{+} \mathbf{x}$和$P^{\prime} \mathbf{C}$上($P^{\prime} $是第二幅视图的摄像机矩阵)，故$\mathbf{I}^{\prime}可以表示为：</p>
+\mathbf{X}(\lambda)=P^{+} \mathbf{x}+\lambda \mathbf{C}</script><p>其中$P^{+}$是$P$的伪逆，则$P P^{+}=I$，该射线上有两个特殊的点$P^{+} \mathbf{x}$和$\mathbf{C}$分别被映射到第二幅视图上的点$P^{\prime} P^{+} \mathbf{x}$和$P^{\prime} \mathbf{C}$上($P^{\prime} $是第二幅视图的摄像机矩阵)，故$\mathbf{I}^{\prime}$可以表示为：</p>
 <script type="math/tex; mode=display">
 \mathbf{I}^{\prime}=\left(P^{\prime} \mathbf{C}\right) \times\left(P^{\prime} P^{+} \mathbf{x}\right)=F\mathbf{x}</script><p>由于</p>
 <script type="math/tex; mode=display">
@@ -600,12 +600,12 @@
 <script type="math/tex; mode=display">
 F=\left[\mathrm{e}^{\prime}\right]_{ \times} P^{\prime} P^{+}</script><p>其中$\left[\mathrm{e}^{\prime}\right]_{ \times}$表示$\mathrm{e}^{\prime}$的反对称矩阵。</p>
 <h2 id="由-F-恢复摄像机矩阵"><a href="#由-F-恢复摄像机矩阵" class="headerlink" title="由$F$恢复摄像机矩阵"></a>由$F$恢复摄像机矩阵</h2><p>上面的$F$可以由摄像机矩阵$P$和$P^{\prime} $唯一确定，但反过来并不成立。给定$F$仅能在射影变换意义下恢复摄像机矩阵。</p>
-<ul>
-<li>如果$H$是一个3维射影变换的一个4×4的矩阵，那么对应于摄像机矩阵$(P,P^{\prime})$和$(PH,P^{\prime}H)$的基本矩阵是相同的。<h3 id="摄像机矩阵的规范形式"><a href="#摄像机矩阵的规范形式" class="headerlink" title="摄像机矩阵的规范形式"></a>摄像机矩阵的规范形式</h3></li>
-<li>对应于摄像机矩阵，对$P=[I | 0]$和$P^{\prime}=[M | \mathrm{m}]$的基本矩阵是$[\mathbf{m}]_{ \times} M$<h3 id="给定-F-后摄像机射影多义性"><a href="#给定-F-后摄像机射影多义性" class="headerlink" title="给定$F$后摄像机射影多义性"></a>给定$F$后摄像机射影多义性</h3></li>
-<li>令$F$为基本矩阵而$\left(P, P^{\prime}\right)$和$\left(\tilde{P}, \tilde{P}^{\prime}\right)$都是于基本矩阵$F$对应的两组摄像机矩阵对，则存在一个非奇异矩阵$H$，使得$\widehat{\mathrm{P}}=\mathrm{PH}$和$\tilde{P}^{\prime}=P^{\prime} \mathbf{H}$。<br>令$P=\widetilde{P}=[\mathrm{I} | \mathbf{0}]$，$P^{\prime}=[A | \mathbf{a}]$，$\tilde{P}^{\prime}=[\tilde{A} | \tilde{\mathbf{a}}]$<br>此时$F$可以分解为两种不同的形式：<script type="math/tex; mode=display">
-F=[\mathrm{a}]_{ \times} A=[\tilde{\mathrm{a}}]_{\times} \tilde{A}</script>这两种形式的对应关系为：$\widetilde{\mathbf{a}}=k \mathbf{a}$和$\tilde{A}=k^{-1}\left(A+\mathbf{a}\mathbf{v}^{T}\right)$，其中$k$为非零常数，$\mathbf{v}$是三维矢量。<h3 id="给定-F-求规范摄像机对"><a href="#给定-F-求规范摄像机对" class="headerlink" title="给定$F$求规范摄像机对"></a>给定$F$求规范摄像机对</h3>可以选择为两种形式：</li>
-</ul>
+<p>如果$H$是一个3维射影变换的一个4×4的矩阵，那么对应于摄像机矩阵$(P,P^{\prime})$和$(PH,P^{\prime}H)$的基本矩阵是相同的。</p>
+<h3 id="摄像机矩阵的规范形式"><a href="#摄像机矩阵的规范形式" class="headerlink" title="摄像机矩阵的规范形式"></a>摄像机矩阵的规范形式</h3><p>对应于摄像机矩阵，对$P=[I | 0]$和$P^{\prime}=[M | \mathrm{m}]$的基本矩阵是$[\mathbf{m}]_{ \times} M$</p>
+<h3 id="给定-F-后摄像机射影多义性"><a href="#给定-F-后摄像机射影多义性" class="headerlink" title="给定$F$后摄像机射影多义性"></a>给定$F$后摄像机射影多义性</h3><p>令$F$为基本矩阵而$\left(P, P^{\prime}\right)$和$\left(\tilde{P}, \tilde{P}^{\prime}\right)$都是于基本矩阵$F$对应的两组摄像机矩阵对，则存在一个非奇异矩阵$H$，使得$\widehat{\mathrm{P}}=\mathrm{PH}$和$\tilde{P}^{\prime}=P^{\prime} H$。令$P=\widetilde{P}=[\mathrm{I} | \mathbf{0}]$，$P^{\prime}=[A | \mathbf{a}]$，$\tilde{P}^{\prime}=[\tilde{A} | \tilde{\mathbf{a}}]$，此时$F$可以分解为两种不同的形式：</p>
+<script type="math/tex; mode=display">
+F=[\mathrm{a}]_{ \times} A=[\tilde{\mathrm{a}}]_{\times} \tilde{A}</script><p>这两种形式的对应关系为：$\widetilde{\mathbf{a}}=k \mathbf{a}$和$\tilde{A}=k^{-1}\left(A+\mathbf{a}\mathbf{v}^{T}\right)$，其中$k$为非零常数，$\mathbf{v}$是三维矢量。</p>
+<h3 id="给定-F-求规范摄像机对"><a href="#给定-F-求规范摄像机对" class="headerlink" title="给定$F$求规范摄像机对"></a>给定$F$求规范摄像机对</h3><p>可以选择为两种形式：</p>
 <ol>
 <li>$\mathrm{P}=[I| \mathbf{0}]$和 $P^{\prime}=\left[\left[\mathrm{e}^{\prime}\right]_{ \times} F | \mathrm{e}^{\prime}\right]$</li>
 <li>$\mathrm{P}=[I | \mathbf{0}]$和 $P^{\prime}=\left[\left[\mathrm{e}^{\prime}\right]_{ \times} F+\mathrm{e}^{\prime} \mathbf{v}^{\mathrm{T}} | \lambda \mathrm{e}^{\prime}\right]$</li>
