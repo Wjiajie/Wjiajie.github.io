@@ -147,12 +147,10 @@
 <meta property="og:site_name" content="jiajie">
 <meta property="og:description" content="本文主要介绍如何用GPU共享内存，线程块和线程的二维索引，线程同步的概念，并利用这些概念实现生成位图。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://pqvlostjb.bkt.clouddn.com/weitu.PNG">
-<meta property="og:updated_time" content="2019-05-07T09:08:02.000Z">
+<meta property="og:updated_time" content="2019-05-25T02:50:12.253Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cuda学习笔记4">
 <meta name="twitter:description" content="本文主要介绍如何用GPU共享内存，线程块和线程的二维索引，线程同步的概念，并利用这些概念实现生成位图。">
-<meta name="twitter:image" content="http://pqvlostjb.bkt.clouddn.com/weitu.PNG">
 
 
 
@@ -420,26 +418,20 @@
   
     <div class="site-search">
       
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
     <span class="popup-btn-close">
       <i class="fa fa-times-circle"></i>
     </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
   </div>
-
+  <div id="local-search-result"></div>
+</div>
 
 
 
@@ -525,12 +517,24 @@
                 
               
 
-              <time title="创建时间：2019-05-07 17:04:57 / 修改时间：17:08:02" itemprop="dateCreated datePublished" datetime="2019-05-07T17:04:57+08:00">2019-05-07</time>
+              <time title="创建时间：2019-05-07 17:04:57" itemprop="dateCreated datePublished" datetime="2019-05-07T17:04:57+08:00">2019-05-07</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-25 10:50:12" itemprop="dateModified" datetime="2019-05-25T10:50:12+08:00">2019-05-25</time>
               
             
           </span>
@@ -604,7 +608,8 @@
       
 
       
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本文主要介绍如何用GPU共享内存，线程块和线程的二维索引，线程同步的概念，并利用这些概念实现生成位图。<br><img src="http://pqvlostjb.bkt.clouddn.com/weitu.PNG" width="100%" height="50%" div align="center"><br><a id="more"></a></p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本文主要介绍如何用GPU共享内存，线程块和线程的二维索引，线程同步的概念，并利用这些概念实现生成位图。</p>
+<a id="more"></a>
 <h2 id="本文概要"><a href="#本文概要" class="headerlink" title="本文概要"></a>本文概要</h2><ul>
 <li>线程块和线程的二维索引表示</li>
 <li>GPU上进行点积运算</li>
@@ -639,7 +644,6 @@
 <p>后，代码将运行错误，因为不是所有线程都满足 <em>“cacheIndex &lt; i”</em> 该条件。</p>
 <h3 id="生成位图"><a href="#生成位图" class="headerlink" title="生成位图"></a>生成位图</h3><p>最后是一个利用线程块和线程的二维索引生成位图的例子：涉及共享内存，线程同步，二位索引的利用。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"cuda.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"../common/book.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"../common/image.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DIM 1024</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PI 3.1415926535897932f</span></span><br><span class="line"></span><br><span class="line">__<span class="function">global__ <span class="keyword">void</span> <span class="title">kernel</span><span class="params">( <span class="keyword">unsigned</span> <span class="keyword">char</span> *ptr )</span> </span>&#123;</span><br><span class="line">    <span class="comment">// map from threadIdx/BlockIdx to pixel position</span></span><br><span class="line">    <span class="keyword">int</span> x = threadIdx.x + blockIdx.x * blockDim.x;</span><br><span class="line">    <span class="keyword">int</span> y = threadIdx.y + blockIdx.y * blockDim.y;</span><br><span class="line">    <span class="keyword">int</span> offset = x + y * blockDim.x * gridDim.x;</span><br><span class="line"></span><br><span class="line">    __shared__ <span class="keyword">float</span>    shared[<span class="number">16</span>][<span class="number">16</span>]; <span class="comment">////二维共享内存数组</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// now calculate the value at that position</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">float</span> period = <span class="number">128.0f</span>;</span><br><span class="line"></span><br><span class="line">    shared[threadIdx.x][threadIdx.y] =</span><br><span class="line">            <span class="number">255</span> * (sinf(x*<span class="number">2.0f</span>*PI/ period) + <span class="number">1.0f</span>) *</span><br><span class="line">                  (sinf(y*<span class="number">2.0f</span>*PI/ period) + <span class="number">1.0f</span>) / <span class="number">4.0f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// removing this syncthreads shows graphically what happens</span></span><br><span class="line">    <span class="comment">// when it doesn't exist.  this is an example of why we need it.</span></span><br><span class="line">    __syncthreads(); <span class="comment">////同步</span></span><br><span class="line"></span><br><span class="line">    ptr[offset*<span class="number">4</span> + <span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    ptr[offset*<span class="number">4</span> + <span class="number">1</span>] = shared[<span class="number">15</span>-threadIdx.x][<span class="number">15</span>-threadIdx.y];</span><br><span class="line">    ptr[offset*<span class="number">4</span> + <span class="number">2</span>] = <span class="number">0</span>;</span><br><span class="line">    ptr[offset*<span class="number">4</span> + <span class="number">3</span>] = <span class="number">255</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// globals needed by the update routine</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DataBlock</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span>   *dev_bitmap;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">( <span class="keyword">void</span> )</span> </span>&#123;</span><br><span class="line">    DataBlock   data;</span><br><span class="line">    <span class="function">IMAGE <span class="title">bitmap</span><span class="params">( DIM, DIM )</span></span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span>    *dev_bitmap;</span><br><span class="line"></span><br><span class="line">    HANDLE_ERROR( cudaMalloc( (<span class="keyword">void</span>**)&amp;dev_bitmap,</span><br><span class="line">                              bitmap.image_size() ) );</span><br><span class="line">    data.dev_bitmap = dev_bitmap;</span><br><span class="line"></span><br><span class="line">    <span class="function">dim3    <span class="title">grids</span><span class="params">(DIM/<span class="number">16</span>,DIM/<span class="number">16</span>)</span></span>;</span><br><span class="line">    <span class="function">dim3    <span class="title">threads</span><span class="params">(<span class="number">16</span>,<span class="number">16</span>)</span></span>;</span><br><span class="line">    kernel&lt;&lt;&lt;grids,threads&gt;&gt;&gt;( dev_bitmap );</span><br><span class="line"></span><br><span class="line">    HANDLE_ERROR( cudaMemcpy( bitmap.get_ptr(), dev_bitmap,</span><br><span class="line">                              bitmap.image_size(),</span><br><span class="line">                              cudaMemcpyDeviceToHost ) );</span><br><span class="line">                              </span><br><span class="line">    HANDLE_ERROR( cudaFree( dev_bitmap ) );</span><br><span class="line">                              </span><br><span class="line">    bitmap.show_image();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>实验效果如文章开头所示。</p>
 
       
     </div>
@@ -1504,19 +1508,6 @@ show_date_time();
 
 
 
-  
-  
-  
-  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
-
-  
-  
-  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
-  
-
-  <script src="/js/algolia-search.js?v=7.1.1"></script>
-
-
 
   
 
@@ -1623,4 +1614,5 @@ show_date_time();
   <script type="text/javascript" src="/js/instantclick.min.js" data-no-instant></script>
   <script data-no-instant>InstantClick.init();</script>
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script></body>
+</html>

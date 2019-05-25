@@ -2,37 +2,65 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://www.jiajiewu.cn/hello-world.html</loc>
+    <loc>https://www.jiajiewu.cn/cuda-practice2.html</loc>
     
-    <lastmod>2019-05-22T05:43:42.885Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jiajiewu.cn/Epipolar-Geametry-and-F.html</loc>
-    
-    <lastmod>2019-05-21T11:55:36.601Z</lastmod>
+    <lastmod>2019-05-25T02:52:40.923Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.jiajiewu.cn/underfitandoverfit.html</loc>
+    <loc>https://www.jiajiewu.cn/cuda-practice4.html</loc>
     
-    <lastmod>2019-05-20T10:44:22.961Z</lastmod>
+    <lastmod>2019-05-25T02:50:12.253Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.jiajiewu.cn/softmax.html</loc>
+    <loc>https://www.jiajiewu.cn/cuda-practice5.html</loc>
     
-    <lastmod>2019-05-19T11:03:02.042Z</lastmod>
+    <lastmod>2019-05-25T02:48:34.802Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://www.jiajiewu.cn/linear-regression.html</loc>
     
-    <lastmod>2019-05-19T11:02:17.284Z</lastmod>
+    <lastmod>2019-05-25T02:48:06.520Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jiajiewu.cn/softmax.html</loc>
+    
+    <lastmod>2019-05-25T02:47:24.637Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jiajiewu.cn/underfitandoverfit.html</loc>
+    
+    <lastmod>2019-05-25T02:46:38.408Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jiajiewu.cn/Epipolar-Geametry-and-F.html</loc>
+    
+    <lastmod>2019-05-25T02:44:25.670Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jiajiewu.cn/talk/index.html</loc>
+    
+    <lastmod>2019-05-25T02:31:52.045Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jiajiewu.cn/hello-world.html</loc>
+    
+    <lastmod>2019-05-22T05:43:42.885Z</lastmod>
     
   </url>
   
@@ -47,20 +75,6 @@
     <loc>https://www.jiajiewu.cn/trimmed-icp.html</loc>
     
     <lastmod>2019-05-19T02:11:12.266Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jiajiewu.cn/talk/index.html</loc>
-    
-    <lastmod>2019-05-17T07:46:24.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jiajiewu.cn/cuda-practice5.html</loc>
-    
-    <lastmod>2019-05-17T05:47:00.000Z</lastmod>
     
   </url>
   
@@ -100,23 +114,9 @@
   </url>
   
   <url>
-    <loc>https://www.jiajiewu.cn/cuda-practice4.html</loc>
-    
-    <lastmod>2019-05-07T09:08:02.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.jiajiewu.cn/cuda-practice1.html</loc>
     
     <lastmod>2019-05-06T07:16:26.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jiajiewu.cn/cuda-practice2.html</loc>
-    
-    <lastmod>2019-05-06T07:16:06.000Z</lastmod>
     
   </url>
   

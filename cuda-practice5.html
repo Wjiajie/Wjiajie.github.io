@@ -147,12 +147,12 @@
 <meta property="og:site_name" content="jiajie">
 <meta property="og:description" content="本节记录常量内存的用法，以及如何用时间函数测量CUDA应用的性能。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://pqvlostjb.bkt.clouddn.com/light_tracking.PNG">
-<meta property="og:updated_time" content="2019-05-17T05:47:00.000Z">
+<meta property="og:image" content="https://i.loli.net/2019/05/25/5ce8acf85ef8e11960.png">
+<meta property="og:updated_time" content="2019-05-25T02:48:34.802Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cuda学习笔记5">
 <meta name="twitter:description" content="本节记录常量内存的用法，以及如何用时间函数测量CUDA应用的性能。">
-<meta name="twitter:image" content="http://pqvlostjb.bkt.clouddn.com/light_tracking.PNG">
+<meta name="twitter:image" content="https://i.loli.net/2019/05/25/5ce8acf85ef8e11960.png">
 
 
 
@@ -420,26 +420,20 @@
   
     <div class="site-search">
       
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
     <span class="popup-btn-close">
       <i class="fa fa-times-circle"></i>
     </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
   </div>
-
+  <div id="local-search-result"></div>
+</div>
 
 
 
@@ -525,12 +519,24 @@
                 
               
 
-              <time title="创建时间：2019-05-17 13:42:57 / 修改时间：13:47:00" itemprop="dateCreated datePublished" datetime="2019-05-17T13:42:57+08:00">2019-05-17</time>
+              <time title="创建时间：2019-05-17 13:42:57" itemprop="dateCreated datePublished" datetime="2019-05-17T13:42:57+08:00">2019-05-17</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-25 10:48:34" itemprop="dateModified" datetime="2019-05-25T10:48:34+08:00">2019-05-25</time>
               
             
           </span>
@@ -604,7 +610,7 @@
       
 
       
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><img src="http://pqvlostjb.bkt.clouddn.com/light_tracking.PNG" width="100%" div align="center"></p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><img src="https://i.loli.net/2019/05/25/5ce8acf85ef8e11960.png" width="100%" div align="center"></p>
 <p>本节记录常量内存的用法，以及如何用时间函数测量CUDA应用的性能。<br><a id="more"></a></p>
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>常量内存用于保存在核函数执行期间不会发生变化的数据，由于GPU的性能瓶颈通常不在于芯片的数学吞吐能力，而在于芯片的内存带宽，合理利用常量内存能有效减小内存的带宽的消耗。</p>
 <h2 id="如何使用常量内存"><a href="#如何使用常量内存" class="headerlink" title="如何使用常量内存"></a>如何使用常量内存</h2><ol>
@@ -1495,19 +1501,6 @@ show_date_time();
 
 
 
-  
-  
-  
-  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
-
-  
-  
-  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
-  
-
-  <script src="/js/algolia-search.js?v=7.1.1"></script>
-
-
 
   
 
@@ -1614,4 +1607,5 @@ show_date_time();
   <script type="text/javascript" src="/js/instantclick.min.js" data-no-instant></script>
   <script data-no-instant>InstantClick.init();</script>
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script></body>
+</html>
