@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jiajiewu.cn/photo/data.json</loc>
+    
+    <lastmod>2019-05-26T15:52:49.416Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jiajiewu.cn/photo/index.html</loc>
+    
+    <lastmod>2019-05-26T15:37:03.872Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jiajiewu.cn/cuda-practice2.html</loc>
     
     <lastmod>2019-05-25T02:52:40.923Z</lastmod>
