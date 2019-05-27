@@ -146,17 +146,17 @@
   <meta name="description" content=".main-inner{         width: 100%;     }     .main {     padding-bottom: 150px;     margin-top: 0px;     background: #121212;     }     .main-inner{         margin-top: unset;     }     .page-post">
 <meta name="keywords" content="cv">
 <meta property="og:type" content="website">
-<meta property="og:title" content="jiajie">
+<meta property="og:title" content="我的相册">
 <meta property="og:url" content="https://www.jiajiewu.cn/photos/index.html">
 <meta property="og:site_name" content="jiajie">
 <meta property="og:description" content=".main-inner{         width: 100%;     }     .main {     padding-bottom: 150px;     margin-top: 0px;     background: #121212;     }     .main-inner{         margin-top: unset;     }     .page-post">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://me.idealli.com/images/load.gif">
-<meta property="og:updated_time" content="2019-05-27T08:07:23.078Z">
+<meta property="og:image" content="https://image.idealli.com/bg12.jpg">
+<meta property="og:updated_time" content="2019-05-27T13:08:10.706Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="jiajie">
+<meta name="twitter:title" content="我的相册">
 <meta name="twitter:description" content=".main-inner{         width: 100%;     }     .main {     padding-bottom: 150px;     margin-top: 0px;     background: #121212;     }     .main-inner{         margin-top: unset;     }     .page-post">
-<meta name="twitter:image" content="https://me.idealli.com/images/load.gif">
+<meta name="twitter:image" content="https://image.idealli.com/bg12.jpg">
 
 
 
@@ -176,7 +176,7 @@
   };
 </script>
 
-  <title> | jiajie</title>
+  <title>我的相册 | jiajie</title>
   
 
 
@@ -523,7 +523,7 @@
     <div class="post-block page">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">
+<h1 class="post-title" itemprop="name headline">我的相册
 
 </h1>
 
@@ -559,8 +559,7 @@
         display: none;
     }
     body {
-        background-image: unset;
-        background-attachment: unset;
+
         background-size: 100%;
         /*background-position: top left;*/
     }
@@ -740,11 +739,12 @@ div#posts.posts-expand {
 
 </style>
 
+
 <div id="box" class="box"></div>
 
-<p><img src="https://me.idealli.com/images/load.gif" data-src="https://image.idealli.com/bg12.jpg" style="width: 100%;height: auto;"></p>
+<p><img src="https://image.idealli.com/bg12.jpg" data-src="https://image.idealli.com/bg12.jpg" style="width: 100%;height: auto;"></p>
 <script type="text/javascript">
-document.getElementsByTagName("img")[0].src="https://me.idealli.com/images/load.gif" data-src="/images/photoico.png";
+document.getElementsByTagName("img")[0].src="https://image.idealli.com/bg12.jpg" ;
 
 function loadXMLDoc(xmlUrl) 
 {
@@ -784,16 +784,7 @@ function loadXMLDoc(xmlUrl)
     return xmlDoc; 
 }
 
-// if (window.XMLHttpRequest)
-// {// code for IE7+, Firefox, Chrome, Opera, Safari
-//     xmlhttp=new XMLHttpRequest();
-// }
-// else
-// {// code for IE6, IE5
-//     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-// }
-// xmlhttp.open("GET","https://images-1256429518.cos.ap-chengdu.myqcloud.com",false);
-// xmlhttp.send();
+
 xmlDoc=loadXMLDoc("https://jiajie-blog-1259151883.cos.ap-chengdu.myqcloud.com");
 
 var urls=xmlDoc.getElementsByTagName("Key");
@@ -833,9 +824,10 @@ for (var i = 0; i < content.length; i++) {
     for (var j = 1; j < content[i].length && j < showNum+1; j++) {
         var con=content[i][j].url;
         var item=document.createElement("li");
-        item.innerHTML="<div class=imgbox id=imgbox style=height:"+wid+"px;><img class=imgitem src="https://me.idealli.com/images/load.gif" data-src=https://jiajie-blog-1259151883.cos.ap-chengdu.myqcloud.com/"+title+con+" alt="+con+"></div><span>"+con.substring(0,con.length-4)+"</span><p>上传于"+content[i][j].date+"</p>";
+        item.innerHTML="<div class=imgbox id=imgbox style=height:"+wid+"px;><img class=imgitem src=https://jiajie-blog-1259151883.cos.ap-chengdu.myqcloud.com/"+title+con+" alt="+con+"></div><span>"+con.substring(0,con.length-4)+"</span><p>上传于"+content[i][j].date+"</p>";
         conBox.appendChild(item);
     }
+
     if(content[i].length > showNum){
         var moreItem=document.createElement("button");
         moreItem.className="btn-more-posts";
@@ -858,9 +850,9 @@ function moreClick(obj,cur,cont,title){
     for ( ; j < cont.length && j < Number(showNum) + Number(begin); j++) {
         var con=cont[j].url;
         var item=document.createElement("li");
-        item.innerHTML="<div class=imgbox id=imgbox style=height:"+wid+"px;><img class=imgitem src="https://me.idealli.com/images/load.gif" data-src=https://jiajie-blog-1259151883.cos.ap-chengdu.myqcloud.com/"+title+con+" alt="+con+"></div><span>"+con.substring(0,con.length-4)+"</span><p>上传于"+cont[j].date+"</p>";
+        item.innerHTML="<div class=imgbox id=imgbox style=height:"+wid+"px;><img class=imgitem src=https://jiajie-blog-1259151883.cos.ap-chengdu.myqcloud.com/"+title+con+" alt="+con+"></div><span>"+con.substring(0,con.length-4)+"</span><p>上传于"+cont[j].date+"</p>";
         parent.appendChild(item);
-        var v=item.getElementsByTagName("img");
+        var v=item.getElementsByTagName('img');
         v[0].id=imgid;
         imgid++;
         v[0].addEventListener("click",function(e){ // 注册事件
@@ -869,7 +861,7 @@ function moreClick(obj,cur,cont,title){
             y=e.target.offsetTop;
             w=e.target.offsetWidth;
             h=e.target.offsetHeight;
-            src="https://me.idealli.com/images/load.gif" data-src=e.target.src;
+            src=e.target.src;
             id=e.target.id;
             // 创建遮罩层
             div=document.createElement("div");
@@ -893,7 +885,7 @@ function moreClick(obj,cur,cont,title){
             img=new Image();
             btnright=document.createElement("button");
             btnleft=document.createElement("button");
-            img.src="https://me.idealli.com/images/load.gif" data-src=src;
+            img.src=src;
             btnleft.style.cssText=`
                 position:fixed;
                 border-radius: 50%;;
@@ -941,10 +933,10 @@ function moreClick(obj,cur,cont,title){
                     return;
                 }
                 var left=document.getElementById(id-1);
-                img.src="https://me.idealli.com/images/load.gif" data-src=left.src;
+                img.src=left.src;
                 x=left.offsetLeft;
                 y=left.offsetTop;
-                  w=left.offsetWidth;
+                w=left.offsetWidth;
                 h=left.offsetHeight;
                 id--;
             }
@@ -955,10 +947,10 @@ function moreClick(obj,cur,cont,title){
                     return;
                 }
                 var right=document.getElementById(id);
-                img.src="https://me.idealli.com/images/load.gif" data-src=right.src;
+                img.src=right.src;
                 x=right.offsetLeft;
                 y=right.offsetTop;
-                  w=right.offsetWidth;
+                w=right.offsetWidth;
                 h=right.offsetHeight;
             }
             img.onload=function(){
@@ -1006,10 +998,14 @@ function moreClick(obj,cur,cont,title){
         parent.appendChild(obj);
     }
 }
-
-
-</script>
-
+</script><script src="https://me.idealli.com/javascripts/jQuery.min.js?t=1558919530818"></script><script src="https://me.idealli.com/javascripts/image.js?t=1558919530818"></script>
+<script>jQuery(document).ready(function () {
+    jQuery.viewImage({
+        'target' : 'img', //需要使用ViewImage的图片
+        'exclude': '#no-view',    //要排除的图片
+        'delay'  : 300                //延迟时间
+    });
+});</script>
         
 
       </div>
@@ -1029,14 +1025,6 @@ function moreClick(obj,cur,cont,title){
 
           </div>
           
-
-  
-    <div class="comments" id="comments">
-    </div>
-
-  
-
-
 
         </div>
         
@@ -1469,8 +1457,6 @@ show_date_time();
 
 
 
-
-  
 
 
   
@@ -1907,4 +1893,5 @@ show_date_time();
 
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script></body>
+</html>
