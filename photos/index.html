@@ -152,7 +152,12 @@
 <meta property="og:description" content=".main-inner{         width: 100%;     }     .main {     padding-bottom: 150px;     margin-top: 0px;     background: #121212;     }     .main-inner{         margin-top: unset;     }     .page-post">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://image.idealli.com/bg12.jpg">
-<meta property="og:updated_time" content="2019-05-27T06:43:09.372Z">
+<meta property="og:image" content="https://source.unsplash.com/juHayWuaaoQ/240x160">
+<meta property="og:image" content="https://source.unsplash.com/eWFdaPRFjwE/240x160">
+<meta property="og:image" content="https://source.unsplash.com/i2KibvLYjqk/240x160">
+<meta property="og:image" content="https://source.unsplash.com/RFgO9B_OR4g/240x160">
+<meta property="og:image" content="https://source.unsplash.com/7bwQXzbF6KE/240x160">
+<meta property="og:updated_time" content="2019-05-28T05:38:28.533Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="我的相册">
 <meta name="twitter:description" content=".main-inner{         width: 100%;     }     .main {     padding-bottom: 150px;     margin-top: 0px;     background: #121212;     }     .main-inner{         margin-top: unset;     }     .page-post">
@@ -569,7 +574,7 @@
     }
     .menu .menu-item a {
     font-weight: 300;
-    color: #010a10;
+    color: #0a0a0a;
 }
 
     .imgbox{
@@ -790,7 +795,7 @@ xmlDoc=loadXMLDoc("https://jiajie-blog-1259151883.cos.ap-chengdu.myqcloud.com");
 var urls=xmlDoc.getElementsByTagName("Key");
 var date=xmlDoc.getElementsByTagName("LastModified");
 var wid=250;
-var showNum=6; //每个相册一次展示多少照片
+var showNum=12; //每个相册一次展示多少照片
 if ((window.innerWidth)>1200) {wid=(window.innerWidth*3)/18;}
 var box=document.getElementById("box");
 var i=0;
@@ -998,7 +1003,12 @@ function moreClick(obj,cur,cont,title){
         parent.appendChild(obj);
     }
 }
-</script><script src="https://me.idealli.com/javascripts/jQuery.min.js?t=1558919530818"></script><script src="https://me.idealli.com/javascripts/image.js?t=1558919530818"></script>
+</script>
+
+<script type="text/javascript" src="/js/jQuery.min.js"></script>
+
+<script type="text/javascript" src="/js/image.js"></script>
+
 <script>jQuery(document).ready(function () {
     jQuery.viewImage({
         'target' : 'img', //需要使用ViewImage的图片
@@ -1006,6 +1016,97 @@ function moreClick(obj,cur,cont,title){
         'delay'  : 300                //延迟时间
     });
 });</script>
+
+
+<p></p><h1>我喜欢的外链展示</h1><p></p>
+<p> 
+ <a data-fancybox data-type="iframe" data-src="https://unsplash.com/" href="javascript:;" class="btn btn-primary" target="_blank" rel="noopener">
+    1.unsplash摄影网站
+</a>
+</p>
+
+<p>
+  样例展示
+  <select id="filter1" style="width: 100px;font-size:0.85rem;">
+    <option value>-----</option>
+    <option value="one">One</option>
+    <option value="two">Two</option>
+    <option value="three">Three</option>
+  </select>
+</p>
+
+<p id="filter1" class="imglist">
+  <a class="one three" href="https://source.unsplash.com/juHayWuaaoQ/1500x1000" data-fancybox="images" target="_blank" rel="noopener">
+ <img src="https://source.unsplash.com/juHayWuaaoQ/240x160">
+  </a><a class="two " href="https://source.unsplash.com/eWFdaPRFjwE/1500x1000" data-fancybox="images" target="_blank" rel="noopener">
+<img src="https://source.unsplash.com/eWFdaPRFjwE/240x160">
+  </a><a class="three" href="https://source.unsplash.com/i2KibvLYjqk/1500x1000" data-fancybox="images" target="_blank" rel="noopener">
+<img src="https://source.unsplash.com/i2KibvLYjqk/240x160">
+  </a> <a class="two " href="https://source.unsplash.com/RFgO9B_OR4g/1500x1000" data-fancybox="images" target="_blank" rel="noopener">
+<img src="https://source.unsplash.com/RFgO9B_OR4g/240x160">
+  </a> <a class="three" href="https://source.unsplash.com/7bwQXzbF6KE/1500x1000" data-fancybox="images" target="_blank" rel="noopener">
+<img src="https://source.unsplash.com/7bwQXzbF6KE/240x160"></a>
+</p>
+
+<p> 
+ <a data-fancybox data-type="iframe" data-src="http://litten.me/gallery/" href="javascript:;" class="btn btn-primary" target="_blank" rel="noopener">
+    2.litten的摄影集
+</a>
+</p>
+
+
+
+
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+<script>
+
+
+// Simple filter
+$('#filter1').on('change', function() {
+  var $visible, val = this.value;
+
+  if (val) {
+    $visible = $('.imglist a').hide().filter('.' + val);
+
+  } else {
+    $visible = $('.imglist a');
+  }
+
+  $visible.show();
+});
+
+$('#filter2').on('change', function() {
+  var $visible, val = this.value;
+
+  if (val) {
+    $visible = $('.imglist a').hide().filter('.' + val);
+
+  } else {
+    $visible = $('.imglist a');
+  }
+
+  $visible.show();
+});
+
+
+$('[data-fancybox="images"]').fancybox({
+  afterLoad : function(instance, current) {
+    var pixelRatio = window.devicePixelRatio || 1;
+
+    if ( pixelRatio > 1.5 ) {
+      current.width  = current.width  / pixelRatio;
+      current.height = current.height / pixelRatio;
+    }
+  }
+});
+
+</script>
+
+
         
 
       </div>
@@ -1044,8 +1145,17 @@ function moreClick(obj,cur,cont,title){
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -1229,6 +1339,23 @@ show_date_time();
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">我喜欢的外链展示</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       
@@ -1893,4 +2020,5 @@ show_date_time();
 
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script></body>
+</html>
