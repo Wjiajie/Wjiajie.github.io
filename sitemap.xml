@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jiajiewu.cn/talk/index.html</loc>
+    
+    <lastmod>2019-05-28T15:12:55.373Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jiajiewu.cn/photos/index.html</loc>
     
-    <lastmod>2019-05-28T06:53:49.982Z</lastmod>
+    <lastmod>2019-05-28T09:40:34.073Z</lastmod>
     
   </url>
   
@@ -75,13 +82,6 @@
     <loc>https://www.jiajiewu.cn/Epipolar-Geametry-and-F.html</loc>
     
     <lastmod>2019-05-25T02:44:25.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jiajiewu.cn/talk/index.html</loc>
-    
-    <lastmod>2019-05-25T02:31:52.000Z</lastmod>
     
   </url>
   
