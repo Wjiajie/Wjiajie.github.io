@@ -630,7 +630,7 @@
       
 
       
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>记录应对过拟合的两种策略：权重衰减 (weight decay) 和丢弃法（dropout），并在实验“softmax回归分类”中探究这两种策略和它们的组合在应对过拟合方面的有效性。摘自《动手学深度学习》<br><a id="more"></a><br>过拟合现象，即模型的训练误差远小于它在测试集上的误差。虽然增大训练数据集可能会减轻过拟合，但是获取额外的训练数据往往代价高昂。权重衰减和丢弃法可以有效应对过拟合的现象。</p>
+        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>记录应对过拟合的两种策略：权重衰减 (weight decay) 和丢弃法（dropout），并在实验“softmax回归分类”中探究这两种策略和它们的组合在应对过拟合方面的有效性。摘自《动手学深度学习》<br><a id="more"></a><br>过拟合现象，即模型的训练误差远小于它在测试集上的误差。虽然增大训练数据集可能会减轻过拟合，但是获取额外的训练数据往往代价高昂。权重衰减和丢弃法可以有效应对过拟合的现象。</p>
 <h2 id="权重衰减简介"><a href="#权重衰减简介" class="headerlink" title="权重衰减简介"></a>权重衰减简介</h2><p>权重衰减等价于𝐿2范数正则化，正则化通过为模型损失函数添加惩罚项使学出的模型参数值较小，是应对过拟合的常用手段。我们先描述𝐿2范数正则化，再解释它为何又称权重衰减。</p>
 <h3 id="𝐿2范数正则化"><a href="#𝐿2范数正则化" class="headerlink" title="𝐿2范数正则化"></a>𝐿2范数正则化</h3><p>𝐿2范数正则化在模型原损失函数基础上添加𝐿2范数惩罚项，从而得到训练所需要最小化的函数。<strong>𝐿2范数惩罚项指的是模型权重参数每个元素的平方和与一个正的常数的乘积。</strong> 以一个线性回归的损失函数为例子：</p>
 <script type="math/tex; mode=display">
