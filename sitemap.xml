@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jiajiewu.cn/graduate.html</loc>
+    
+    <lastmod>2019-06-23T21:40:30.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jiajiewu.cn/hello-world.html</loc>
     
     <lastmod>2019-06-01T15:52:17.325Z</lastmod>
@@ -11,7 +18,7 @@
   <url>
     <loc>https://www.jiajiewu.cn/talk/index.html</loc>
     
-    <lastmod>2019-06-01T02:30:14.426Z</lastmod>
+    <lastmod>2019-06-01T02:30:14.000Z</lastmod>
     
   </url>
   
@@ -25,19 +32,19 @@
   <url>
     <loc>https://www.jiajiewu.cn/photos/index.html</loc>
     
-    <lastmod>2019-05-28T09:40:34.073Z</lastmod>
+    <lastmod>2019-05-28T09:40:34.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/README.html</loc>
+    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/bower.json</loc>
     
     <lastmod>2019-05-27T06:27:49.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/bower.json</loc>
+    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/README.html</loc>
     
     <lastmod>2019-05-27T06:27:49.000Z</lastmod>
     

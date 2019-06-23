@@ -1768,7 +1768,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #b5ff6a;
+  background: #9f905d;
 }
 .feed-link,
 .chat {
@@ -2592,12 +2592,22 @@ body {
   display: inline-block;
   padding: 0 40px;
   color: #e8dddd;
-  background: #222;
+  background: rgba(246,241,241,0);
   border-bottom: none;
+  border-bottom-color: currentcolor;
+  border-bottom-style: none;
+  border-bottom-width: medium;
+}
+.site-title {
+  font-size: 65px;
+  font-weight: 700;
+  color: #4d4d4d;
+  line-height: 80px;
+  letter-spacing: 3px;
 }
 .site-subtitle {
   margin-top: 10px;
-  font-size: 18px;
+  font-size: 24px;
   color: #535d54;
 }
 .header-inner {

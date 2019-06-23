@@ -638,7 +638,7 @@
       
 
       
-        <link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>记录模型欠拟合和过拟合的原因和实验现象。摘自《动手学深度学习》<br><a id="more"></a><br>网络欠拟合和过拟合</p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>记录模型欠拟合和过拟合的原因和实验现象。摘自《动手学深度学习》<br><a id="more"></a><br>网络欠拟合和过拟合</p>
 <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>在讨论欠拟合和过拟合之前首先需要区分几个概念：<br>1 .  训练误差和泛化误差<br>训练误差（training error）和泛化误差（generalization error）。前者指模型在训练数据集上表现出的误差，后者指模型在任意一个测试数据样本上表现出的误差的期望，并常常通过测试数据集上的误差来近似。由于无法从训练误差估计泛化误差，一味地降低训练误差并不意味着泛化误差一定会降低。<br>2 .  模型选择<br>在机器学习中，通常需要评估若干候选模型的表现并从中选择模型。这一过程称为模型选择（model selection）。可供选择的候选模型可以是有着不同超参数的同类模型。以多层感知机为例，我们可以选择隐藏层的个数，以及每个隐藏层中隐藏单元个数和激活函数。<br>3 .   验证数据集<br>从严格意义上讲，测试集只能在所有超参数和模型参数选定后使用一次。不可以使用测试数据选择模型，如调参。但由于无法从训练误差估计泛化误差，因此也不应只依赖训练数据选择模型。鉴于此，我们可以预留一部分在训练数据集和测试数据集以外的数据来进行模型选择。这部分数据被称为验证数据集，简称验证集（validation set）。然而在实际应用中，由于数据不容易获取，测试数据极少只使用一次就丢弃。一种改善的方法是$K$折交叉验证（$K$-fold cross-validation）。在$K$折交叉验证中，我们把原始训练数据集分割成$K$个不重合的子数据集，然后我们做$K$次模型训练和验证。每一次，我们使用一个子数据集验证模型，并使用其他$K−1$个子数据集来训练模型。在这$K$次训练和验证中，每次用来验证模型的子数据集都不同。最后，我们对这$K$次训练误差和验证误差分别求平均。</p>
 <h3 id="欠拟合和过拟合是什么"><a href="#欠拟合和过拟合是什么" class="headerlink" title="欠拟合和过拟合是什么"></a>欠拟合和过拟合是什么</h3><p>在模型训练中经常出现的两类典型问题：一类是模型无法得到较低的训练误差，我们将这一现象称作欠拟合（underfitting）；另一类是模型的训练误差远小于它在测试数据集上的误差，我们称该现象为过拟合（overfitting）。</p>
 <p>虽然有很多因素可能导致这两种拟合问题，在主要两个因素是：模型复杂度和训练数据集大小。</p>
@@ -778,7 +778,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-count">17</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
