@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jiajiewu.cn/tips.html</loc>
+    
+    <lastmod>2019-06-25T12:27:12.252Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jiajiewu.cn/home-design/index.html</loc>
+    
+    <lastmod>2019-06-25T12:07:27.587Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jiajiewu.cn/graduate.html</loc>
     
-    <lastmod>2019-06-24T01:11:20.495Z</lastmod>
+    <lastmod>2019-06-25T11:53:40.991Z</lastmod>
     
   </url>
   
@@ -37,14 +51,14 @@
   </url>
   
   <url>
-    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/README.html</loc>
+    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/bower.json</loc>
     
     <lastmod>2019-05-27T06:27:49.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/bower.json</loc>
+    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/README.html</loc>
     
     <lastmod>2019-05-27T06:27:49.000Z</lastmod>
     

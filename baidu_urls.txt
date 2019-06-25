@@ -1,3 +1,4 @@
+https://www.jiajiewu.cn/tips.html
 https://www.jiajiewu.cn/graduate.html
 https://www.jiajiewu.cn/trimmed-icp.html
 https://www.jiajiewu.cn/tips-for-overfit.html
@@ -7,4 +8,3 @@ https://www.jiajiewu.cn/softmax.html
 https://www.jiajiewu.cn/show-issue.html
 https://www.jiajiewu.cn/linear-regression.html
 https://www.jiajiewu.cn/cuda-practice5.html
-https://www.jiajiewu.cn/suanfa1.html
