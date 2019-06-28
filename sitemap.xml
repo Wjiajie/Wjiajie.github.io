@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jiajiewu.cn/about/index.html</loc>
+    
+    <lastmod>2019-06-28T09:51:19.334Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jiajiewu.cn/photos/index.html</loc>
+    
+    <lastmod>2019-06-28T09:08:33.950Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jiajiewu.cn/tips.html</loc>
     
     <lastmod>2019-06-27T12:04:08.235Z</lastmod>
@@ -44,21 +58,14 @@
   </url>
   
   <url>
-    <loc>https://www.jiajiewu.cn/photos/index.html</loc>
-    
-    <lastmod>2019-05-28T09:40:34.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/bower.json</loc>
+    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/README.html</loc>
     
     <lastmod>2019-05-27T06:27:49.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/README.html</loc>
+    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/bower.json</loc>
     
     <lastmod>2019-05-27T06:27:49.000Z</lastmod>
     
@@ -173,13 +180,6 @@
     <loc>https://www.jiajiewu.cn/cuda-practice1.html</loc>
     
     <lastmod>2019-05-06T07:16:26.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jiajiewu.cn/about/index.html</loc>
-    
-    <lastmod>2019-05-04T04:42:00.000Z</lastmod>
     
   </url>
   
