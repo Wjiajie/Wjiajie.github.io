@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jiajiewu.cn/exception.html</loc>
+    
+    <lastmod>2019-06-29T11:18:45.287Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jiajiewu.cn/about/index.html</loc>
     
     <lastmod>2019-06-29T08:59:28.338Z</lastmod>
@@ -58,14 +65,14 @@
   </url>
   
   <url>
-    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/bower.json</loc>
+    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/README.html</loc>
     
     <lastmod>2019-05-27T06:27:49.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/README.html</loc>
+    <loc>https://www.jiajiewu.cn/lib/jquery_lazyload/bower.json</loc>
     
     <lastmod>2019-05-27T06:27:49.000Z</lastmod>
     
