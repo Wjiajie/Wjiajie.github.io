@@ -143,17 +143,24 @@
 
 
 
-  <meta name="description" content="我觉得你很像一个终生跋涉的香客，不停地寻找一座可能根本不存在的神庙。">
-<meta name="keywords" content="cv">
-<meta property="og:type" content="website">
-<meta property="og:title" content="jiajie">
-<meta property="og:url" content="https://www.jiajiewu.cn/tags/复杂度分析/index.html">
+  <meta name="description" content="记录卷积神经网络（CNN）的卷积层，卷积核等概念和网络输入输出维度的计算方法。摘自《动手学深度学习》">
+<meta name="keywords" content="dl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="卷积神经网络的卷积层">
+<meta property="og:url" content="https://www.jiajiewu.cn/cnn-layer.html">
 <meta property="og:site_name" content="jiajie">
-<meta property="og:description" content="我觉得你很像一个终生跋涉的香客，不停地寻找一座可能根本不存在的神庙。">
+<meta property="og:description" content="记录卷积神经网络（CNN）的卷积层，卷积核等概念和网络输入输出维度的计算方法。摘自《动手学深度学习》">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2019/07/01/5d1a01dd4ba0063255.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/01/5d1a045678fe520998.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/01/5d1a06c23096340948.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/01/5d1a01dd4ba0063255.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/01/5d1a098a0ec1657495.png">
+<meta property="og:updated_time" content="2019-07-01T13:27:25.059Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="jiajie">
-<meta name="twitter:description" content="我觉得你很像一个终生跋涉的香客，不停地寻找一座可能根本不存在的神庙。">
+<meta name="twitter:title" content="卷积神经网络的卷积层">
+<meta name="twitter:description" content="记录卷积神经网络（CNN）的卷积层，卷积核等概念和网络输入输出维度的计算方法。摘自《动手学深度学习》">
+<meta name="twitter:image" content="https://i.loli.net/2019/07/01/5d1a01dd4ba0063255.png">
 
 
 
@@ -163,7 +170,7 @@
 
   
   
-  <link rel="canonical" href="https://www.jiajiewu.cn/tags/复杂度分析/">
+  <link rel="canonical" href="https://www.jiajiewu.cn/cnn-layer">
 
 
 
@@ -173,7 +180,7 @@
   };
 </script>
 
-  <title>标签: 复杂度分析 | jiajie</title>
+  <title>卷积神经网络的卷积层 | jiajie</title>
   
 
 
@@ -246,7 +253,7 @@
 
 
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -305,7 +312,7 @@
         
         
           
-          <li class="menu-item menu-item-tags menu-item-active">
+          <li class="menu-item menu-item-tags">
 
     
     
@@ -412,34 +419,6 @@
   
     
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
   
 
   
@@ -464,57 +443,233 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>复杂度分析<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/cnn-layer.html">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jiajie">
+      <meta itemprop="description" content="我觉得你很像一个终生跋涉的香客，不停地寻找一座可能根本不存在的神庙。">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jiajie">
+    </span>
+
+    
+      <header class="post-header">
+
         
-          <a class="post-title-link" href="/suanfa1.html" itemprop="url">
-            
-              <span itemprop="name">算法复杂度分析</span>
-            
-          </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">卷积神经网络的卷积层
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-05-13T15:38:57+08:00" content="2019-05-13">
-          05-13
-        </time>
-      </div>
+              
+            
+          </h1>
+        
 
-    </header>
-  </article>
+        <div class="post-meta">
+          <span class="post-time">
 
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-01 20:38:41 / 修改时间：21:27:25" itemprop="dateCreated datePublished" datetime="2019-07-01T20:38:41+08:00">2019-07-01</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/dl/" itemprop="url" rel="index"><span itemprop="name">dl</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/cnn-layer.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/cnn-layer.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+	
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>记录卷积神经网络（CNN）的卷积层，卷积核等概念和网络输入输出维度的计算方法。摘自《动手学深度学习》</p>
+<a id="more"></a>
+<h2 id="卷积层的概念"><a href="#卷积层的概念" class="headerlink" title="卷积层的概念"></a>卷积层的概念</h2><p>卷积神经网络（convolutional neural network）是含有卷积层（convolutional layer）的神经网络。</p>
+<p>虽然卷积层得名于卷积（convolution）运算，但我们通常在卷积层中使用更加直观的互相关（cross-correlation）运算。实际上，卷积运算与互相关运算类似。为了得到卷积运算的输出，我们只需将核数组左右翻转并上下翻转，再与输入数组做互相关运算。其实，在深度学习中核数组都是学出来的：卷积层无论使用互相关运算或卷积运算都不影响模型预测时的输出。因为假如使用卷积运算学出的核数组按上下、左右翻转，在利用该核数组做卷积运算时，依然会得出和互相关一样的输出（负负得正和正正得正）。以后说卷积其实指的是互相关运算。</p>
+<h2 id="卷积层的运算"><a href="#卷积层的运算" class="headerlink" title="卷积层的运算"></a>卷积层的运算</h2><h3 id="最简单的二维卷积层"><a href="#最简单的二维卷积层" class="headerlink" title="最简单的二维卷积层"></a>最简单的二维卷积层</h3><p><img src="https://i.loli.net/2019/07/01/5d1a01dd4ba0063255.png" alt><br>如上图，输入是一个高和宽均为3的二维数组（通道为1）。我们将该数组的形状记为3×3或（3，3）。核数组的高和宽分别为2。该数组在卷积计算中又称卷积核或过滤器（filter）。卷积核窗口（又称卷积窗口）的形状取决于卷积核的高和宽，即2×2。图中的阴影部分为第一个输出元素及其计算所使用的输入和核数组元素：0×0+1×1+3×2+4×3=19。</p>
+<p>二维卷积层将输入和卷积核做互相关运算，并加上一个标量偏差来得到输出。卷积层的模型参数包括了卷积核和标量偏差。在训练模型的时候，通常我们先对卷积核随机初始化，然后不断迭代卷积核和偏差。</p>
+<h3 id="多输入通道和多输出通道"><a href="#多输入通道和多输出通道" class="headerlink" title="多输入通道和多输出通道"></a>多输入通道和多输出通道</h3><p>前面用到的输入和输出都是二维数组，但真实数据的维度经常更高。例如，彩色图像在高和宽2个维度外还有RGB（红、绿、蓝）3个颜色通道。假设彩色图像的高和宽分别是$h$和$w$（像素），那么它可以表示为一个$3×ℎ×𝑤$的多维数组。我们将大小为3的这一维称为通道（channel）维。</p>
+<h3 id="多输入通道"><a href="#多输入通道" class="headerlink" title="多输入通道"></a>多输入通道</h3><p><img src="https://i.loli.net/2019/07/01/5d1a045678fe520998.png" alt><br>如上图：当输入数据含多个通道时，我们需要构造一个输入通道数与输入数据的通道数相同的卷积核，从而能够与含多通道的输入数据做互相关运算。假设输入数据的通道数为$𝑐_𝑖$，那么卷积核的输入通道数同样为$𝑐_𝑖$。设卷积核窗口形状为$𝑘_ℎ×𝑘_𝑤$。当$𝑐_𝑖=1$时，我们知道卷积核只包含一个形状为$𝑘_ℎ×𝑘_𝑤$的二维数组。当$𝑐_𝑖&gt;1$时，我们将会为每个输入通道各分配一个形状为$𝑘_ℎ×𝑘_𝑤$的核数组。把这$𝑐_𝑖$个数组在输入通道维上连结，即得到一个形状为$𝑐_𝑖×𝑘_ℎ×𝑘_𝑤$的卷积核。由于输入和卷积核各有$𝑐_𝑖$个通道，我们可以在各个通道上对输入的二维数组和卷积核的二维核数组做互相关运算，再将这$𝑐_𝑖$个互相关运算的二维输出按通道相加，得到一个二维数组。这就是含多个通道的输入数据与多输入通道的卷积核做二维互相关运算的输出。</p>
+<h3 id="多输出通道"><a href="#多输出通道" class="headerlink" title="多输出通道"></a>多输出通道</h3><p>当输入通道有多个时，因为我们对各个通道的结果做了累加，所以不论输入通道数是多少，输出通道数总是为1。设卷积核输入通道数和输出通道数分别为$𝑐_𝑖$和$𝑐_𝑜$，高和宽分别为$𝑘_ℎ$和$𝑘_𝑤$。如果希望得到含多个通道的输出，我们可以为每个输出通道分别创建形状为$𝑐_𝑖×𝑘_ℎ×𝑘_𝑤$的核数组。将它们在输出通道维上连结，卷积核的形状即$𝑐_𝑜×𝑐_𝑖×𝑘_ℎ×𝑘_𝑤$。在做互相关运算时，每个输出通道上的结果由卷积核在该输出通道上的核数组与整个输入数组计算而来。</p>
+<p>总结就是：输入的通道数$c_i$取决于卷积核的通道数，输出的通道数$c_o$取决于卷积核的个数。</p>
+<h3 id="1×1卷积层"><a href="#1×1卷积层" class="headerlink" title="1×1卷积层"></a>1×1卷积层</h3><p><img src="https://i.loli.net/2019/07/01/5d1a06c23096340948.png" alt><br>最后我们讨论卷积窗口形状为1×1（$𝑘_ℎ=𝑘_𝑤=1$）的多通道卷积层。我们通常称之为1×1卷积层，并将其中的卷积运算称为1×1卷积。因为使用了最小窗口，1×1卷积失去了卷积层可以识别高和宽维度上相邻元素构成的模式的功能。实际上，1×1卷积的主要计算发生在通道维上。图中展示了使用输入通道数为3、输出通道数为2的1×1卷积核的互相关计算。值得注意的是，输入和输出具有相同的高和宽。输出中的每个元素来自输入中在高和宽上相同位置的元素在不同通道之间的按权重累加。假设我们将通道维当作特征维，将高和宽维度上的元素当成数据样本，那么1×1卷积层的作用与全连接层等价。</p>
+<h2 id="特征图和感受野"><a href="#特征图和感受野" class="headerlink" title="特征图和感受野"></a>特征图和感受野</h2><p>二维卷积层输出的二维数组可以看作是输入在空间维度（宽和高）上某一级的表征，也叫特征图（feature map）。影响元素$x$的前向计算的所有可能输入区域（可能大于输入的实际尺寸）叫做$x$的感受野（receptive field）。如图：<br><img src="https://i.loli.net/2019/07/01/5d1a01dd4ba0063255.png" alt><br>输入中阴影部分的四个元素是输出中阴影部分元素的感受野。我们将图中形状为2×2的输出记为$Y$，并考虑一个更深的卷积神经网络：将$Y$与另一个形状为2×2的核数组做互相关运算，输出单个元素$z$。那么，$z$在$Y$上的感受野包括$Y$的全部四个元素，在输入上的感受野包括其中全部9个元素。可见，我们可以通过更深的卷积神经网络使特征图中单个元素的感受野变得更加广阔，从而捕捉输入上更大尺寸的特征。</p>
+<h2 id="填充和步幅"><a href="#填充和步幅" class="headerlink" title="填充和步幅"></a>填充和步幅</h2><p>填充（padding）是指在输入高和宽的两侧填充元素（通常是0元素）。卷积神经网络经常使用奇数高宽的卷积核，如1、3、5和7，使得两端上的填充个数相等。</p>
+<p>在二维互相关运算中，卷积窗口从输入数组的最左上方开始，按从左往右、从上往下的顺序，依次在输入数组上滑动。我们将每次滑动的行数和列数称为步幅（stride）。我们可以使用更大步幅。下图展示了在高上步幅为3、在宽上步幅为2的二维互相关运算。可以看到，输出第一列第二个元素时，卷积窗口向下滑动了3行，而在输出第一行第二个元素时卷积窗口向右滑动了2列。当卷积窗口在输入上再向右滑动2列时，由于输入元素无法填满窗口，无结果输出。<br><img src="https://i.loli.net/2019/07/01/5d1a098a0ec1657495.png" alt></p>
+<h3 id="卷积运算的输出形状的计算公式："><a href="#卷积运算的输出形状的计算公式：" class="headerlink" title="卷积运算的输出形状的计算公式："></a>卷积运算的输出形状的计算公式：</h3><script type="math/tex; mode=display">
+\lfloor(n_h-k_h+p_h+s_h)/s_h\rfloor \times \lfloor(n_w-k_w+p_w+s_w)/s_w\rfloor.</script><p>该输出的通道数取决于参与运算的卷积核的个数。</p>
 
       
     </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/dl/" rel="tag"># dl</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/exception.html" rel="next" title="异常处理">
+                <i class="fa fa-chevron-left"></i> 异常处理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
 
         </div>
         
@@ -534,8 +689,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -722,6 +886,23 @@ show_date_time();
       </div>
 
       
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#卷积层的概念"><span class="nav-number">1.</span> <span class="nav-text">卷积层的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卷积层的运算"><span class="nav-number">2.</span> <span class="nav-text">卷积层的运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#最简单的二维卷积层"><span class="nav-number">2.1.</span> <span class="nav-text">最简单的二维卷积层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多输入通道和多输出通道"><span class="nav-number">2.2.</span> <span class="nav-text">多输入通道和多输出通道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多输入通道"><span class="nav-number">2.3.</span> <span class="nav-text">多输入通道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多输出通道"><span class="nav-number">2.4.</span> <span class="nav-text">多输出通道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1×1卷积层"><span class="nav-number">2.5.</span> <span class="nav-text">1×1卷积层</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征图和感受野"><span class="nav-number">3.</span> <span class="nav-text">特征图和感受野</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#填充和步幅"><span class="nav-number">4.</span> <span class="nav-text">填充和步幅</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积运算的输出形状的计算公式："><span class="nav-number">4.1.</span> <span class="nav-text">卷积运算的输出形状的计算公式：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
       
 
@@ -899,6 +1080,11 @@ show_date_time();
 
 
   
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
 
   
 
@@ -944,6 +1130,8 @@ show_date_time();
 
 
 
+
+  
 
 
   
