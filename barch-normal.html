@@ -143,18 +143,18 @@
 
 
 
-  <meta name="description" content="本文主要介绍c++标准库中 vector 的基本用法。">
-<meta name="keywords" content="c++,vector">
+  <meta name="description" content="本节介绍批量归一化（batch normalization）层，它能让较深的神经网络的训练变得更加容易 。内容摘自《动手学深度学习》">
+<meta name="keywords" content="dl,python,卷积神经网络">
 <meta property="og:type" content="article">
-<meta property="og:title" content="标准库类型vector笔记">
-<meta property="og:url" content="https://www.jiajiewu.cn/cpp-vector.html">
+<meta property="og:title" content="批标准化">
+<meta property="og:url" content="https://www.jiajiewu.cn/barch-normal.html">
 <meta property="og:site_name" content="jiajie">
-<meta property="og:description" content="本文主要介绍c++标准库中 vector 的基本用法。">
+<meta property="og:description" content="本节介绍批量归一化（batch normalization）层，它能让较深的神经网络的训练变得更加容易 。内容摘自《动手学深度学习》">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-05-10T02:39:04.000Z">
+<meta property="og:updated_time" content="2019-07-02T13:15:10.968Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="标准库类型vector笔记">
-<meta name="twitter:description" content="本文主要介绍c++标准库中 vector 的基本用法。">
+<meta name="twitter:title" content="批标准化">
+<meta name="twitter:description" content="本节介绍批量归一化（batch normalization）层，它能让较深的神经网络的训练变得更加容易 。内容摘自《动手学深度学习》">
 
 
 
@@ -164,7 +164,7 @@
 
   
   
-  <link rel="canonical" href="https://www.jiajiewu.cn/cpp-vector">
+  <link rel="canonical" href="https://www.jiajiewu.cn/barch-normal">
 
 
 
@@ -174,7 +174,7 @@
   };
 </script>
 
-  <title>标准库类型vector笔记 | jiajie</title>
+  <title>批标准化 | jiajie</title>
   
 
 
@@ -453,7 +453,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/cpp-vector.html">
+    <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/barch-normal.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jiajie">
@@ -470,7 +470,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">标准库类型vector笔记
+          <h1 class="post-title" itemprop="name headline">批标准化
 
               
             
@@ -496,24 +496,12 @@
                 
               
 
-              <time title="创建时间：2019-05-08 15:21:34" itemprop="dateCreated datePublished" datetime="2019-05-08T15:21:34+08:00">2019-05-08</time>
+              <time title="创建时间：2019-07-02 18:05:33 / 修改时间：21:15:10" itemprop="dateCreated datePublished" datetime="2019-07-02T18:05:33+08:00">2019-07-02</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-05-10 10:39:04" itemprop="dateModified" datetime="2019-05-10T10:39:04+08:00">2019-05-10</time>
               
             
           </span>
@@ -530,7 +518,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/dl/" itemprop="url" rel="index"><span itemprop="name">dl</span></a></span>
 
                 
                 
@@ -549,8 +537,8 @@
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/cpp-vector.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/cpp-vector.html" itemprop="commentCount"></span>
+                <a href="/barch-normal.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/barch-normal.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -587,49 +575,28 @@
       
 
       
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本文主要介绍c++标准库中 <strong>vector</strong> 的基本用法。<br><a id="more"></a><br>本文主要记录：</p>
-<ul>
-<li><strong>vector</strong> 的初始化</li>
-<li>访问 <strong>vector</strong> 的元素</li>
-<li>迭代器<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2>标准库类型 <strong>vector</strong>表示对象的集合，其中的所有对象的类型都相同， <strong>vector</strong> 是一个类模板而不是类型，需要提供额外的信息给编译器将 <strong>vector</strong> 实例化，比如：</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; file;</span><br></pre></td></tr></table></figure>
-<p><strong>vector</strong>  常用操作：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">v.empty()</span><br><span class="line">v.size()</span><br><span class="line">v.push_back(t)</span><br><span class="line">v[n]</span><br><span class="line">v1 = v2 <span class="comment">////拷贝</span></span><br><span class="line">v1 = &#123;a,b,c...&#125;</span><br><span class="line">v1 == v2 <span class="comment">////当且仅当它们元素个数和元素值都相同</span></span><br><span class="line">v1 != v2</span><br><span class="line">&lt; ,V= ,&gt; ,&gt;= <span class="comment">////以字典顺序比较</span></span><br></pre></td></tr></table></figure>
-<h2 id="一些要点"><a href="#一些要点" class="headerlink" title="一些要点"></a>一些要点</h2><h3 id="vector-初始化"><a href="#vector-初始化" class="headerlink" title="vector 初始化"></a><strong>vector</strong> 初始化</h3><p>可以对 <strong>vector</strong> 对象直接初始化；或者先定义为一个空的对象，在运行时再用 <em>push_back</em> 添加具体值。前一种情况适用于：</p>
-<ol>
-<li>初始值已知并且数量较少；</li>
-</ol>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;; <span class="comment">////列表初始化</span></span><br></pre></td></tr></table></figure>
-<ol>
-<li>初始值是另一个 <strong>vector</strong> 对象的副本；</li>
-</ol>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec = ivec1;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>所有元素的初始值都一样；</li>
-</ol>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec(<span class="number">10</span>,<span class="number">1</span>); <span class="comment">////初始化为10个1</span></span><br></pre></td></tr></table></figure>
-<div class="note info"><p>除此之外，建议采用第二种方式初始化。</p></div>
-
-
-
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cpp_practice.cpp : 定义控制台应用程序的入口点。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">vector</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; int_str;</span><br><span class="line">	<span class="built_in">string</span> str;</span><br><span class="line">	<span class="keyword">char</span> cont = <span class="string">'y'</span>;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; str)</span><br><span class="line">	&#123;</span><br><span class="line">		int_str.push_back(str);</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"continue ?'y or n'"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="built_in">cin</span> &gt;&gt; cont;</span><br><span class="line">		<span class="keyword">if</span> (cont == <span class="string">'n'</span> || cont == <span class="string">'N'</span>)</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> i : int_str)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="访问-vector-的元素"><a href="#访问-vector-的元素" class="headerlink" title="访问 vector 的元素"></a>访问 <strong>vector</strong> 的元素</h3><ol>
-<li>利用 <strong>范围for</strong> 遍历 <strong>vector</strong> 的所有元素。</li>
-<li>利用下标访问 <strong>vector</strong> 中已经存在的元素。</li>
-</ol>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">vector</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">decltype</span>(ivec.size())ix = <span class="number">0</span>; ix != <span class="number">10</span>; ix++)</span><br><span class="line">	&#123;</span><br><span class="line">		ivec.push_back(ix); <span class="comment">////初始化为空的 vector 用 push_back 添加元素</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : ivec)</span><br><span class="line">	&#123;</span><br><span class="line">		i *= <span class="number">2</span>;  <span class="comment">////范围for,需要用引用的格式修改其中的元素的值。</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">decltype</span>(ivec.size())ix = <span class="number">0</span>; ix != <span class="number">10</span>; ix++)</span><br><span class="line">	&#123;</span><br><span class="line">		ivec[ix] += <span class="number">1</span>; <span class="comment">////利用下标访问已经存在的元素，显然易见，空vector不可使用下标方式访问</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> i : ivec)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h3><p>标准库中的所有容器和 <strong>string</strong> 都可以使用迭代器访问对象的元素，迭代器常用的成员：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iter.begin(); <span class="comment">////返回指向对象第一个元素的迭代器</span></span><br><span class="line">iter.end(); <span class="comment">////返回对象尾元素的下一个位置的迭代器，该位置为空，不可对该位置的元素进行解引。</span></span><br></pre></td></tr></table></figure>
-<p>利用迭代器遍历对象中的元素：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> str&#123; <span class="string">"some string"</span> &#125;;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> s = str.begin(); s != str.end(); ++s)</span><br><span class="line">	&#123;</span><br><span class="line">		*s = <span class="built_in">toupper</span>(*s);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; str &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
-<p>若对象只需读操作而不需要写操作，可用 <strong>iter.cbegin()</strong> 和 <strong>iter.cend()</strong> 来访问对象中元素，这样返回的会是一个 <strong>const_iterator</strong> ，不论访问的对象本身是不是常量对象。</p>
-<div class="note danger"><p>但凡使用了迭代器的循环体，都不要向迭代器所属容器添加元素！</p></div>
-
-<p>比如不能用 <strong>push_back</strong> 向 <strong>vector</strong>添加元素，该操作会使迭代器失效。</p>
-<p>迭代器运算符:</p>
-<p>所有的迭代器都支持 <strong>==</strong> ， <strong>！=</strong> 运算符， <strong>vector</strong> 和 <strong>string</strong> 支持更多的运算如下：</p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">iter </span>+ n ////得到当前迭代器位置超前原来迭代器n个位置</span><br><span class="line"><span class="keyword">iter </span>- n</span><br><span class="line"><span class="keyword">iter </span>+= n</span><br><span class="line"><span class="keyword">iter </span>-= n</span><br><span class="line"><span class="keyword">iter1 </span>- <span class="keyword">iter2 </span>////返回两个迭代器的距离，类型是一个带符号类型： difference_type</span><br><span class="line">&gt;, &lt;, &gt;=, &lt;= ////所在位置前后的比较，必须在同一个容器对象中比较才有意义。</span><br></pre></td></tr></table></figure>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本节介绍批量归一化（batch normalization）层，它能让较深的神经网络的训练变得更加容易 。内容摘自《动手学深度学习》</p>
+<a id="more"></a>
+<p>通常来说，数据标准化预处理对于浅层模型就足够有效了。随着模型训练的进行，当每层中参数更新时，靠近输出层的输出较难出现剧烈变化。但对深层神经网络来说，即使输入数据已做标准化，训练中模型参数的更新依然很容易造成靠近输出层输出的剧烈变化。这种计算数值的不稳定性通常令我们难以训练出有效的深度模型。</p>
+<p>批量归一化的提出正是为了应对深度模型训练的挑战。在模型训练时，批量归一化利用小批量上的均值和标准差，不断调整神经网络中间输出，从而使整个神经网络在各层的中间输出的数值更稳定。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="对全连接层做批量归一化"><a href="#对全连接层做批量归一化" class="headerlink" title="对全连接层做批量归一化"></a>对全连接层做批量归一化</h3><p>我们先考虑如何对全连接层做批量归一化。通常，我们将批量归一化层置于全连接层中的仿射变换和激活函数之间。设全连接层的输入为$𝑢$，权重参数和偏差参数分别为$𝑊$和$𝑏$，激活函数为$\phi$。设批量归一化的运算符为$BN$。那么，使用批量归一化的全连接层的输出为:</p>
+<script type="math/tex; mode=display">
+\phi(\text{BN}(\boldsymbol{x})),</script><p>其中批量归一化输入$\boldsymbol{x}$由仿射变换</p>
+<script type="math/tex; mode=display">
+\boldsymbol{x} = \boldsymbol{W\boldsymbol{u} + \boldsymbol{b}}</script><p>得到。考虑一个由𝑚个样本组成的小批量，仿射变换的输出为一个新的小批量$\mathcal{B} = \{\boldsymbol{x}^{(1)}, \ldots, \boldsymbol{x}^{(m)} \}$。它们正是批量归一化层的输入。对于小批量$\mathcal{B}$中任意样本$\boldsymbol{x}^{(i)} \in \mathbb{R}^d, 1 \leq  i \leq m$，批量归一化层的输出同样是$𝑑$维向量:</p>
+<script type="math/tex; mode=display">
+\boldsymbol{y}^{(i)} = \text{BN}(\boldsymbol{x}^{(i)}),</script><p>并由以下几步求得。首先，对小批量<script type="math/tex">\mathcal{B}</script>求均值和方差：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{\mu}_\mathcal{B} \leftarrow \frac{1}{m}\sum_{i = 1}^{m} \boldsymbol{x}^{(i)},</script><script type="math/tex; mode=display">
+\boldsymbol{\sigma}_\mathcal{B}^2 \leftarrow \frac{1}{m} \sum_{i=1}^{m}(\boldsymbol{x}^{(i)} - \boldsymbol{\mu}_\mathcal{B})^2,</script><p>其中的平方计算是按元素求平方。接下来，使用按元素开方和按元素除法对$\boldsymbol{x}^{(i)}$标准化：</p>
+<script type="math/tex; mode=display">
+\hat{\boldsymbol{x}}^{(i)} \leftarrow \frac{\boldsymbol{x}^{(i)} - \boldsymbol{\mu}_\mathcal{B}}{\sqrt{\boldsymbol{\sigma}_\mathcal{B}^2 + \epsilon}},</script><p>这里 $\epsilon &gt; 0$ 是一个很小的常数，保证分母大于0。在上面标准化的基础上，批量归一化层引入了两个可以学习的模型参数，拉伸（scale）参数 $\boldsymbol{\gamma}$ 和偏移（shift）参数 $\boldsymbol{\beta}$。这两个参数和$\boldsymbol{x}^{(i)}$形状相同，皆为𝑑维向量。它们与$\boldsymbol{x}^{(i)}$分别做按元素乘法（符号$\odot$）和加法计算：</p>
+<script type="math/tex; mode=display">
+{\boldsymbol{y}}^{(i)} \leftarrow \boldsymbol{\gamma} \odot \hat{\boldsymbol{x}}^{(i)} + \boldsymbol{\beta}.</script><p>至此，我们得到了$\boldsymbol{x}^{(i)}$的批量归一化的输出$\boldsymbol{y}^{(i)}$。 值得注意的是，可学习的拉伸和偏移参数保留了不对$\hat{\boldsymbol{x}}^{(i)}$做批量归一化的可能：此时只需学出$\boldsymbol{\gamma} = \sqrt{\boldsymbol{\sigma}_\mathcal{B}^2 + \epsilon}$和$\boldsymbol{\beta} = \boldsymbol{\mu}_\mathcal{B}$。我们可以对此这样理解：如果批量归一化无益，理论上，学出的模型可以不使用批量归一化。</p>
+<h3 id="对卷积层做批量归一化"><a href="#对卷积层做批量归一化" class="headerlink" title="对卷积层做批量归一化"></a>对卷积层做批量归一化</h3><p>对卷积层来说，批量归一化发生在卷积计算之后、应用激活函数之前。如果卷积计算输出多个通道，我们需要对这些通道的输出分别做批量归一化，且每个通道都拥有独立的拉伸和偏移参数，并均为标量。设小批量中有𝑚个样本。在单个通道上，假设卷积计算输出的高和宽分别为𝑝和𝑞。我们需要对该通道中𝑚×𝑝×𝑞个元素同时做批量归一化。对这些元素做标准化计算时，我们使用相同的均值和方差，即该通道中𝑚×𝑝×𝑞个元素的均值和方差。</p>
+<h3 id="预测时的批量归一化"><a href="#预测时的批量归一化" class="headerlink" title="预测时的批量归一化"></a>预测时的批量归一化</h3><p>使用批量归一化训练时，我们可以将批量大小设得大一点，从而使批量内样本的均值和方差的计算都较为准确。将训练好的模型用于预测时，我们希望模型对于任意输入都有确定的输出。因此，单个样本的输出不应取决于批量归一化所需要的随机小批量中的均值和方差。一种常用的方法是通过移动平均估算整个训练数据集的样本均值和方差，并在预测时使用它们得到确定的输出。可见，和丢弃层一样，批量归一化层在训练模式和预测模式下的计算结果也是不一样的。</p>
+<h2 id="python实现"><a href="#python实现" class="headerlink" title="python实现"></a>python实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> d2lzh <span class="keyword">as</span> d2l</span><br><span class="line"><span class="keyword">from</span> mxnet <span class="keyword">import</span> autograd, gluon, init, nd</span><br><span class="line"><span class="keyword">from</span> mxnet.gluon <span class="keyword">import</span> nn</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">batch_norm</span><span class="params">(X, gamma, beta, moving_mean, moving_var, eps, momentum)</span>:</span></span><br><span class="line">    <span class="comment"># 通过autograd来判断当前模式是训练模式还是预测模式</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> autograd.is_training():</span><br><span class="line">        <span class="comment"># 如果是在预测模式下，直接使用传入的移动平均所得的均值和方差</span></span><br><span class="line">        X_hat = (X - moving_mean) / nd.sqrt(moving_var + eps)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">assert</span> len(X.shape) <span class="keyword">in</span> (<span class="number">2</span>, <span class="number">4</span>)</span><br><span class="line">        <span class="keyword">if</span> len(X.shape) == <span class="number">2</span>:</span><br><span class="line">            <span class="comment"># 使用全连接层的情况，计算特征维上的均值和方差（这里指的是每个特征上都统计（小批量样本的）均值和方差）</span></span><br><span class="line">            mean = X.mean(axis=<span class="number">0</span>)</span><br><span class="line">            var = ((X - mean) ** <span class="number">2</span>).mean(axis=<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 使用二维卷积层的情况，计算通道维上（axis=1）的均值和方差。这里我们需要保持X的形状以便后面可以做广播运算（同上）</span></span><br><span class="line">            mean = X.mean(axis=(<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>), keepdims=<span class="literal">True</span>)</span><br><span class="line">            var = ((X - mean) ** <span class="number">2</span>).mean(axis=(<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>), keepdims=<span class="literal">True</span>)</span><br><span class="line">        <span class="comment"># 训练模式下用当前的均值和方差做标准化</span></span><br><span class="line">        X_hat = (X - mean) / nd.sqrt(var + eps)</span><br><span class="line">        <span class="comment"># 更新移动平均的均值和方差</span></span><br><span class="line">        moving_mean = momentum * moving_mean + (<span class="number">1.0</span> - momentum) * mean</span><br><span class="line">        moving_var = momentum * moving_var + (<span class="number">1.0</span> - momentum) * var</span><br><span class="line">    Y = gamma * X_hat + beta  <span class="comment"># 拉伸和偏移</span></span><br><span class="line">    <span class="keyword">return</span> Y, moving_mean, moving_var</span><br></pre></td></tr></table></figure>
+<p>接下来，我们自定义一个BatchNorm层。它保存参与求梯度和迭代的拉伸参数gamma和偏移参数beta，同时也维护移动平均得到的均值和方差，以便能够在模型预测时被使用。BatchNorm实例所需指定的num_features参数对于全连接层来说应为输出个数，对于卷积层来说则为输出通道数。该实例所需指定的num_dims参数对于全连接层和卷积层来说分别为2和4。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BatchNorm</span><span class="params">(nn.Block)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num_features, num_dims, **kwargs)</span>:</span></span><br><span class="line">        super(BatchNorm, self).__init__(**kwargs)</span><br><span class="line">        <span class="keyword">if</span> num_dims == <span class="number">2</span>:</span><br><span class="line">            shape = (<span class="number">1</span>, num_features)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            shape = (<span class="number">1</span>, num_features, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 参与求梯度和迭代的拉伸和偏移参数，分别初始化成0和1</span></span><br><span class="line">        self.gamma = self.params.get(<span class="string">'gamma'</span>, shape=shape, init=init.One())</span><br><span class="line">        self.beta = self.params.get(<span class="string">'beta'</span>, shape=shape, init=init.Zero())</span><br><span class="line">        <span class="comment"># 不参与求梯度和迭代的变量，全在内存上初始化成0</span></span><br><span class="line">        self.moving_mean = nd.zeros(shape)</span><br><span class="line">        self.moving_var = nd.zeros(shape)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        <span class="comment"># 如果X不在内存上，将moving_mean和moving_var复制到X所在显存上</span></span><br><span class="line">        <span class="keyword">if</span> self.moving_mean.context != X.context:</span><br><span class="line">            self.moving_mean = self.moving_mean.copyto(X.context)</span><br><span class="line">            self.moving_var = self.moving_var.copyto(X.context)</span><br><span class="line">        <span class="comment"># 保存更新过的moving_mean和moving_var</span></span><br><span class="line">        Y, self.moving_mean, self.moving_var = batch_norm(</span><br><span class="line">            X, self.gamma.data(), self.beta.data(), self.moving_mean,</span><br><span class="line">            self.moving_var, eps=<span class="number">1e-5</span>, momentum=<span class="number">0.9</span>)</span><br><span class="line">        <span class="keyword">return</span> Y</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -653,9 +620,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag"># c++</a>
+            <a href="/tags/dl/" rel="tag"># dl</a>
           
-            <a href="/tags/vector/" rel="tag"># vector</a>
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/卷积神经网络/" rel="tag"># 卷积神经网络</a>
           
         </div>
       
@@ -668,8 +637,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/cuda-practice4.html" rel="next" title="cuda学习笔记4">
-                <i class="fa fa-chevron-left"></i> cuda学习笔记4
+              <a href="/cnn-model.html" rel="next" title="常见的卷积神经网络模型">
+                <i class="fa fa-chevron-left"></i> 常见的卷积神经网络模型
               </a>
             
           </div>
@@ -677,10 +646,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/suanfa1.html" rel="prev" title="算法复杂度分析">
-                算法复杂度分析 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -937,7 +902,7 @@ show_date_time();
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些要点"><span class="nav-number">2.</span> <span class="nav-text">一些要点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vector-初始化"><span class="nav-number">2.1.</span> <span class="nav-text">vector 初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问-vector-的元素"><span class="nav-number">2.2.</span> <span class="nav-text">访问 vector 的元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器"><span class="nav-number">2.3.</span> <span class="nav-text">迭代器</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对全连接层做批量归一化"><span class="nav-number">1.1.</span> <span class="nav-text">对全连接层做批量归一化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对卷积层做批量归一化"><span class="nav-number">1.2.</span> <span class="nav-text">对卷积层做批量归一化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预测时的批量归一化"><span class="nav-number">1.3.</span> <span class="nav-text">预测时的批量归一化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python实现"><span class="nav-number">2.</span> <span class="nav-text">python实现</span></a></li></ol></div>
             
 
           </div>
