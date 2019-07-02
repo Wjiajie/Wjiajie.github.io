@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="cjNXc2AEYk3vl2-qiFXeVz-0jFUbTm5BiOPMiNROc2U">
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="0OsNUYuom8">
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":true,"dimmer":true},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本节记录几种常见的卷积神经网络模型，摘自《动手学深度学习》">
+<meta name="keywords" content="python,dl,卷积神经网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常见的卷积神经网络模型">
+<meta property="og:url" content="https://www.jiajiewu.cn/cnn-model.html">
+<meta property="og:site_name" content="jiajie">
+<meta property="og:description" content="本节记录几种常见的卷积神经网络模型，摘自《动手学深度学习》">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2019/07/02/5d1b04f51def518149.png">
+<meta property="og:image" content="https://i.loli.net/2019/07/02/5d1b13cddc88827315.png">
+<meta property="og:updated_time" content="2019-07-02T08:59:39.272Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常见的卷积神经网络模型">
+<meta name="twitter:description" content="本节记录几种常见的卷积神经网络模型，摘自《动手学深度学习》">
+<meta name="twitter:image" content="https://i.loli.net/2019/07/02/5d1b04f51def518149.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="jiajie" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.jiajiewu.cn/cnn-model">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>常见的卷积神经网络模型 | jiajie</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-139409990-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-139409990-1');
+    }
+  </script>
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4935452b6c6a00d127c010608b531cc0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jiajie</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Cv Learner</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-talk">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/talk/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>杂谈</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-photos">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/photos/" rel="section"><i class="menu-item-icon fa fa-fw fa-image"></i> <br>相册</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-home-design">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/home-design/" rel="section"><i class="menu-item-icon fa fa-fw fa-bath"></i> <br>家居</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link/" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>有趣的链接</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于我与本博客</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/cnn-model.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jiajie">
+      <meta itemprop="description" content="我觉得你很像一个终生跋涉的香客，不停地寻找一座可能根本不存在的神庙。">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jiajie">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">常见的卷积神经网络模型
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-02 09:51:26 / 修改时间：16:59:39" itemprop="dateCreated datePublished" datetime="2019-07-02T09:51:26+08:00">2019-07-02</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/dl/" itemprop="url" rel="index"><span itemprop="name">dl</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/cnn-model.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/cnn-model.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+	
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本节记录几种常见的卷积神经网络模型，摘自《动手学深度学习》</p>
+<a id="more"></a>
+<h2 id="卷积神经网络相对于全连接网络的好处"><a href="#卷积神经网络相对于全连接网络的好处" class="headerlink" title="卷积神经网络相对于全连接网络的好处"></a>卷积神经网络相对于全连接网络的好处</h2><h3 id="全连接网络的局限性"><a href="#全连接网络的局限性" class="headerlink" title="全连接网络的局限性"></a>全连接网络的局限性</h3><ol>
+<li>如果将图像中的像素逐行展开，把得到的向量输入进全连接层中，图像在同一列邻近的像素在这个向量中可能相距较远。它们构成的模式可能难以被模型识别。</li>
+<li>对于大尺寸的输入图像，使用全连接层容易造成模型过大。假设输入是高和宽均为1,000像素的彩色照片（含3个通道）。即使全连接层输出个数仍是256，该层权重参数的形状是3,000,000×256：它占用了大约3 GB的内存或显存。这带来过复杂的模型和过高的存储开销。<h3 id="卷积神经网络优势"><a href="#卷积神经网络优势" class="headerlink" title="卷积神经网络优势"></a>卷积神经网络优势</h3></li>
+</ol>
+<ul>
+<li>卷积层保留输入形状，使图像的像素在高和宽两个方向上的相关性均可能被有效识别；</li>
+<li>卷积层通过滑动窗口将同一卷积核与不同位置的输入重复计算，从而避免参数尺寸过大。</li>
+</ul>
+<h2 id="常见几种卷积神经网络模型"><a href="#常见几种卷积神经网络模型" class="headerlink" title="常见几种卷积神经网络模型"></a>常见几种卷积神经网络模型</h2><h3 id="LeNet模型"><a href="#LeNet模型" class="headerlink" title="LeNet模型"></a>LeNet模型</h3><h4 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h4><p>LeNet分为卷积层块和全连接层块两个部分。下面我们分别介绍这两个模块。</p>
+<p>卷积层块里的基本单位是卷积层后接最大池化层：卷积层用来识别图像里的空间模式，如线条和物体局部，之后的最大池化层则用来降低卷积层对位置的敏感性。卷积层块由两个这样的基本单位重复堆叠构成。在卷积层块中，每个卷积层都使用5×5的窗口，并在输出上使用sigmoid激活函数。第一个卷积层输出通道数为6，第二个卷积层输出通道数则增加到16。这是因为第二个卷积层比第一个卷积层的输入的高和宽要小，所以增加输出通道使两个卷积层的参数尺寸类似。卷积层块的两个最大池化层的窗口形状均为2×2，且步幅为2。由于池化窗口与步幅形状相同，池化窗口在输入上每次滑动所覆盖的区域互不重叠。</p>
+<p>卷积层块的输出形状为(批量大小, 通道, 高, 宽)。当卷积层块的输出传入全连接层块时，全连接层块会将小批量中每个样本变平（flatten）。也就是说，全连接层的输入形状将变成二维，其中第一维是小批量中的样本，第二维是每个样本变平后的向量表示，且向量长度为通道、高和宽的乘积。全连接层块含3个全连接层。它们的输出个数分别是120、84和10，其中10为输出的类别个数。</p>
+<h4 id="python实现"><a href="#python实现" class="headerlink" title="python实现"></a>python实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> d2lzh <span class="keyword">as</span> d2l</span><br><span class="line"><span class="keyword">import</span> mxnet <span class="keyword">as</span> mx</span><br><span class="line"><span class="keyword">from</span> mxnet <span class="keyword">import</span> autograd, gluon, init, nd</span><br><span class="line"><span class="keyword">from</span> mxnet.gluon <span class="keyword">import</span> loss <span class="keyword">as</span> gloss, nn</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">net = nn.Sequential()</span><br><span class="line">net.add(nn.Conv2D(channels=<span class="number">6</span>, kernel_size=<span class="number">5</span>, activation=<span class="string">'sigmoid'</span>),</span><br><span class="line">        nn.MaxPool2D(pool_size=<span class="number">2</span>, strides=<span class="number">2</span>),</span><br><span class="line">        nn.Conv2D(channels=<span class="number">16</span>, kernel_size=<span class="number">5</span>, activation=<span class="string">'sigmoid'</span>),</span><br><span class="line">        nn.MaxPool2D(pool_size=<span class="number">2</span>, strides=<span class="number">2</span>),</span><br><span class="line">        <span class="comment"># Dense会默认将(批量大小, 通道, 高, 宽)形状的输入转换成</span></span><br><span class="line">        <span class="comment"># (批量大小, 通道 * 高 * 宽)形状的输入</span></span><br><span class="line">        nn.Dense(<span class="number">120</span>, activation=<span class="string">'sigmoid'</span>),</span><br><span class="line">        nn.Dense(<span class="number">84</span>, activation=<span class="string">'sigmoid'</span>),</span><br><span class="line">        nn.Dense(<span class="number">10</span>))</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 查看每个层的输出形状</span></span><br><span class="line">X = nd.random.uniform(shape=(<span class="number">1</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>))</span><br><span class="line">net.initialize()</span><br><span class="line"><span class="keyword">for</span> layer <span class="keyword">in</span> net:</span><br><span class="line">    X = layer(X)</span><br><span class="line">    print(layer.name, <span class="string">'output shape:\t'</span>, X.shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载数据集</span></span><br><span class="line">batch_size = <span class="number">256</span></span><br><span class="line">train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size=batch_size)    </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">try_gpu</span><span class="params">()</span>:</span>  <span class="comment"># 本函数已保存在d2lzh包中方便以后使用</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ctx = mx.gpu()</span><br><span class="line">        _ = nd.zeros((<span class="number">1</span>,), ctx=ctx)</span><br><span class="line">    <span class="keyword">except</span> mx.base.MXNetError:</span><br><span class="line">        ctx = mx.cpu()</span><br><span class="line">    <span class="keyword">return</span> ctx</span><br><span class="line"></span><br><span class="line">ctx = try_gpu()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">evaluate_accuracy</span><span class="params">(data_iter, net, ctx)</span>:</span></span><br><span class="line">    acc_sum, n = nd.array([<span class="number">0</span>], ctx=ctx), <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> X, y <span class="keyword">in</span> data_iter:</span><br><span class="line">        <span class="comment"># 如果ctx代表GPU及相应的显存，将数据复制到显存上</span></span><br><span class="line">        X, y =X.as_in_context(ctx),y.as_in_context(ctx).astype(<span class="string">'float32'</span>)</span><br><span class="line">        acc_sum += (net(X).argmax(axis=<span class="number">1</span>) == y).sum()</span><br><span class="line">        n += y.size</span><br><span class="line">    <span class="keyword">return</span> acc_sum.asscalar() / n</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 本函数已保存在d2lzh包中方便以后使用</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_ch5</span><span class="params">(net, train_iter, test_iter, batch_size, trainer, ctx,</span></span></span><br><span class="line"><span class="function"><span class="params">              num_epochs)</span>:</span></span><br><span class="line">    print(<span class="string">'training on'</span>, ctx)</span><br><span class="line">    loss = gloss.SoftmaxCrossEntropyLoss()</span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> range(num_epochs):</span><br><span class="line">        train_l_sum, train_acc_sum, n, start = <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0</span>, time.time()</span><br><span class="line">        <span class="keyword">for</span> X, y <span class="keyword">in</span> train_iter:</span><br><span class="line">            X, y = X.as_in_context(ctx), y.as_in_context(ctx)</span><br><span class="line">            <span class="keyword">with</span> autograd.record():</span><br><span class="line">                y_hat = net(X)</span><br><span class="line">                l = loss(y_hat, y).sum()</span><br><span class="line">            l.backward()</span><br><span class="line">            trainer.step(batch_size)</span><br><span class="line">            y = y.astype(<span class="string">'float32'</span>)</span><br><span class="line">            train_l_sum += l.asscalar()</span><br><span class="line">            train_acc_sum += (y_hat.argmax(axis=<span class="number">1</span>) == y).sum().asscalar()</span><br><span class="line">            n += y.size</span><br><span class="line">        test_acc = evaluate_accuracy(test_iter, net, ctx)</span><br><span class="line">        print(<span class="string">'epoch %d, loss %.4f, train acc %.3f, test acc %.3f, '</span></span><br><span class="line">              <span class="string">'time %.1f sec'</span></span><br><span class="line">              % (epoch + <span class="number">1</span>, train_l_sum / n, train_acc_sum / n, test_acc,</span><br><span class="line">                 time.time() - start))</span><br><span class="line">                 </span><br><span class="line">lr, num_epochs = <span class="number">0.9</span>, <span class="number">10</span></span><br><span class="line">net.initialize(force_reinit=<span class="literal">True</span>, ctx=ctx, init=init.Xavier())</span><br><span class="line">trainer = gluon.Trainer(net.collect_params(), <span class="string">'sgd'</span>, &#123;<span class="string">'learning_rate'</span>: lr&#125;)</span><br><span class="line">train_ch5(net, train_iter, test_iter, batch_size, trainer, ctx, num_epochs)</span><br></pre></td></tr></table></figure>
+<h3 id="AlexNet（深度卷积神经网络分界线）"><a href="#AlexNet（深度卷积神经网络分界线）" class="headerlink" title="AlexNet（深度卷积神经网络分界线）"></a>AlexNet（深度卷积神经网络分界线）</h3><h4 id="模型结构-1"><a href="#模型结构-1" class="headerlink" title="模型结构"></a>模型结构</h4><p>AlexNet与LeNet的设计理念非常相似，但也有显著的区别。</p>
+<ol>
+<li><p>与相对较小的LeNet相比，AlexNet包含8层变换，其中有5层卷积和2层全连接隐藏层，以及1个全连接输出层。下面我们来详细描述这些层的设计。AlexNet第一层中的卷积窗口形状是11×11<br>。因为ImageNet中绝大多数图像的高和宽均比MNIST图像的高和宽大10倍以上，ImageNet图像的物体占用更多的像素，所以需要更大的卷积窗口来捕获物体。第二层中的卷积窗口形状减小到5×5，之后全采用3×3。此外，第一、第二和第五个卷积层之后都使用了窗口形状为3×3、步幅为2的最大池化层。而且，AlexNet使用的卷积通道数也大于LeNet中的卷积通道数数十倍。紧接着最后一个卷积层的是两个输出个数为4096的全连接层。这两个巨大的全连接层带来将近1 GB的模型参数。由于早期显存的限制，最早的AlexNet使用双数据流的设计使一个GPU只需要处理一半模型。幸运的是，显存在过去几年得到了长足的发展，因此通常我们不再需要这样的特别设计了。</p>
+</li>
+<li><p>AlexNet将sigmoid激活函数改成了更加简单的ReLU激活函数。一方面，ReLU激活函数的计算更简单，例如它并没有sigmoid激活函数中的求幂运算。另一方面，ReLU激活函数在不同的参数初始化方法下使模型更容易训练。这是由于当sigmoid激活函数输出极接近0或1时，这些区域的梯度几乎为0，从而造成反向传播无法继续更新部分模型参数；而ReLU激活函数在正区间的梯度恒为1。因此，若模型参数初始化不当，sigmoid函数可能在正区间得到几乎为0的梯度，从而令模型无法得到有效训练。</p>
+</li>
+<li><p>AlexNet通过丢弃法（参见“丢弃法”一节）来控制全连接层的模型复杂度。而LeNet并没有使用丢弃法。</p>
+</li>
+<li><p>AlexNet引入了大量的图像增广，如翻转、裁剪和颜色变化，从而进一步扩大数据集来缓解过拟合。我们将在后面的“图像增广”一节详细介绍这种方法。</p>
+</li>
+</ol>
+<h4 id="python-实现"><a href="#python-实现" class="headerlink" title="python 实现"></a>python 实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> d2lzh <span class="keyword">as</span> d2l</span><br><span class="line"><span class="keyword">from</span> mxnet <span class="keyword">import</span> gluon, init, nd</span><br><span class="line"><span class="keyword">from</span> mxnet.gluon <span class="keyword">import</span> data <span class="keyword">as</span> gdata, nn</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">net = nn.Sequential()</span><br><span class="line"><span class="comment"># 使用较大的11 x 11窗口来捕获物体。同时使用步幅4来较大幅度减小输出高和宽。这里使用的输出通</span></span><br><span class="line"><span class="comment"># 道数比LeNet中的也要大很多</span></span><br><span class="line">net.add(nn.Conv2D(<span class="number">96</span>, kernel_size=<span class="number">11</span>, strides=<span class="number">4</span>, activation=<span class="string">'relu'</span>),</span><br><span class="line">        nn.MaxPool2D(pool_size=<span class="number">3</span>, strides=<span class="number">2</span>),</span><br><span class="line">        <span class="comment"># 减小卷积窗口，使用填充为2来使得输入与输出的高和宽一致，且增大输出通道数</span></span><br><span class="line">        nn.Conv2D(<span class="number">256</span>, kernel_size=<span class="number">5</span>, padding=<span class="number">2</span>, activation=<span class="string">'relu'</span>),</span><br><span class="line">        nn.MaxPool2D(pool_size=<span class="number">3</span>, strides=<span class="number">2</span>),</span><br><span class="line">        <span class="comment"># 连续3个卷积层，且使用更小的卷积窗口。除了最后的卷积层外，进一步增大了输出通道数。</span></span><br><span class="line">        <span class="comment"># 前两个卷积层后不使用池化层来减小输入的高和宽</span></span><br><span class="line">        nn.Conv2D(<span class="number">384</span>, kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>, activation=<span class="string">'relu'</span>),</span><br><span class="line">        nn.Conv2D(<span class="number">384</span>, kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>, activation=<span class="string">'relu'</span>),</span><br><span class="line">        nn.Conv2D(<span class="number">256</span>, kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>, activation=<span class="string">'relu'</span>),</span><br><span class="line">        nn.MaxPool2D(pool_size=<span class="number">3</span>, strides=<span class="number">2</span>),</span><br><span class="line">        <span class="comment"># 这里全连接层的输出个数比LeNet中的大数倍。使用丢弃层来缓解过拟合</span></span><br><span class="line">        nn.Dense(<span class="number">4096</span>, activation=<span class="string">"relu"</span>), nn.Dropout(<span class="number">0.5</span>),</span><br><span class="line">        nn.Dense(<span class="number">4096</span>, activation=<span class="string">"relu"</span>), nn.Dropout(<span class="number">0.5</span>),</span><br><span class="line">        <span class="comment"># 输出层。由于这里使用Fashion-MNIST，所以用类别数为10，而非论文中的1000</span></span><br><span class="line">        nn.Dense(<span class="number">10</span>))</span><br><span class="line">        </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_data_fashion_mnist</span><span class="params">(batch_size, resize=None, root=os.path.join<span class="params">(</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="params">        <span class="string">'~'</span>, <span class="string">'.mxnet'</span>, <span class="string">'datasets'</span>, <span class="string">'fashion-mnist'</span>)</span>)</span>:</span></span><br><span class="line">    root = os.path.expanduser(root)  <span class="comment"># 展开用户路径'~'</span></span><br><span class="line">    transformer = []</span><br><span class="line">    <span class="keyword">if</span> resize:</span><br><span class="line">        transformer += [gdata.vision.transforms.Resize(resize)]</span><br><span class="line">    transformer += [gdata.vision.transforms.ToTensor()]</span><br><span class="line">    transformer = gdata.vision.transforms.Compose(transformer)</span><br><span class="line">    mnist_train = gdata.vision.FashionMNIST(root=root, train=<span class="literal">True</span>)</span><br><span class="line">    mnist_test = gdata.vision.FashionMNIST(root=root, train=<span class="literal">False</span>)</span><br><span class="line">    num_workers = <span class="number">0</span> <span class="keyword">if</span> sys.platform.startswith(<span class="string">'win32'</span>) <span class="keyword">else</span> <span class="number">4</span></span><br><span class="line">    train_iter = gdata.DataLoader(</span><br><span class="line">        mnist_train.transform_first(transformer), batch_size, shuffle=<span class="literal">True</span>,</span><br><span class="line">        num_workers=num_workers)</span><br><span class="line">    test_iter = gdata.DataLoader(</span><br><span class="line">        mnist_test.transform_first(transformer), batch_size, shuffle=<span class="literal">False</span>,</span><br><span class="line">        num_workers=num_workers)</span><br><span class="line">    <span class="keyword">return</span> train_iter, test_iter</span><br><span class="line"></span><br><span class="line">batch_size = <span class="number">16</span></span><br><span class="line"><span class="comment"># 如出现“out of memory”的报错信息，可减小batch_size或resize</span></span><br><span class="line">train_iter, test_iter = load_data_fashion_mnist(batch_size, resize=<span class="number">224</span>)      </span><br><span class="line">lr, num_epochs, ctx = <span class="number">0.01</span>, <span class="number">5</span>, d2l.try_gpu()</span><br><span class="line">net.initialize(force_reinit=<span class="literal">True</span>, ctx=ctx, init=init.Xavier())</span><br><span class="line">trainer = gluon.Trainer(net.collect_params(), <span class="string">'sgd'</span>, &#123;<span class="string">'learning_rate'</span>: lr&#125;)</span><br><span class="line">d2l.train_ch5(net, train_iter, test_iter, batch_size, trainer, ctx, num_epochs)</span><br></pre></td></tr></table></figure>
+<h3 id="VGG（使用重复元素的网络）"><a href="#VGG（使用重复元素的网络）" class="headerlink" title="VGG（使用重复元素的网络）"></a>VGG（使用重复元素的网络）</h3><h4 id="模型结构-2"><a href="#模型结构-2" class="headerlink" title="模型结构"></a>模型结构</h4><h6 id="VGG块"><a href="#VGG块" class="headerlink" title="VGG块"></a>VGG块</h6><p>VGG块的组成规律是：连续使用数个相同的填充为1、窗口形状为3×3的卷积层后接上一个步幅为2、窗口形状为2×2的最大池化层。卷积层保持输入的高和宽不变，而池化层则对其减半。我们使用<code>vgg_block</code>函数来实现这个基础的VGG块，它可以指定卷积层的数量<code>num_convs</code>和输出通道数<code>num_channels</code>。</p>
+<h5 id="VGG网络"><a href="#VGG网络" class="headerlink" title="VGG网络"></a>VGG网络</h5><p>与AlexNet和LeNet一样，VGG网络由卷积层模块后接全连接层模块构成。卷积层模块串联数个<code>vgg_block</code>，其超参数由变量<code>conv_arch</code>定义。该变量指定了每个VGG块里卷积层个数和输出通道数。全连接模块则跟AlexNet中的一样。</p>
+<p>现在我们构造一个VGG网络。它有5个卷积块，前2块使用单卷积层，而后3块使用双卷积层。第一块的输出通道是64，之后每次对输出通道数翻倍，直到变为512。因为这个网络使用了8个卷积层和3个全连接层，所以经常被称为VGG-11。</p>
+<h4 id="python实现-1"><a href="#python实现-1" class="headerlink" title="python实现"></a>python实现</h4><h6 id="VGG块-1"><a href="#VGG块-1" class="headerlink" title="VGG块"></a>VGG块</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> d2lzh <span class="keyword">as</span> d2l</span><br><span class="line"><span class="keyword">from</span> mxnet <span class="keyword">import</span> gluon, init, nd</span><br><span class="line"><span class="keyword">from</span> mxnet.gluon <span class="keyword">import</span> nn</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">vgg_block</span><span class="params">(num_convs, num_channels)</span>:</span></span><br><span class="line">    blk = nn.Sequential()</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(num_convs):</span><br><span class="line">        blk.add(nn.Conv2D(num_channels, kernel_size=<span class="number">3</span>,</span><br><span class="line">                          padding=<span class="number">1</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">    blk.add(nn.MaxPool2D(pool_size=<span class="number">2</span>, strides=<span class="number">2</span>))</span><br><span class="line">    <span class="keyword">return</span> blk</span><br></pre></td></tr></table></figure>
+<h5 id="VGG网络-1"><a href="#VGG网络-1" class="headerlink" title="VGG网络"></a>VGG网络</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">vgg</span><span class="params">(conv_arch)</span>:</span></span><br><span class="line">    net = nn.Sequential()</span><br><span class="line">    <span class="comment"># 卷积层部分</span></span><br><span class="line">    <span class="keyword">for</span> (num_convs, num_channels) <span class="keyword">in</span> conv_arch:</span><br><span class="line">        net.add(vgg_block(num_convs, num_channels))</span><br><span class="line">    <span class="comment"># 全连接层部分</span></span><br><span class="line">    net.add(nn.Dense(<span class="number">4096</span>, activation=<span class="string">'relu'</span>), nn.Dropout(<span class="number">0.5</span>),</span><br><span class="line">            nn.Dense(<span class="number">4096</span>, activation=<span class="string">'relu'</span>), nn.Dropout(<span class="number">0.5</span>),</span><br><span class="line">            nn.Dense(<span class="number">10</span>))</span><br><span class="line">    <span class="keyword">return</span> net</span><br><span class="line"></span><br><span class="line">net = vgg(conv_arch)</span><br><span class="line"></span><br><span class="line">ratio = <span class="number">4</span> <span class="comment">#减小模型复杂度</span></span><br><span class="line">small_conv_arch = [(pair[<span class="number">0</span>], pair[<span class="number">1</span>] // ratio) <span class="keyword">for</span> pair <span class="keyword">in</span> conv_arch]</span><br><span class="line">net = vgg(small_conv_arch)</span><br><span class="line"></span><br><span class="line">lr, num_epochs, batch_size, ctx = <span class="number">0.05</span>, <span class="number">5</span>, <span class="number">128</span>, d2l.try_gpu()</span><br><span class="line">net.initialize(ctx=ctx, init=init.Xavier())</span><br><span class="line">trainer = gluon.Trainer(net.collect_params(), <span class="string">'sgd'</span>, &#123;<span class="string">'learning_rate'</span>: lr&#125;)</span><br><span class="line">train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size, resize=<span class="number">224</span>)</span><br><span class="line">d2l.train_ch5(net, train_iter, test_iter, batch_size, trainer, ctx,</span><br><span class="line">              num_epochs)</span><br></pre></td></tr></table></figure>
+<h3 id="NiN（网络中的网络）"><a href="#NiN（网络中的网络）" class="headerlink" title="NiN（网络中的网络）"></a>NiN（网络中的网络）</h3><p>前面介绍的LeNet、AlexNet和VGG在设计上的共同之处是：先以由卷积层构成的模块充分抽取空间特征，再以由全连接层构成的模块来输出分类结果。其中，AlexNet和VGG对LeNet的改进主要在于如何对这两个模块加宽（增加通道数）和加深。本节我们介绍网络中的网络（NiN）。它提出了另外一个思路，即串联多个由卷积层和“全连接”层构成的小网络来构建一个深层网络。</p>
+<h4 id="模型结构-3"><a href="#模型结构-3" class="headerlink" title="模型结构"></a>模型结构</h4><h5 id="NiN块"><a href="#NiN块" class="headerlink" title="NiN块"></a>NiN块</h5><p>我们知道，卷积层的输入和输出通常是四维数组（样本，通道，高，宽），而全连接层的输入和输出则通常是二维数组（样本，特征）。如果想在全连接层后再接上卷积层，则需要将全连接层的输出变换为四维。回忆在“多输入通道和多输出通道”一节里介绍的1×1卷积层。它可以看成全连接层，其中空间维度（高和宽）上的每个元素相当于样本，通道相当于特征。因此，NiN使用1×1卷积层来替代全连接层，从而使空间信息能够自然传递到后面的层中去。下图对比了NiN同AlexNet和VGG等网络在结构上的主要区别。<br><img src="https://i.loli.net/2019/07/02/5d1b04f51def518149.png" alt></p>
+<h5 id="NiN模型"><a href="#NiN模型" class="headerlink" title="NiN模型"></a>NiN模型</h5><p>NiN是在AlexNet问世不久后提出的。它们的卷积层设定有类似之处。NiN使用卷积窗口形状分别为11×11、5×5和3×3的卷积层，相应的输出通道数也与AlexNet中的一致。每个NiN块后接一个步幅为2、窗口形状为3×3的最大池化层。</p>
+<p>除使用NiN块以外，NiN还有一个设计与AlexNet显著不同：NiN去掉了AlexNet最后的3个全连接层，取而代之地，NiN使用了输出通道数等于标签类别数的NiN块，然后使用全局平均池化层对每个通道中所有元素求平均并直接用于分类。这里的全局平均池化层即窗口形状等于输入空间维形状的平均池化层。NiN的这个设计的好处是可以显著减小模型参数尺寸，从而缓解过拟合。然而，该设计有时会造成获得有效模型的训练时间的增加。</p>
+<h4 id="python实现-2"><a href="#python实现-2" class="headerlink" title="python实现"></a>python实现</h4><h5 id="NiN块-1"><a href="#NiN块-1" class="headerlink" title="NiN块"></a>NiN块</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> d2lzh <span class="keyword">as</span> d2l</span><br><span class="line"><span class="keyword">from</span> mxnet <span class="keyword">import</span> gluon, init, nd</span><br><span class="line"><span class="keyword">from</span> mxnet.gluon <span class="keyword">import</span> nn</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">nin_block</span><span class="params">(num_channels, kernel_size, strides, padding)</span>:</span></span><br><span class="line">    blk = nn.Sequential()</span><br><span class="line">    blk.add(nn.Conv2D(num_channels, kernel_size,</span><br><span class="line">                      strides, padding, activation=<span class="string">'relu'</span>),</span><br><span class="line">            nn.Conv2D(num_channels, kernel_size=<span class="number">1</span>, activation=<span class="string">'relu'</span>),</span><br><span class="line">            nn.Conv2D(num_channels, kernel_size=<span class="number">1</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">    <span class="keyword">return</span> blk</span><br></pre></td></tr></table></figure>
+<h5 id="NiN模型-1"><a href="#NiN模型-1" class="headerlink" title="NiN模型"></a>NiN模型</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">net = nn.Sequential()</span><br><span class="line">net.add(nin_block(<span class="number">96</span>, kernel_size=<span class="number">11</span>, strides=<span class="number">4</span>, padding=<span class="number">0</span>),</span><br><span class="line">        nn.MaxPool2D(pool_size=<span class="number">3</span>, strides=<span class="number">2</span>),</span><br><span class="line">        nin_block(<span class="number">256</span>, kernel_size=<span class="number">5</span>, strides=<span class="number">1</span>, padding=<span class="number">2</span>),</span><br><span class="line">        nn.MaxPool2D(pool_size=<span class="number">3</span>, strides=<span class="number">2</span>),</span><br><span class="line">        nin_block(<span class="number">384</span>, kernel_size=<span class="number">3</span>, strides=<span class="number">1</span>, padding=<span class="number">1</span>),</span><br><span class="line">        nn.MaxPool2D(pool_size=<span class="number">3</span>, strides=<span class="number">2</span>), nn.Dropout(<span class="number">0.5</span>),</span><br><span class="line">        <span class="comment"># 标签类别数是10</span></span><br><span class="line">        nin_block(<span class="number">10</span>, kernel_size=<span class="number">3</span>, strides=<span class="number">1</span>, padding=<span class="number">1</span>),</span><br><span class="line">        <span class="comment"># 全局平均池化层将窗口形状自动设置成输入的高和宽</span></span><br><span class="line">        nn.GlobalAvgPool2D(),</span><br><span class="line">        <span class="comment"># 将四维的输出转成二维的输出，其形状为(批量大小, 10)</span></span><br><span class="line">        nn.Flatten())</span><br><span class="line">        </span><br><span class="line">lr, num_epochs, batch_size, ctx = <span class="number">0.1</span>, <span class="number">5</span>, <span class="number">16</span>, d2l.try_gpu()</span><br><span class="line">net.initialize(force_reinit=<span class="literal">True</span>, ctx=ctx, init=init.Xavier())</span><br><span class="line">trainer = gluon.Trainer(net.collect_params(), <span class="string">'sgd'</span>, &#123;<span class="string">'learning_rate'</span>: lr&#125;)</span><br><span class="line">train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size, resize=<span class="number">224</span>)</span><br><span class="line">d2l.train_ch5(net, train_iter, test_iter, batch_size, trainer, ctx,</span><br><span class="line">              num_epochs)</span><br></pre></td></tr></table></figure>
+<h4 id="NiN模型小结"><a href="#NiN模型小结" class="headerlink" title="NiN模型小结"></a>NiN模型小结</h4><ul>
+<li>NiN重复使用由卷积层和代替全连接层的1×1卷积层构成的NiN块来构建深层网络。</li>
+<li>NiN去除了容易造成过拟合的全连接输出层，而是将其替换成输出通道数等于标签类别数的NiN块和全局平均池化层。</li>
+<li>NiN的以上设计思想影响了后面一系列卷积神经网络的设计。</li>
+</ul>
+<h3 id="GoogLeNet-含并行连结的网络"><a href="#GoogLeNet-含并行连结的网络" class="headerlink" title="GoogLeNet(含并行连结的网络)"></a>GoogLeNet(含并行连结的网络)</h3><h4 id="模型结构-4"><a href="#模型结构-4" class="headerlink" title="模型结构"></a>模型结构</h4><h5 id="Inception-块"><a href="#Inception-块" class="headerlink" title="Inception 块"></a>Inception 块</h5><p>GoogLeNet中的基础卷积块叫作Inception块，得名于同名电影《盗梦空间》（Inception）。与上一节介绍的NiN块相比，这个基础块在结构上更加复杂，如下图所示。<br><img src="https://i.loli.net/2019/07/02/5d1b13cddc88827315.png" alt><br>由图可以看出，Inception块里有4条并行的线路。前3条线路使用窗口大小分别是1×1、3×3和5×5的卷积层来抽取不同空间尺寸下的信息，其中中间2个线路会对输入先做1×1卷积来减少输入通道数，以降低模型复杂度。第四条线路则使用3×3最大池化层，后接1×1卷积层来改变通道数。4条线路都使用了合适的填充来使输入与输出的高和宽一致。最后我们将每条线路的输出在通道维上连结，并输入接下来的层中去。Inception块中可以自定义的超参数是每个层的输出通道数，我们以此来控制模型复杂度。</p>
+<h5 id="GoogLeNet模型"><a href="#GoogLeNet模型" class="headerlink" title="GoogLeNet模型"></a>GoogLeNet模型</h5><p>GoogLeNet跟VGG一样，在主体卷积部分中使用5个模块（block），每个模块之间使用步幅为2的3×3最大池化层来减小输出高宽。第一模块使用一个64通道的7×7卷积层。</p>
+<p>第二模块使用2个卷积层：首先是64通道的1×1卷积层，然后是将通道增大3倍的3×3卷积层。它对应Inception块中的第二条线路。</p>
+<p>第三模块串联2个完整的Inception块。第一个Inception块的输出通道数为64+128+32+32=256，其中4条线路的输出通道数比例为64:128:32:32=2:4:1:1。其中第二、第三条线路先分别将输入通道数减小至96/192=1/2和16/192=1/12后，再接上第二层卷积层。第二个Inception块输出通道数增至128+192+96+64=480，每条线路的输出通道数之比为128:192:96:64=4:6:3:2。其中第二、第三条线路先分别将输入通道数减小至128/256=1/2和32/256=1/8。</p>
+<p>第四模块更加复杂。它串联了5个Inception块，其输出通道数分别是192+208+48+64=512、160+224+64+64=512、128+256+64+64=512、112+288+64+64=528和256+320+128+128=832。这些线路的通道数分配和第三模块中的类似，首先含3×3卷积层的第二条线路输出最多通道，其次是仅含1×1卷积层的第一条线路，之后是含5×5卷积层的第三条线路和含3×3最大池化层的第四条线路。其中第二、第三条线路都会先按比例减小通道数。这些比例在各个Inception块中都略有不同。</p>
+<p>第五模块有输出通道数为256+320+128+128=832和384+384+128+128=1024的两个Inception块。其中每条线路的通道数的分配思路和第三、第四模块中的一致，只是在具体数值上有所不同。需要注意的是，第五模块的后面紧跟输出层，该模块同NiN一样使用全局平均池化层来将每个通道的高和宽变成1。最后我们将输出变成二维数组后接上一个输出个数为标签类别数的全连接层。</p>
+<h4 id="python实现-3"><a href="#python实现-3" class="headerlink" title="python实现"></a>python实现</h4><h6 id="Inception-块-1"><a href="#Inception-块-1" class="headerlink" title="Inception 块"></a>Inception 块</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> d2lzh <span class="keyword">as</span> d2l</span><br><span class="line"><span class="keyword">from</span> mxnet <span class="keyword">import</span> gluon, init, nd</span><br><span class="line"><span class="keyword">from</span> mxnet.gluon <span class="keyword">import</span> nn</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Inception</span><span class="params">(nn.Block)</span>:</span></span><br><span class="line">    <span class="comment"># c1 - c4为每条线路里的层的输出通道数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, c1, c2, c3, c4, **kwargs)</span>:</span></span><br><span class="line">        super(Inception, self).__init__(**kwargs)</span><br><span class="line">        <span class="comment"># 线路1，单1 x 1卷积层</span></span><br><span class="line">        self.p1_1 = nn.Conv2D(c1, kernel_size=<span class="number">1</span>, activation=<span class="string">'relu'</span>)</span><br><span class="line">        <span class="comment"># 线路2，1 x 1卷积层后接3 x 3卷积层</span></span><br><span class="line">        self.p2_1 = nn.Conv2D(c2[<span class="number">0</span>], kernel_size=<span class="number">1</span>, activation=<span class="string">'relu'</span>)</span><br><span class="line">        self.p2_2 = nn.Conv2D(c2[<span class="number">1</span>], kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>,</span><br><span class="line">                              activation=<span class="string">'relu'</span>)</span><br><span class="line">        <span class="comment"># 线路3，1 x 1卷积层后接5 x 5卷积层</span></span><br><span class="line">        self.p3_1 = nn.Conv2D(c3[<span class="number">0</span>], kernel_size=<span class="number">1</span>, activation=<span class="string">'relu'</span>)</span><br><span class="line">        self.p3_2 = nn.Conv2D(c3[<span class="number">1</span>], kernel_size=<span class="number">5</span>, padding=<span class="number">2</span>,</span><br><span class="line">                              activation=<span class="string">'relu'</span>)</span><br><span class="line">        <span class="comment"># 线路4，3 x 3最大池化层后接1 x 1卷积层</span></span><br><span class="line">        self.p4_1 = nn.MaxPool2D(pool_size=<span class="number">3</span>, strides=<span class="number">1</span>, padding=<span class="number">1</span>)</span><br><span class="line">        self.p4_2 = nn.Conv2D(c4, kernel_size=<span class="number">1</span>, activation=<span class="string">'relu'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        p1 = self.p1_1(x)</span><br><span class="line">        p2 = self.p2_2(self.p2_1(x))</span><br><span class="line">        p3 = self.p3_2(self.p3_1(x))</span><br><span class="line">        p4 = self.p4_2(self.p4_1(x))</span><br><span class="line">        <span class="keyword">return</span> nd.concat(p1, p2, p3, p4, dim=<span class="number">1</span>)  <span class="comment"># 在通道维上连结输出</span></span><br></pre></td></tr></table></figure>
+<h5 id="GoogLeNet模型-1"><a href="#GoogLeNet模型-1" class="headerlink" title="GoogLeNet模型"></a>GoogLeNet模型</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 模型定义</span></span><br><span class="line">b1 = nn.Sequential()</span><br><span class="line">b1.add(nn.Conv2D(<span class="number">64</span>, kernel_size=<span class="number">7</span>, strides=<span class="number">2</span>, padding=<span class="number">3</span>, activation=<span class="string">'relu'</span>),</span><br><span class="line">       nn.MaxPool2D(pool_size=<span class="number">3</span>, strides=<span class="number">2</span>, padding=<span class="number">1</span>))</span><br><span class="line">     </span><br><span class="line">b2 = nn.Sequential()</span><br><span class="line">b2.add(nn.Conv2D(<span class="number">64</span>, kernel_size=<span class="number">1</span>, activation=<span class="string">'relu'</span>),</span><br><span class="line">       nn.Conv2D(<span class="number">192</span>, kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>, activation=<span class="string">'relu'</span>),</span><br><span class="line">       nn.MaxPool2D(pool_size=<span class="number">3</span>, strides=<span class="number">2</span>, padding=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">b3 = nn.Sequential()</span><br><span class="line">b3.add(Inception(<span class="number">64</span>, (<span class="number">96</span>, <span class="number">128</span>), (<span class="number">16</span>, <span class="number">32</span>), <span class="number">32</span>),</span><br><span class="line">       Inception(<span class="number">128</span>, (<span class="number">128</span>, <span class="number">192</span>), (<span class="number">32</span>, <span class="number">96</span>), <span class="number">64</span>),</span><br><span class="line">       nn.MaxPool2D(pool_size=<span class="number">3</span>, strides=<span class="number">2</span>, padding=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">b4 = nn.Sequential()</span><br><span class="line">b4.add(Inception(<span class="number">192</span>, (<span class="number">96</span>, <span class="number">208</span>), (<span class="number">16</span>, <span class="number">48</span>), <span class="number">64</span>),</span><br><span class="line">       Inception(<span class="number">160</span>, (<span class="number">112</span>, <span class="number">224</span>), (<span class="number">24</span>, <span class="number">64</span>), <span class="number">64</span>),</span><br><span class="line">       Inception(<span class="number">128</span>, (<span class="number">128</span>, <span class="number">256</span>), (<span class="number">24</span>, <span class="number">64</span>), <span class="number">64</span>),</span><br><span class="line">       Inception(<span class="number">112</span>, (<span class="number">144</span>, <span class="number">288</span>), (<span class="number">32</span>, <span class="number">64</span>), <span class="number">64</span>),</span><br><span class="line">       Inception(<span class="number">256</span>, (<span class="number">160</span>, <span class="number">320</span>), (<span class="number">32</span>, <span class="number">128</span>), <span class="number">128</span>),</span><br><span class="line">       nn.MaxPool2D(pool_size=<span class="number">3</span>, strides=<span class="number">2</span>, padding=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">b5 = nn.Sequential()</span><br><span class="line">b5.add(Inception(<span class="number">256</span>, (<span class="number">160</span>, <span class="number">320</span>), (<span class="number">32</span>, <span class="number">128</span>), <span class="number">128</span>),</span><br><span class="line">       Inception(<span class="number">384</span>, (<span class="number">192</span>, <span class="number">384</span>), (<span class="number">48</span>, <span class="number">128</span>), <span class="number">128</span>),</span><br><span class="line">       nn.GlobalAvgPool2D())</span><br><span class="line"></span><br><span class="line">net = nn.Sequential()</span><br><span class="line">net.add(b1, b2, b3, b4, b5, nn.Dense(<span class="number">10</span>))</span><br><span class="line"></span><br><span class="line">lr, num_epochs, batch_size, ctx = <span class="number">0.1</span>, <span class="number">5</span>, <span class="number">128</span>, d2l.try_gpu()</span><br><span class="line">net.initialize(force_reinit=<span class="literal">True</span>, ctx=ctx, init=init.Xavier())</span><br><span class="line">trainer = gluon.Trainer(net.collect_params(), <span class="string">'sgd'</span>, &#123;<span class="string">'learning_rate'</span>: lr&#125;)</span><br><span class="line">train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size, resize=<span class="number">96</span>)</span><br><span class="line">d2l.train_ch5(net, train_iter, test_iter, batch_size, trainer, ctx,</span><br><span class="line">              num_epochs)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/dl/" rel="tag"># dl</a>
+          
+            <a href="/tags/卷积神经网络/" rel="tag"># 卷积神经网络</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/cnn-layer.html" rel="next" title="卷积神经网络的卷积层和池化层">
+                <i class="fa fa-chevron-left"></i> 卷积神经网络的卷积层和池化层
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="jiajie">
+            
+              <p class="site-author-name" itemprop="name">jiajie</p>
+              <div class="site-description motion-element" itemprop="description">我觉得你很像一个终生跋涉的香客，不停地寻找一座可能根本不存在的神庙。</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Wjiajie" title="GitHub &rarr; https://github.com/Wjiajie" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="/3208920286@qq.com" title="E-Mail &rarr; 3208920286@qq.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          <div id="days"></div>
+    <script>
+    function show_date_time(){
+        window.setTimeout("show_date_time()", 1000);
+        BirthDay=new Date("05/01/2019 00:00:00");
+        today=new Date();
+        timeold=(today.getTime()-BirthDay.getTime());
+        sectimeold=timeold/1000
+        secondsold=Math.floor(sectimeold);
+        msPerDay=24*60*60*1000
+        e_daysold=timeold/msPerDay
+        daysold=Math.floor(e_daysold);
+        e_hrsold=(e_daysold-daysold)*24;
+        hrsold=setzero(Math.floor(e_hrsold));
+        e_minsold=(e_hrsold-hrsold)*60;
+        minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+        seconds=setzero(Math.floor((e_minsold-minsold)*60));
+        document.getElementById('days').innerHTML="已运行"+daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";
+    }
+function setzero(i){
+    if (i<10)
+    {i="0" + i};
+    return i;
+}
+show_date_time();
+</script>
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#卷积神经网络相对于全连接网络的好处"><span class="nav-number">1.</span> <span class="nav-text">卷积神经网络相对于全连接网络的好处</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全连接网络的局限性"><span class="nav-number">1.1.</span> <span class="nav-text">全连接网络的局限性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积神经网络优势"><span class="nav-number">1.2.</span> <span class="nav-text">卷积神经网络优势</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见几种卷积神经网络模型"><span class="nav-number">2.</span> <span class="nav-text">常见几种卷积神经网络模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LeNet模型"><span class="nav-number">2.1.</span> <span class="nav-text">LeNet模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模型结构"><span class="nav-number">2.1.1.</span> <span class="nav-text">模型结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python实现"><span class="nav-number">2.1.2.</span> <span class="nav-text">python实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AlexNet（深度卷积神经网络分界线）"><span class="nav-number">2.2.</span> <span class="nav-text">AlexNet（深度卷积神经网络分界线）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模型结构-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">模型结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python-实现"><span class="nav-number">2.2.2.</span> <span class="nav-text">python 实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VGG（使用重复元素的网络）"><span class="nav-number">2.3.</span> <span class="nav-text">VGG（使用重复元素的网络）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模型结构-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">模型结构</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#VGG块"><span class="nav-number">2.3.1.0.1.</span> <span class="nav-text">VGG块</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#VGG网络"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">VGG网络</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python实现-1"><span class="nav-number">2.3.2.</span> <span class="nav-text">python实现</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#VGG块-1"><span class="nav-number">2.3.2.0.1.</span> <span class="nav-text">VGG块</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#VGG网络-1"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">VGG网络</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#NiN（网络中的网络）"><span class="nav-number">2.4.</span> <span class="nav-text">NiN（网络中的网络）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模型结构-3"><span class="nav-number">2.4.1.</span> <span class="nav-text">模型结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#NiN块"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">NiN块</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NiN模型"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">NiN模型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python实现-2"><span class="nav-number">2.4.2.</span> <span class="nav-text">python实现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#NiN块-1"><span class="nav-number">2.4.2.1.</span> <span class="nav-text">NiN块</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NiN模型-1"><span class="nav-number">2.4.2.2.</span> <span class="nav-text">NiN模型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NiN模型小结"><span class="nav-number">2.4.3.</span> <span class="nav-text">NiN模型小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GoogLeNet-含并行连结的网络"><span class="nav-number">2.5.</span> <span class="nav-text">GoogLeNet(含并行连结的网络)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模型结构-4"><span class="nav-number">2.5.1.</span> <span class="nav-text">模型结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Inception-块"><span class="nav-number">2.5.1.1.</span> <span class="nav-text">Inception 块</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#GoogLeNet模型"><span class="nav-number">2.5.1.2.</span> <span class="nav-text">GoogLeNet模型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python实现-3"><span class="nav-number">2.5.2.</span> <span class="nav-text">python实现</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Inception-块-1"><span class="nav-number">2.5.2.0.1.</span> <span class="nav-text">Inception 块</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#GoogLeNet模型-1"><span class="nav-number">2.5.2.1.</span> <span class="nav-text">GoogLeNet模型</span></a></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+    <div id="sidebar-dimmer"></div>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jiajie</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+  <script>
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66402682";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+      
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="true"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'y7ICC5jdzN1vLAJPPhHypnuJ-gzGzoHsz',
+    appKey: 'FvHfDNMHxSVsxKqgFGB3p99M',
+    placeholder: 'say something~maybe',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+  <script type="text/javascript" color="150,72,0" opacity="0.3" zindex="-2" count="10" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+  
+
+ 
+  
+<script type="text/javascript">
+    //微信二维码点击背景关闭
+    $('body').delegate('.-mob-share-weixin-qrcode-bg','click', function(){
+         $(".-mob-share-weixin-qrcode-close").trigger("click");
+    }); 
+</script>
+
+
+
+  <script type="text/javascript" src="/js/instantclick.min.js" data-no-instant></script>
+  <script data-no-instant>InstantClick.init();</script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>

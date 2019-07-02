@@ -1,3 +1,4 @@
+https://www.jiajiewu.cn/cnn-model.html
 https://www.jiajiewu.cn/cnn-layer.html
 https://www.jiajiewu.cn/exception.html
 https://www.jiajiewu.cn/tips.html
@@ -7,4 +8,3 @@ https://www.jiajiewu.cn/tips-for-overfit.html
 https://www.jiajiewu.cn/Epipolar-Geametry-and-F.html
 https://www.jiajiewu.cn/underfitandoverfit.html
 https://www.jiajiewu.cn/softmax.html
-https://www.jiajiewu.cn/show-issue.html
