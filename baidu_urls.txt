@@ -1,3 +1,4 @@
+https://www.jiajiewu.cn/ubuntu-and-windows.html
 https://www.jiajiewu.cn/resnet-densenet.html
 https://www.jiajiewu.cn/barch-normal.html
 https://www.jiajiewu.cn/cnn-model.html
@@ -7,4 +8,3 @@ https://www.jiajiewu.cn/tips.html
 https://www.jiajiewu.cn/graduate.html
 https://www.jiajiewu.cn/trimmed-icp.html
 https://www.jiajiewu.cn/tips-for-overfit.html
-https://www.jiajiewu.cn/Epipolar-Geametry-and-F.html

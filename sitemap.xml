@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jiajiewu.cn/about/index.html</loc>
+    
+    <lastmod>2019-07-07T12:58:34.438Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.jiajiewu.cn/ubuntu-and-windows.html</loc>
+    
+    <lastmod>2019-07-07T08:47:36.726Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jiajiewu.cn/resnet-densenet.html</loc>
     
     <lastmod>2019-07-03T03:19:54.654Z</lastmod>
@@ -47,13 +61,6 @@
     <loc>https://www.jiajiewu.cn/exception.html</loc>
     
     <lastmod>2019-06-29T11:18:45.287Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jiajiewu.cn/about/index.html</loc>
-    
-    <lastmod>2019-06-29T08:59:28.338Z</lastmod>
     
   </url>
   
