@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[三维重建系统搭建-openMVG和openMVS]]></title>
+    <url>%2FopenMVG-openMVS.html</url>
+    <content type="text"><![CDATA[记录openMVG，openMVS的编译，使用流程。 三维重建流程 三维重建的流程大致如下：首先，通过多角度拍摄或者从视频中提取得到一组图像序列，将这些图像序列作为整个系统的输入；随后，在多视角的图像中，根据纹理特征提取出稀疏特征点（称为点云），通过这些特征点估计相机位置和参数；在得到相机参数并完成特征点匹配后，我们就可以获得更稠密的点云（这些点可以附带颜色，从远处看就像还原了物体本身一样，但从近处能明显看出它们只是一些点）；最后根据这些点重建物体表面，并进行纹理映射，就还原出三维场景和物体了。 概括起来就是：图像获取-&gt;特征匹配-&gt;深度估计-&gt;稀疏点云-&gt;相机参数估计-&gt;稠密点云-&gt;表面重建-&gt;纹理映射 详细见这篇文章。 openMVG搭配openMVS 刚好完成从原始图像到稀疏点云、重建稠密点云、重建表面和纹理映射的流程。以下是两个开源系统的编译和使用流程。 编译openMVG跟着官方文档走就可以了，没有什么坑，注意依赖库的版本就行。 或者看这里： 1234567891011121314151617git clone --recursive https://github.com/openMVG/openMVG.gitsudo apt-get install libpng-dev libjpeg-dev libtiff-dev libxxf86vm1 libxxf86vm-dev libxi-dev libxrandr-devsudo apt-get install graphvizcd path/to/openMVGmkdir buildcd buildcmake -DCMAKE_BUILD_TYPE=RELEASE -DOpenMVG_BUILD_TESTS=ON -DOpenMVG_BUILD_EXAMPLES=ON . ../src/make -j12make testsudo make install 编译openMVS主要参考官方文档 文章参考: OpenMVG与OpenMVS安装配置、简单使用 ubuntu16.04下安装openMVG+openMVS +三维重建测试 Ubuntu使用OpenMVG和OpenMVS进行三维重建 有几个坑，需要注意： 官方文档第四行有一句：main_path=’pwd’，不用管行命令（直接跳过），在cmake的时候执行cmake . ../openMVS -DCMAKE_BUILD_TYPE=Release -DVCG_ROOT=&quot;$main_path/vcglib&quot;时，把$main_path替换成你安装vcglib的对应路径就好。 Eigen必须是3.2.X版本，如果按照官方文档安装貌似装的是最新版本，可以自己下载源码安装3.2.X版本。 在后面进行MVS的测试是，需要把openMVS_build/bin的文件复制到linux下面/user/bin文件夹里面；才能运行MVS重建命令。 使用流程openMVG的sfM用例见官方文档 比如我的流程是：1234567openMVG_main_SfMInit_ImageListing -d ~/3d-reco/openMVG/src/openMVG/exif/sensor_width_database/sensor_width_camera_database.txt -i ~/datasets/ImageDataset_SceauxCastle-master/images -o ~/datasets/ImageDataset_SceauxCastle-master/matches/openMVG_main_ComputeFeatures -i ~/datasets/ImageDataset_SceauxCastle-master/matches/sfm_data.json -o ~/datasets/ImageDataset_SceauxCastle-master/matches/openMVG_main_ComputeMatches -n ANNL2 -f 1 -i ~/datasets/ImageDataset_SceauxCastle-master/matches/sfm_data.json -o ~/datasets/ImageDataset_SceauxCastle-master/matches/openMVG_main_GlobalSfM -i ~/datasets/ImageDataset_SceauxCastle-master/matches/sfm_data.json -m ~/datasets/ImageDataset_SceauxCastle-master/matches/ -o ~/datasets/ImageDataset_SceauxCastle-master/outReconstruction/ 在openMVG_main_ComputeMatches步骤时我遇到invalid match files的错误，通过更换matching的方法，即使用指令openMVG_main_ComputeMatches -n ANNL2 -f 1就可以执行下面的重建步骤。 另外，若使用openMVG_main_GlobalSfM，可能也会遇到invalid match files的问题，这是因为上一步骤可能生成的是matches.f.bin，而openMVG_main_GlobalSfM需要的是matches.e.bin，这时将matches.f.bin重命名为matches.e.bin即可。 openMVS流程见官方文档 我的流程： 123456789sudo openMVG_main_openMVG2openMVS -i ~/datasets/ImageDataset_SceauxCastle-master/reconstruction_global/robust.bin -o ~/datasets/ImageDataset_SceauxCastle-master/reconstruction_global/global_scene.mvsDensifyPointCloud global_scene.mvs ReconstructMesh -d 4 global_scene_dense.mvsRefineMesh --resolution-level=4 global_scene_dense_mesh.mvsTextureMesh global_scene_dense_mesh_refine.mvs 以上。]]></content>
+      <categories>
+        <category>三维重建</category>
+      </categories>
+      <tags>
+        <tag>三维重建</tag>
+        <tag>计算机视觉</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[信号检测与估值笔记]]></title>
+    <url>%2Fsignal-detect-and-estimate.html</url>
+    <content type="text"><![CDATA[记录信号检测与估值的学习笔记，以后不知道用不用得着，但先保存下来吧。]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[UEFI模式下Windows10上安装Ubuntu 18.04.1 LTS双系统]]></title>
     <url>%2Fubuntu-and-windows.html</url>
     <content type="text"><![CDATA[之前想在win10系统基础上安装Ubuntu 18.04，折腾了两天才装上。这里把遇到的一些坑记录下来，防止以后要重装系统时忘记了。 概述折腾了这么久，最后发现是有几个概念当初不清楚，把这几个概念搞明白就知道怎么做了。 系统引导方式：Legacy和UEFI概念了解戳这里：Legacy和UEFI 分区表类型：MBR和GPT概念了解戳这里：MBR和GPT 首先，我是想在台式机上，在已经安装好win10的基础上，再安装Ubuntu 18.04.1 LTS，但在分区过程中出现报错：starting sector number, 4532393984 exceeds the msdos-partition-table-imposed maximum ，在一个解答中发现，由于我的台式机只有一块4TB的大磁盘，而且当初安装win10时用的是MBR分区表格式，而这个格式可利用的磁盘空间不能超过2TB，而且这种格式在一块磁盘上只允许有4个主分区（或者3个主分区加一个扩展分区，在扩展分区上可以创建逻辑分区）。在win10的磁盘管理器中可以看到有一块未利用的磁盘空间（在最后面）。当在安装ubuntu时划分的空间再加上win10所占的空间超过2TB时就会报错。如果一块磁盘的大小不超过2TB，用MBR分区表格式，只要主分区数不超过4个就没问题，一旦超过，得换用GPT分区表格式了。无奈win10用的是MBR格式装的，就把win10删了，将磁盘转为GPT格式，再重装双系统。（后来发现，可以在DiskGenius中将MBR转换为GPT，虽然有风险，但总比删掉好。不管哪种方式，记得把重要数据做好备份）。 我最终成功在4TB大磁盘上安装双系统的方式是：UEFI+GPT。安装前记得确保自己的磁盘是GPT格式的，并且支持UEFI引导方式。 我先安装好ubuntu，再安装win10。（我觉得安装顺序没有多大差别，把各个分区分配好就行。） 安装ubuntu跟着这篇文章做就好，不重复造轮子了。但注意，把U盘插在USB2.0口上安装，并且在刚进入安装界面时，选择 install ubuntu 的地方， 按’e’键进入edit mode ， 找到”quiet splash —-“，把“—-”换成“acpi=off”,然后F10继续安装；然后跟着上面的文章的步骤安装。 安装时出现的报错： 我在安装ubuntu时，把启动盘插到USB3.0口上最终无法识别安装盘，插到USB2.0口上就好了。 安装过程出现 acpi error，解决方法参考：这篇文章 报错：无法将grub-efi-amd64-signed软件包安装到/target，这时未完全安装完，不要关机，得先安装boot修复工具：123sudo add-apt-repository ppa:yannubuntu/boot-repairsudo apt-get updatesudo apt-get install -y boot-repair &amp;&amp; boot-repair 然后根据引导操作修复就可以了，修复结束后重启,这时候可以把安装盘拔掉了，重启后可以进入ubuntu系统。 安装win10我用的是老毛桃装机软件刻录的启动盘，选的是UEFI方式做的启动盘，制作方式上网搜一下就好。老毛桃教程戳这里。不管用什么刻录软件，只要保证在同一块硬盘上安装的双系统都是 GPT+UEFI 方式就好。]]></content>
@@ -101,8 +124,8 @@
         <category>点云处理</category>
       </categories>
       <tags>
-        <tag>点云配准</tag>
         <tag>三维重建</tag>
+        <tag>点云配准</tag>
         <tag>论文解读</tag>
       </tags>
   </entry>

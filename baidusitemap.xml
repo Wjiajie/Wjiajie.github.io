@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.jiajiewu.cn/openMVG-openMVS.html</loc>
+    <lastmod>2019-07-17</lastmod>
+  </url>  <url>
+    <loc>https://www.jiajiewu.cn/signal-detect-and-estimate.html</loc>
+    <lastmod>2019-07-12</lastmod>
+  </url>  <url>
     <loc>https://www.jiajiewu.cn/ubuntu-and-windows.html</loc>
     <lastmod>2019-07-07</lastmod>
   </url>  <url>
