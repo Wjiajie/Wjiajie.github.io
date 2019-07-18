@@ -1,3 +1,4 @@
+https://www.jiajiewu.cn/SFM-intro.html
 https://www.jiajiewu.cn/openMVG-openMVS.html
 https://www.jiajiewu.cn/signal-detect-and-estimate.html
 https://www.jiajiewu.cn/ubuntu-and-windows.html
@@ -7,4 +8,3 @@ https://www.jiajiewu.cn/cnn-model.html
 https://www.jiajiewu.cn/cnn-layer.html
 https://www.jiajiewu.cn/exception.html
 https://www.jiajiewu.cn/tips.html
-https://www.jiajiewu.cn/graduate.html
