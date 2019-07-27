@@ -52,9 +52,9 @@
         <category>三维重建</category>
       </categories>
       <tags>
-        <tag>多视图几何</tag>
         <tag>三维重建</tag>
         <tag>计算机视觉</tag>
+        <tag>多视图几何</tag>
       </tags>
   </entry>
   <entry>
@@ -206,8 +206,8 @@
         <category>多视图几何</category>
       </categories>
       <tags>
-        <tag>cv</tag>
         <tag>多视图几何</tag>
+        <tag>cv</tag>
       </tags>
   </entry>
   <entry>

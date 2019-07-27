@@ -151,15 +151,15 @@
 <meta property="og:site_name" content="jiajie">
 <meta property="og:description" content="笔记记录：  SLAM基本框架 如何用cmake编译cpp源文件">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/12158909-6834d40b81321be5.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/50">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/12158909-59d63c61534d7f3c.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/50">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/12158909-96cbb313b778a2a5.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/50">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/12158909-9a08ca30dddc03f3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/50">
-<meta property="og:updated_time" content="2019-07-27T06:31:24.139Z">
+<meta property="og:image" content="https://i.loli.net/2019/07/27/5d3bfd7e360de14546.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/07/27/5d3bfd8b9ac0e24433.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/07/27/5d3bfd976f79871265.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/07/27/5d3bfda247ffa76924.jpg">
+<meta property="og:updated_time" content="2019-07-27T07:47:36.029Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SLAM的基本框架">
 <meta name="twitter:description" content="笔记记录：  SLAM基本框架 如何用cmake编译cpp源文件">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/12158909-6834d40b81321be5.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/50">
+<meta name="twitter:image" content="https://i.loli.net/2019/07/27/5d3bfd7e360de14546.jpg">
 
 
 
@@ -484,7 +484,7 @@
                 
               
 
-              <time title="创建时间：2019-07-27 14:23:20 / 修改时间：14:31:24" itemprop="dateCreated datePublished" datetime="2019-07-27T14:23:20+08:00">2019-07-27</time>
+              <time title="创建时间：2019-07-27 14:23:20 / 修改时间：15:47:36" itemprop="dateCreated datePublished" datetime="2019-07-27T14:23:20+08:00">2019-07-27</time>
             
 
             
@@ -569,10 +569,10 @@
 <li>如何用cmake编译cpp源文件</li>
 </ol>
 <a id="more"></a>
-<h2 id="SLAM基本框架"><a href="#SLAM基本框架" class="headerlink" title="SLAM基本框架"></a>SLAM基本框架</h2><p>SLAM要解决两个问题：定位和建图。一个基本的SLAM框架包括：传感器信息读取，视觉里程计，后端优化，回环检测和建图。视觉里程计称为整个框架的前端，它的任务是估算相邻图像中相机的运动轨迹，构建局部地图。由于估算会有误差积累（累计漂移）导致估算的轨迹不再准确，这时候需要回环检测负责把“机器人回到原始位置”的事情检测出来，视觉里程计和回环检测会把数据传递给后端优化，校正整个轨迹的形状，最后构建全局地图。整个框架的框图如下：<br><img src="http://upload-images.jianshu.io/upload_images/12158909-6834d40b81321be5.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/50" alt="《视觉SLAM十四讲配图》"></p>
-<p>以下是阅读<em>《视觉SLAM十四讲》</em>做的笔记：第一张是相机分类，后两张是SLAM基本框架各部分的大致内容和联系：<br><img src="http://upload-images.jianshu.io/upload_images/12158909-59d63c61534d7f3c.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/50" alt="相机分类"></p>
-<p><img src="http://upload-images.jianshu.io/upload_images/12158909-96cbb313b778a2a5.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/50" alt="SLAM框架"></p>
-<p><img src="http://upload-images.jianshu.io/upload_images/12158909-9a08ca30dddc03f3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/50" alt="SLAM框架"></p>
+<h2 id="SLAM基本框架"><a href="#SLAM基本框架" class="headerlink" title="SLAM基本框架"></a>SLAM基本框架</h2><p>SLAM要解决两个问题：定位和建图。一个基本的SLAM框架包括：传感器信息读取，视觉里程计，后端优化，回环检测和建图。视觉里程计称为整个框架的前端，它的任务是估算相邻图像中相机的运动轨迹，构建局部地图。由于估算会有误差积累（累计漂移）导致估算的轨迹不再准确，这时候需要回环检测负责把“机器人回到原始位置”的事情检测出来，视觉里程计和回环检测会把数据传递给后端优化，校正整个轨迹的形状，最后构建全局地图。整个框架的框图如下：<br><img src="https://i.loli.net/2019/07/27/5d3bfd7e360de14546.jpg" alt></p>
+<p>以下是阅读<em>《视觉SLAM十四讲》</em>做的笔记：第一张是相机分类，后两张是SLAM基本框架各部分的大致内容和联系：<br><img src="https://i.loli.net/2019/07/27/5d3bfd8b9ac0e24433.jpg" alt></p>
+<p><img src="https://i.loli.net/2019/07/27/5d3bfd976f79871265.jpg" alt></p>
+<p><img src="https://i.loli.net/2019/07/27/5d3bfda247ffa76924.jpg" alt></p>
 <h2 id="用cmake编译cpp源文件"><a href="#用cmake编译cpp源文件" class="headerlink" title="用cmake编译cpp源文件"></a>用cmake编译cpp源文件</h2><p>例子会用到opencv和cmake.两者在Linux下安装步骤看<a href="https://blog.csdn.net/u013066730/article/details/79411767" target="_blank" rel="noopener">这里</a>。为什么要用cmake?<em>《CMake Practice》</em>里这样说：</p>
 <blockquote>
 <p>1.开放源代码，使用类 BSD 许可发布。<br>2.跨平台，并可生成 native 编译配置文件，在 Linux/Unix 平台，生成 makefile，在苹果平台，可以生成 xcode，在 Windows 平台，可以生成 MSVC 的工程文件。<br>3.能够管理大型项目，KDE4 就是最好的证明。<br>4.简化编译构建过程和编译过程。Cmake 的工具链非常简单：cmake+make。<br>5.高效虑，按照 KDE 官方说法，CMake 构建 KDE4 的 kdelibs 要比使用 autotools 来构建 KDE3.5.6 的 kdelibs 快 40%  ，主要是因为 Cmake 在工具链中没有 libtool。<br>6.可扩展，可以为 cmake 编写特定功能的模块，扩充 cmake 功能。<br>下面用cmake编译<em>mian.cpp</em>构建工程，需要创建一个文件夹，并把两个文件拷贝进去：</p>
