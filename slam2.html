@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="cjNXc2AEYk3vl2-qiFXeVz-0jFUbTm5BiOPMiNROc2U">
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="0OsNUYuom8">
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":true,"dimmer":true},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="笔记内容有向量内积，向量外积，欧氏变换，旋转向量，欧拉角，旋转矩阵，四元数以及它们的转换关系，代码是Eigen库的基本使用。">
+<meta name="keywords" content="SLAM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三维空间刚体运动">
+<meta property="og:url" content="https://www.jiajiewu.cn/slam2.html">
+<meta property="og:site_name" content="jiajie">
+<meta property="og:description" content="笔记内容有向量内积，向量外积，欧氏变换，旋转向量，欧拉角，旋转矩阵，四元数以及它们的转换关系，代码是Eigen库的基本使用。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/12158909-51826282d15e9a04.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/12158909-3ee93ee38993e200.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-07-27T06:58:19.142Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="三维空间刚体运动">
+<meta name="twitter:description" content="笔记内容有向量内积，向量外积，欧氏变换，旋转向量，欧拉角，旋转矩阵，四元数以及它们的转换关系，代码是Eigen库的基本使用。">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/12158909-51826282d15e9a04.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="jiajie" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.jiajiewu.cn/slam2">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>三维空间刚体运动 | jiajie</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-139409990-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-139409990-1');
+    }
+  </script>
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4935452b6c6a00d127c010608b531cc0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jiajie</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Cv Learner</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-talk">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/talk/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>杂谈</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-photos">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/photos/" rel="section"><i class="menu-item-icon fa fa-fw fa-image"></i> <br>相册</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link/" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>有趣的链接</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于我与本博客</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/slam2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jiajie">
+      <meta itemprop="description" content="我觉得你很像一个终生跋涉的香客，不停地寻找一座可能根本不存在的神庙。">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jiajie">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">三维空间刚体运动
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-27 14:32:04 / 修改时间：14:58:19" itemprop="dateCreated datePublished" datetime="2019-07-27T14:32:04+08:00">2019-07-27</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/SLAM/" itemprop="url" rel="index"><span itemprop="name">SLAM</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/slam2.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/slam2.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+	
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>笔记内容有向量内积，向量外积，欧氏变换，旋转向量，欧拉角，旋转矩阵，四元数以及它们的转换关系，代码是Eigen库的基本使用。</p>
+<a id="more"></a>
+<h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><p><img src="https://upload-images.jianshu.io/upload_images/12158909-51826282d15e9a04.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/12158909-3ee93ee38993e200.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Eigen/Core&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Eigen/Dense&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Eigen/Geometry&gt; </span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MATRIX_SIZE 50</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">///Eigen 基本操作</span></span><br><span class="line">    Eigen::Matrix&lt;<span class="keyword">float</span>,<span class="number">2</span>,<span class="number">3</span>&gt; matrix_23 ;</span><br><span class="line">    Eigen::Vector3d v_3d; <span class="comment">//实质是Eigen::Matrix&lt;double,3,1&gt;</span></span><br><span class="line">    matrix_23 &lt;&lt; <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>; <span class="comment">//赋值操作</span></span><br><span class="line">    v_3d &lt;&lt; <span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>;</span><br><span class="line">    Eigen::Matrix&lt;<span class="keyword">double</span>,<span class="number">2</span>,<span class="number">1</span>&gt; result = matrix_23.cast&lt;<span class="keyword">double</span>&gt;() * v_3d;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; result &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    Eigen::Matrix3d matrix_33 = Eigen::Matrix3d::Random();</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; <span class="string">"matrix_33 is :"</span> &lt;&lt; matrix_33 &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; <span class="string">"matrix_33 transpose is :"</span> &lt;&lt; matrix_33.transpose() &lt;&lt;<span class="built_in">endl</span>; <span class="comment">//转置</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; <span class="string">"matrix_33 sum is :"</span> &lt;&lt; matrix_33.sum() &lt;&lt;<span class="built_in">endl</span>; <span class="comment">//各元素的和</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; <span class="string">"matrix_33 trace is :"</span>&lt;&lt; matrix_33.trace() &lt;&lt;<span class="built_in">endl</span>; <span class="comment">//矩阵的迹</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; <span class="string">"matrix_33 inverse is :"</span>&lt;&lt; matrix_33.inverse() &lt;&lt;<span class="built_in">endl</span>; <span class="comment">//逆</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; <span class="string">"matrix_33 determinant is ::"</span>&lt;&lt; matrix_33.determinant() &lt;&lt;<span class="built_in">endl</span>; <span class="comment">//行列式</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//特征值和特征向量</span></span><br><span class="line">    </span><br><span class="line">    Eigen::SelfAdjointEigenSolver&lt;Eigen::Matrix3d&gt; eigen_solver (matrix_33.transpose() * matrix_33);<span class="comment">//实对称矩阵</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; <span class="string">"Eigen values = "</span>&lt;&lt; eigen_solver.eigenvalues() &lt;&lt; <span class="built_in">endl</span>; <span class="comment">//特征值</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; <span class="string">"Eigen vectors = "</span>&lt;&lt; eigen_solver.eigenvectors() &lt;&lt; <span class="built_in">endl</span>; <span class="comment">//特征向量</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//解方程，对比求逆和矩阵分解的速度</span></span><br><span class="line">    </span><br><span class="line">    Eigen::Matrix&lt;<span class="keyword">double</span>,MATRIX_SIZE,MATRIX_SIZE&gt; matrix_NN;</span><br><span class="line">    matrix_NN = Eigen::MatrixXd::Random(MATRIX_SIZE,MATRIX_SIZE);</span><br><span class="line">    Eigen::Matrix &lt; <span class="keyword">double</span> ,MATRIX_SIZE,<span class="number">1</span>&gt; v_Nd;</span><br><span class="line">    v_Nd = Eigen::MatrixXd::Random(MATRIX_SIZE,<span class="number">1</span>);</span><br><span class="line">    <span class="comment">//求逆</span></span><br><span class="line">    <span class="keyword">clock_t</span> time_stt = clock();</span><br><span class="line">    Eigen::Matrix&lt;<span class="keyword">double</span>,MATRIX_SIZE,<span class="number">1</span>&gt; x = matrix_NN.inverse() * v_Nd;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; <span class="string">" inverse time use is :"</span>&lt;&lt; <span class="number">1000</span>*(clock()-time_stt)/(<span class="keyword">double</span>)CLOCKS_PER_SEC &lt;&lt; <span class="string">"ms"</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//QR分解</span></span><br><span class="line">    time_stt = clock();</span><br><span class="line">    x = matrix_NN.colPivHouseholderQr().solve(v_Nd);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; <span class="string">"Qr time use is :"</span>&lt;&lt; <span class="number">1000</span>*(clock()-time_stt)/(<span class="keyword">double</span>)CLOCKS_PER_SEC &lt;&lt; <span class="string">"ms"</span> &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">///Eigen 中四元数，欧拉角，旋转矩阵，旋转向量的转换</span></span><br><span class="line">    </span><br><span class="line">    Eigen::Matrix3d rotation_matrix = Eigen::Matrix3d::Identity();</span><br><span class="line">    Eigen::<span class="function">AngleAxisd <span class="title">rotation_vector</span><span class="params">(M_PI/<span class="number">4</span>,Eigen::Vector3d(<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>))</span></span>;</span><br><span class="line">    <span class="built_in">cout</span>.precision(<span class="number">3</span>);</span><br><span class="line">    rotation_matrix = rotation_vector.toRotationMatrix(); <span class="comment">//旋转向量可以转换为旋转矩阵</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"rotation_matrix is :"</span>&lt;&lt;rotation_matrix&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">///AngleAxis 旋转向量进行坐标变换</span></span><br><span class="line">    Eigen::<span class="function">Vector3d <span class="title">v</span><span class="params">(<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>)</span></span>;</span><br><span class="line">    Eigen::Vector3d v_rotated = rotation_vector * v;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"(1,0,0) after rotated:"</span>&lt;&lt;v_rotated.transpose()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 旋转矩阵进行坐标变换</span></span><br><span class="line">    v_rotated = rotation_matrix * v;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"(1,0,0) after rotation = "</span>&lt;&lt;v_rotated.transpose();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 欧拉角： 可以直接将旋转矩阵转换为欧拉角</span></span><br><span class="line">    </span><br><span class="line">    Eigen::Vector3d euler_angles = rotation_matrix.eulerAngles(<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>); <span class="comment">//(2,1,0)表示ZYX 的旋转顺序</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"yaw pitch roll = "</span>&lt;&lt;euler_angles.transpose()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">///四元数  可以将旋转向量转换为四元数</span></span><br><span class="line">    Eigen::Quaterniond q = Eigen::Quaterniond (rotation_vector);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"Quaterniond = \n"</span>&lt;&lt;q.coeffs()&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//coeffs 表示顺序是(x,y,z,w),w为实部，前三者为虚部。</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 也可以将旋转矩阵赋予给四元数</span></span><br><span class="line">    q = Eigen::Quaterniond(rotation_matrix);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"Quaterniond = \n"</span>&lt;&lt;q.coeffs()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">///四元数旋转一个矩阵</span></span><br><span class="line">    v_rotated = q*v; <span class="comment">//注意数学形式为 qvq^&#123;-1&#125;</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"(1,0,0) after rotated :"</span>&lt;&lt;v_rotated.transpose()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">///使用欧氏变换</span></span><br><span class="line">    </span><br><span class="line">    Eigen::Isometry3d T_o = Eigen::Isometry3d::Identity();</span><br><span class="line">    T_o.rotate (rotation_vector);</span><br><span class="line">    T_o.pretranslate(Eigen::Vector3d(<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>));</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; <span class="string">"Transform matrix = \n"</span>&lt;&lt; T_o.matrix()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    Eigen::Vector3d v_transformed = T_o*v;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"v transformed :"</span>&lt;&lt;v_transformed.transpose()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">///仿射变换</span></span><br><span class="line">    Eigen::Affine3d T_a = Eigen::Affine3d::Identity();</span><br><span class="line">    T_a.rotate (rotation_vector);</span><br><span class="line">    T_a.prescale(<span class="number">0.5</span>);</span><br><span class="line">    T_a.pretranslate(Eigen::Vector3d(<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>));</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; <span class="string">"Transform matrix = \n"</span>&lt;&lt; T_a.matrix()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    Eigen::Vector3d v_transformed1 = T_a*v;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"v transformed :"</span>&lt;&lt;v_transformed1.transpose()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">///射影变换 </span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    Eigen::Projective3d T_p;</span></span><br><span class="line"><span class="comment">    T_p.rotate (rotation_vector);</span></span><br><span class="line"><span class="comment">    T_p.prescale(0.5);</span></span><br><span class="line"><span class="comment">    T_p.pretranslate(Eigen::Vector3d(1,3,4));</span></span><br><span class="line"><span class="comment">    cout&lt;&lt; "Transform matrix = \n"&lt;&lt; T_p.matrix()&lt;&lt;endl;</span></span><br><span class="line"><span class="comment">    Eigen::Vector3d v_transformed2 = T_p*v;</span></span><br><span class="line"><span class="comment">    cout&lt;&lt;"v transformed :"&lt;&lt;v_transformed2.transpose()&lt;&lt;endl;</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SLAM/" rel="tag"># SLAM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/slam1.html" rel="next" title="SLAM的基本框架">
+                <i class="fa fa-chevron-left"></i> SLAM的基本框架
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/slam3.html" rel="prev" title="李群与李代数">
+                李群与李代数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="jiajie">
+            
+              <p class="site-author-name" itemprop="name">jiajie</p>
+              <div class="site-description motion-element" itemprop="description">我觉得你很像一个终生跋涉的香客，不停地寻找一座可能根本不存在的神庙。</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Wjiajie" title="GitHub &rarr; https://github.com/Wjiajie" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="/3208920286@qq.com" title="E-Mail &rarr; 3208920286@qq.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://flymrwind.github.io/" title="https://flymrwind.github.io/" rel="noopener" target="_blank">南鱼北游</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          <div id="days"></div>
+    <script>
+    function show_date_time(){
+        window.setTimeout("show_date_time()", 1000);
+        BirthDay=new Date("05/01/2019 00:00:00");
+        today=new Date();
+        timeold=(today.getTime()-BirthDay.getTime());
+        sectimeold=timeold/1000
+        secondsold=Math.floor(sectimeold);
+        msPerDay=24*60*60*1000
+        e_daysold=timeold/msPerDay
+        daysold=Math.floor(e_daysold);
+        e_hrsold=(e_daysold-daysold)*24;
+        hrsold=setzero(Math.floor(e_hrsold));
+        e_minsold=(e_hrsold-hrsold)*60;
+        minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+        seconds=setzero(Math.floor((e_minsold-minsold)*60));
+        document.getElementById('days').innerHTML="已运行"+daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";
+    }
+function setzero(i){
+    if (i<10)
+    {i="0" + i};
+    return i;
+}
+show_date_time();
+</script>
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#笔记"><span class="nav-number">1.</span> <span class="nav-text">笔记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">2.</span> <span class="nav-text">代码</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+    <div id="sidebar-dimmer"></div>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jiajie</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+  <script>
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66402682";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+      
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="true"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'y7ICC5jdzN1vLAJPPhHypnuJ-gzGzoHsz',
+    appKey: 'FvHfDNMHxSVsxKqgFGB3p99M',
+    placeholder: 'say something~maybe',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+  <script type="text/javascript" color="150,72,0" opacity="0.3" zindex="-2" count="10" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+  
+
+ 
+  
+<script type="text/javascript">
+    //微信二维码点击背景关闭
+    $('body').delegate('.-mob-share-weixin-qrcode-bg','click', function(){
+         $(".-mob-share-weixin-qrcode-close").trigger("click");
+    }); 
+</script>
+
+
+
+  <script type="text/javascript" src="/js/instantclick.min.js" data-no-instant></script>
+  <script data-no-instant>InstantClick.init();</script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>

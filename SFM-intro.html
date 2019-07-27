@@ -162,7 +162,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/07/18/5d307920e213078347.png">
 <meta property="og:image" content="https://i.loli.net/2019/07/18/5d307ad107a7973892.png">
 <meta property="og:image" content="https://i.loli.net/2019/07/18/5d307aff2f8fa26829.png">
-<meta property="og:updated_time" content="2019-07-18T14:13:29.630Z">
+<meta property="og:updated_time" content="2019-07-18T14:17:19.085Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SFM算法原理初简介">
 <meta name="twitter:description" content="SFM（structure-from-motion）算法是一种基于各种收集到的无序图片进行三维重建的离线算法。顾名思义是从运动中（不同时间拍摄的图片集）恢复物体的三维结构，这需要估计出图片的$R,t$，结合相机内参重建稀疏点云。">
@@ -491,7 +491,7 @@
                 
               
 
-              <time title="创建时间：2019-07-18 19:22:45 / 修改时间：22:13:29" itemprop="dateCreated datePublished" datetime="2019-07-18T19:22:45+08:00">2019-07-18</time>
+              <time title="创建时间：2019-07-18 19:22:45 / 修改时间：22:17:19" itemprop="dateCreated datePublished" datetime="2019-07-18T19:22:45+08:00">2019-07-18</time>
             
 
             
@@ -587,10 +587,12 @@
 <h3 id="SIFT特征提取"><a href="#SIFT特征提取" class="headerlink" title="SIFT特征提取"></a>SIFT特征提取</h3><p>参考<a href="https://blog.csdn.net/u010440456/article/details/81483145" target="_blank" rel="noopener">这篇文章</a>。</p>
 <h3 id="特征匹配"><a href="#特征匹配" class="headerlink" title="特征匹配"></a>特征匹配</h3><p>第二步是匹配和建立track,图像对两两匹配,一般采用欧式距离.有两种方法：</p>
 <ul>
-<li>粗暴匹配,对所有特征点都穷举计算距离</li>
-<li>邻近搜索,建立KD树,缩小搜索范围,能提高效率,但也有可能不是最优,所以邻域取值是关键,越大越准确,越大计算量越大</li>
-<li>这里参考的是<a href="https://blog.csdn.net/qingcaichongchong/article/details/62424661" target="_blank" rel="noopener">这篇文章</a>。</li>
+<li><p>粗暴匹配,对所有特征点都穷举计算距离</p>
+</li>
+<li><p>邻近搜索,建立KD树,缩小搜索范围,能提高效率,但也有可能不是最优,所以邻域取值是关键,越大越准确,越大计算量越大</p>
+</li>
 </ul>
+<p>这里参考的是<a href="https://blog.csdn.net/qingcaichongchong/article/details/62424661" target="_blank" rel="noopener">这篇文章</a>。</p>
 <p>然而初选的匹配对可能还是不可靠，需要用几何约束去检测。这个测试是基于事实的，假设一个静止场景，不是所有的匹配特征点在实际场景中是符合物理规律的。那么就需要计算对极几何，F矩阵可以把两张图片之间的像素坐标联系起来，并包含相机的内参信息。每一个符合的匹配对像素坐标都需要满足：</p>
 <script type="math/tex; mode=display">
 \mathbf{x}_{1}^{T} \mathbf{F} \mathbf{x}_{2}=0</script><p><img src="https://i.loli.net/2019/07/18/5d30713c03fdc49947.png" alt><br>然而像这种F矩阵计算出有很多噪声数据，需要用RANSAC(随机抽样一致性)算法进行滤波，用直接线性变换(DLT)(需要八组对应点)来进行RANSACA假设，剔除不满足基础矩阵的匹配对。<br><img src="https://i.loli.net/2019/07/18/5d3072a2d256f49506.png" alt></p>
@@ -611,7 +613,7 @@
 \begin{array}{l}{\mathbf{P}_{2}=\left[\mathbf{U} \mathbf{W} \mathbf{V}^{T} |+\mathbf{u}_{3}\right]} \\ {\mathbf{P}_{2}=\left[\mathbf{U} \mathbf{W} \mathbf{V}^{T} |-\mathbf{u}_{3}\right]} \\ {\mathbf{P}_{2}=\left[\mathbf{U} \mathbf{W}^{T} \mathbf{V}^{T} |+\mathbf{u}_{3}\right]} \\ {\mathbf{P}_{2}=\left[\mathbf{U} \mathbf{W}^{T} \mathbf{V}^{T} |-\mathbf{u}_{3}\right]}\end{array} \quad \mathbf{W}=\left[\begin{array}{ccc}{0} & {-1} & {0} \\ {1} & {0} & {0} \\ {0} & {0} & {1}\end{array}\right]</script><p><img src="https://i.loli.net/2019/07/18/5d307920e213078347.png" alt><br>我们希望得到上图中，图一的情况，这种情况下，两个相机的“从光心到主点的射线”与“三维物体点到光心的连线”的夹角都小于90度。<br>公式表示为：<br><img src="https://i.loli.net/2019/07/18/5d307ad107a7973892.png" alt></p>
 <p><img src="https://i.loli.net/2019/07/18/5d307aff2f8fa26829.png" alt></p>
 <p>选择$(\mathbf{X}-\mathbf{C}) \cdot \mathbf{R}(3, :)^{T}&gt;0 ?$的对应的$P_2$即可。这时候两幅图像的$R,t$均求得。</p>
-<h3 id="点云融合"><a href="#点云融合" class="headerlink" title="点云融合"></a>点云融合</h3><p>由上面计算出来的$R,t$和相机内参，可以恢复出物体的稀疏点云结构，如何讲点云融合呢，如果求出的$R,t$是一个准确解，这时直接讲各部分点云通过$R,t$变换到同一基准下就可以完成融合的过程。单上面求解出来的$R,t$仍然不够准确，这时候可以通过Bundle Adjustment（BA），这是一个非线性优化的过程，目的是使重建误差降低到最小，通过调整POSE和三维点使反向投影差最小，如果相机没有标定,还应该将焦距也参与平差。BA最小化以下目标函数：</p>
+<h3 id="点云融合"><a href="#点云融合" class="headerlink" title="点云融合"></a>点云融合</h3><p>由上面计算出来的$R,t$和相机内参，可以恢复出物体的稀疏点云结构，如何将点云融合呢，如果求出的$R,t$是一个准确解，这时直接讲各部分点云通过$R,t$变换到同一基准下就可以完成融合的过程。单上面求解出来的$R,t$仍然不够准确，这时候可以通过Bundle Adjustment（BA），这是一个非线性优化的过程，目的是使重建误差降低到最小，通过调整POSE和三维点使反向投影差最小，如果相机没有标定,还应该将焦距也参与平差。BA最小化以下目标函数：</p>
 <script type="math/tex; mode=display">
 \min \sum_{i} \sum_{j}\left(\tilde{\mathbf{x}}_{i}^{j}-\mathbf{K}\left[\mathbf{R}_{i} | \mathbf{t}_{i}\right] \mathbf{X}^{j}\right)^{2}</script><p>多幅图像的计算方法，依次迭代上面的流程，求得比较准确的$R,t$后，即可进行点云的融合，到此完成稀疏点云的重建过程。</p>
 
@@ -663,6 +665,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/slam-total.html" rel="prev" title="SLAM论文综述">
+                SLAM论文综述 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -737,7 +743,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-count">31</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -776,7 +782,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">11</span>
+                      
+                    
+                    <span class="site-state-item-count">12</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -835,7 +843,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">21</span>
+                      
+                    
+                    <span class="site-state-item-count">22</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

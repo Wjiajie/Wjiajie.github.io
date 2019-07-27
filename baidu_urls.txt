@@ -1,10 +1,10 @@
+https://www.jiajiewu.cn/slam3.html
+https://www.jiajiewu.cn/slam2.html
+https://www.jiajiewu.cn/slam1.html
+https://www.jiajiewu.cn/slam-total.html
 https://www.jiajiewu.cn/SFM-intro.html
 https://www.jiajiewu.cn/openMVG-openMVS.html
 https://www.jiajiewu.cn/signal-detect-and-estimate.html
 https://www.jiajiewu.cn/ubuntu-and-windows.html
 https://www.jiajiewu.cn/resnet-densenet.html
 https://www.jiajiewu.cn/barch-normal.html
-https://www.jiajiewu.cn/cnn-model.html
-https://www.jiajiewu.cn/cnn-layer.html
-https://www.jiajiewu.cn/exception.html
-https://www.jiajiewu.cn/tips.html
