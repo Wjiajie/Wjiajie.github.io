@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="cjNXc2AEYk3vl2-qiFXeVz-0jFUbTm5BiOPMiNROc2U">
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="0OsNUYuom8">
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":true,"dimmer":true},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="主要记录两个非线性优化的方法：Gauss-Newton, Levenburg-Marquadt下降策略，以及学习 Ceres 库和 g2o 库的基本使用方法。摘自《视觉SLAM十四讲》">
+<meta name="keywords" content="SLAM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="非线性优化">
+<meta property="og:url" content="https://www.jiajiewu.cn/Nonlinear-optimization.html">
+<meta property="og:site_name" content="jiajie">
+<meta property="og:description" content="主要记录两个非线性优化的方法：Gauss-Newton, Levenburg-Marquadt下降策略，以及学习 Ceres 库和 g2o 库的基本使用方法。摘自《视觉SLAM十四讲》">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-28T07:31:09.999Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="非线性优化">
+<meta name="twitter:description" content="主要记录两个非线性优化的方法：Gauss-Newton, Levenburg-Marquadt下降策略，以及学习 Ceres 库和 g2o 库的基本使用方法。摘自《视觉SLAM十四讲》">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="jiajie" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.jiajiewu.cn/Nonlinear-optimization">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>非线性优化 | jiajie</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-139409990-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-139409990-1');
+    }
+  </script>
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4935452b6c6a00d127c010608b531cc0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jiajie</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Cv 爱好者</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-talk">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/talk/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>杂谈</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-photos">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/photos/" rel="section"><i class="menu-item-icon fa fa-fw fa-image"></i> <br>相册</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link/" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>有趣的链接</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于我与本博客</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/Nonlinear-optimization.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jiajie">
+      <meta itemprop="description" content="这是最好的时代，也是最坏的时代。">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jiajie">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">非线性优化
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-27 20:39:24" itemprop="dateCreated datePublished" datetime="2019-07-27T20:39:24+08:00">2019-07-27</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-28 15:31:09" itemprop="dateModified" datetime="2019-07-28T15:31:09+08:00">2019-07-28</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/SLAM/" itemprop="url" rel="index"><span itemprop="name">SLAM</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/Nonlinear-optimization.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/Nonlinear-optimization.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+	
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>主要记录两个非线性优化的方法：Gauss-Newton, Levenburg-Marquadt下降策略，以及学习 Ceres 库和 g2o 库的基本使用方法。摘自《视觉SLAM十四讲》</p>
+<a id="more"></a>
+<h2 id="SLAM-模型的运动方程和观测方程"><a href="#SLAM-模型的运动方程和观测方程" class="headerlink" title="SLAM 模型的运动方程和观测方程"></a>SLAM 模型的运动方程和观测方程</h2><p>经典 SLAM 模型由一个状态方程和一个运动方程构成：</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}{\boldsymbol{x}_{k}=f\left(\boldsymbol{x}_{k-1}, \boldsymbol{u}_{k}\right)+\boldsymbol{w}_{k}} \\ {\boldsymbol{z}_{k, j}=h\left(\boldsymbol{y}_{j}, \boldsymbol{x}_{k}\right)+\boldsymbol{v}_{k, j}}\end{array}\right.</script><p>状态方程中，这里的 $\boldsymbol{x}_{k}$乃是相机的位姿。k时刻的相机位姿由k-1时刻相机位姿，运动传感器的数据和噪声决定。我们可以使用变换矩阵或李代数表示它。观测方程中，  ${\boldsymbol{z}_{k, j}}$ 对应$\boldsymbol{x}_{k}$对路标$\boldsymbol{y}_{j}$的一次观测，对应到图像上的像素位置。对于针孔摄像机，观测方程可以表示成:</p>
+<script type="math/tex; mode=display">
+s \boldsymbol{z}_{k, j}=\boldsymbol{K} \exp \left(\boldsymbol{\xi}^{\wedge}\right) \boldsymbol{y}_{j}</script><p>这里 $\boldsymbol{K}$为相机内参,s 为像素点的距离。同时这里$\boldsymbol{z}_{k, j}$和 $\boldsymbol{y}_{j}$都必须以齐次坐标来描述,且中间有一次齐次到非齐次的转换。</p>
+<p>由于受到噪声的影响，我们希望通过带噪声的数据 $\boldsymbol{z}$ 和 $\boldsymbol{u}$,推断位姿 $\boldsymbol{x}$和地图 $\boldsymbol{y}$。</p>
+<h2 id="非线性优化"><a href="#非线性优化" class="headerlink" title="非线性优化"></a>非线性优化</h2><p>在非线性优化中,我们把所有待估计的变量放在一个“状态变量”中:</p>
+<script type="math/tex; mode=display">
+\boldsymbol{x}=\left\{\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{N}, \boldsymbol{y}_{1}, \ldots, \boldsymbol{y}_{M}\right\}</script><p>对机器人状态的估计,就是求已知输入数据 $\boldsymbol{u}$ 和观测数据$\boldsymbol{ z }$的条件下,计算状态$\boldsymbol{ x}$ 的条件概率分布:</p>
+<script type="math/tex; mode=display">
+P(\boldsymbol{x} | \boldsymbol{z}, \boldsymbol{u})</script><p>类似于$\boldsymbol{x}$,这里 $\boldsymbol{u}$ 和$\boldsymbol{z}$ 也是对所有数据的统称。特别地,当我们没有测量运动的传感器,只有一张张的图像时,即只考虑观测方程带来的数据时,相当于估计 $P(\boldsymbol{x} | \boldsymbol{z})$ 的条件概率分布。如果忽略图像在时间上的联系,把它们看作一堆彼此没有关系的图片,该问题也称为 Structure from Motion(SfM),即如何从许多图像中重建三维空间结构 。在这种情况下,<strong>SLAM 可以看作是图像具有时间先后顺序的,需要实时求解一个 SfM 问题。</strong></p>
+<p>直接求后验分布是困难的,但是求一个状态最优估计,使得在该状态下,后验概率最大化(Maximize a Posterior,MAP),则是可行的:</p>
+<script type="math/tex; mode=display">
+x^{*}_{M A P}=\arg \max P(x | z)=\arg \max P(z | x) P(x)</script><p>当不知道机器人位姿大概在什么地方,此时就没有了先验。那么,可以求解x 的最大似然估计(Maximize Likelihood Estimation, MLE):</p>
+<script type="math/tex; mode=display">
+\boldsymbol{x}^{*}_{M L E}=\arg \max P(\boldsymbol{z} | \boldsymbol{x})</script><p>在这里，<strong>最大似然估计,可以理解成:“在什么样的状态下,最可能产生现在观测到的数据”。</strong><br>在求解最大似然估计的时候，最终解的形式可以表示为一个最小二乘问题，度量函数选择误差的平方之和：</p>
+<script type="math/tex; mode=display">
+J(\boldsymbol{x})=\sum_{k} e_{v, k}^{T} \boldsymbol{R}_{k}^{-1} \boldsymbol{e}_{v, k}+\sum_{k} \sum_{j} \boldsymbol{e}_{y, k, j}^{T} \boldsymbol{Q}_{k, j}^{-1} \boldsymbol{e}_{y, k, j}</script><p>上式的最优解等价于状态的最大似然估计。但由于噪声的存在，当我们把估计的轨迹与地图代入 SLAM 的运动、观测方程中时,它们并不会完美的成立。因此我们把状态的估计值进行微调,使得整体的误差下降一些。当然这个下降也有限度,它一般会到达一个极小值。这就是一个典型非线性优化的过程。下面记录两个非线性优化的方法：Gauss-Newton, Levenburg-Marquadt下降策略。</p>
+<p>设$\boldsymbol{f}$ 是任意一个非线性函数,我们设它有 m 维:$f(x) \in \mathbb{R}^{m}$。一个简单的最小二乘问题是:</p>
+<script type="math/tex; mode=display">
+\min _{x} \frac{1}{2}\|f(\boldsymbol{x})\|_{2}^{2}</script><h3 id="Gauss-Newton"><a href="#Gauss-Newton" class="headerlink" title="Gauss-Newton"></a>Gauss-Newton</h3><p>Gauss Newton 是最优化算法里面最简单的方法之一。它的思想是将 $f(\boldsymbol{x})$进行一阶的泰勒展开：</p>
+<script type="math/tex; mode=display">
+f(\boldsymbol{x}+\Delta \boldsymbol{x}) \approx f(\boldsymbol{x})+\boldsymbol{J}(\boldsymbol{x}) \Delta \boldsymbol{x}</script><p>这里$J(\boldsymbol{x})$为$f(\boldsymbol{x})$关于 x 的导数,实际上是一个 m × n 的矩阵,也是一个雅可比矩阵。根据前面的框架,当前的目标是为了寻找下降矢量 $\Delta \boldsymbol{x}$,使得$|f(\boldsymbol{x}+\Delta \boldsymbol{x})|^{2}$达到最小。为了求 $\Delta \boldsymbol{x}$,,我们需要解一个线性的最小二乘问题:</p>
+<script type="math/tex; mode=display">
+\Delta \boldsymbol{x}^{*}=\arg \min _{\Delta \boldsymbol{x}} \frac{1}{2}\|f(\boldsymbol{x})+\boldsymbol{J}(\boldsymbol{x}) \Delta \boldsymbol{x}\|^{2}</script><p>求上式关于 $\Delta \boldsymbol{x}$的导数,并令其为零,可以得到如下方程组:</p>
+<script type="math/tex; mode=display">
+J(\boldsymbol{x})^{T} \boldsymbol{J}(\boldsymbol{x}) \Delta \boldsymbol{x}=-\boldsymbol{J}(\boldsymbol{x})^{T} f(\boldsymbol{x})</script><p>Gauss-Newton 的算法步骤可以写成:</p>
+<ol>
+<li>给定初始值 $\boldsymbol{x}_{0}$ 。</li>
+<li>对于第 k 次迭代,求出当前的雅可比矩阵$J\left(x_{k}\right)$和误差$f\left(\boldsymbol{x}_{k}\right)$。</li>
+<li>求解增量方程:$\boldsymbol{H} \Delta \boldsymbol{x}_{k}=\boldsymbol{g}$</li>
+<li>若$\Delta \boldsymbol{x}_{k}$ 足够小,则停止。否则,令$\boldsymbol{x}_{k+1}=\boldsymbol{x}_{k}+\Delta \boldsymbol{x}_{k}$,返回 2.</li>
+</ol>
+<h3 id="Levenberg-Marquadt"><a href="#Levenberg-Marquadt" class="headerlink" title="Levenberg-Marquadt"></a>Levenberg-Marquadt</h3><p>由于 Gauss-Newton 方法中采用的近似二阶泰勒展开只能在展开点附近有较好的近似<br>效果,所以我们很自然地想到应该给 ∆x 添加一个信赖区域(Trust Region),不能让它太大而使得近似不准确。非线性优化种有一系列这类方法,这类方法也被称之为信赖区域方法 (Trust Region Method)。在信赖区域里边,我们认为近似是有效的;出了这个区域,近似可能会出问题。</p>
+<p>一个比较好的方法是根据我们的近似模型跟实际函数之间的差异来确定这个范围:如果差异小,我们就让范围尽可能大;如果差异大,我们就缩小这个近似范围。</p>
+<script type="math/tex; mode=display">
+\rho=\frac{f(\boldsymbol{x}+\Delta \boldsymbol{x})-f(\boldsymbol{x})}{\boldsymbol{J}(\boldsymbol{x}) \Delta \boldsymbol{x}}</script><p>$\rho$ 的分子是实际函数下降的值,分母是近似模型下降的值。如果 $\rho$ 接近于 1,则近似是好的。如果 $\rho$太小,说明实际减小的值远少于近似减小的值,则认为近似比较差,需要缩小近似范围。反之,如果 $\rho$比较大,则说明实际下降的比预计的更大,我们可以放大近似范围。</p>
+<p>Levenberg-Marquadt的算法步骤可以写成:</p>
+<ol>
+<li>给定初始值 $\boldsymbol{x}_{0}$ ,以及初始优化半径 $\mu$。</li>
+<li>对于第 k 次迭代,求解:<script type="math/tex; mode=display">
+\min _{\Delta \boldsymbol{x}_{k}} \frac{1}{2}\left\|f\left(\boldsymbol{x}_{k}\right)+\boldsymbol{J}\left(\boldsymbol{x}_{k}\right) \Delta \boldsymbol{x}_{k}\right\|^{2}, \quad \text { s.t. }\left\|\boldsymbol{D} \Delta \boldsymbol{x}_{k}\right\|^{2} \leq \mu</script>这里 $\mu$ 是信赖区域的半径,$D$将在后文说明。</li>
+<li>计算 $\rho$。</li>
+<li>若 $\rho$ &gt; 34 ,则 $\mu$ = 2$\mu$;</li>
+<li>若 $\rho$ &lt; 14 ,则 $\mu$ = 0.5$\mu$;</li>
+<li>如果 $\rho$ 大于某阈值,认为近似可行。令$\boldsymbol{x}_{k+1}=\boldsymbol{x}_{k}+\Delta \boldsymbol{x}_{k}$ 。</li>
+<li>判断算法是否收敛。如不收敛则返回 2,否则结束。</li>
+</ol>
+<p>上式用 拉格朗日乘子将它转化为一个无约束优化问题:</p>
+<script type="math/tex; mode=display">
+\min _{\Delta \boldsymbol{x}_{k}} \frac{1}{2}\left\|f\left(\boldsymbol{x}_{k}\right)+\boldsymbol{J}\left(\boldsymbol{x}_{k}\right) \Delta \boldsymbol{x}_{k}\right\|^{2}+\frac{\lambda}{2}\|\boldsymbol{D} \Delta \boldsymbol{x}\|^{2}</script><p>类似于 Gauss-Newton 中的做法,把它展开后,我们发现<br>该问题的核心仍是计算增量的线性方程:</p>
+<script type="math/tex; mode=display">
+\left(\boldsymbol{H}+\lambda \boldsymbol{D}^{T} \boldsymbol{D}\right) \Delta \boldsymbol{x}=\boldsymbol{g}</script><p>可以看到,增量方程相比于 Gauss-Newton,多了一项$\lambda \boldsymbol{D}^{T} \boldsymbol{D}$。如果考虑它的简化形式,即$\boldsymbol{D}=\boldsymbol{I}$,那么相当于求解:</p>
+<script type="math/tex; mode=display">
+(\boldsymbol{H}+\lambda \boldsymbol{I}) \Delta \boldsymbol{x}=\boldsymbol{g}</script><p>我们看到,当参数 $\lambda$比较小时,$\boldsymbol{H}$占主要地位,这说明二次近似模型在该范围内是比较好的,L-M 方法更接近于 G-N 法。另一方面,当 λ 比较大时,λI 占据主要地位,L-M更接近于一阶梯度下降法(即最速下降),这说明附近的二次近似不够好。L-M 的求解方式,可在一定程度上避免线性方程组的系数矩阵的非奇异和病态问题,提供更稳定更准确的增量 $\Delta \boldsymbol{x}$。</p>
+<p>无论是 G-N 还是 L-M,在做最优化计算的时候,都需要提供变量的初始值。实际上非线性优化的所有迭代求解方案,都需要用户来提供一个良好的初始值。由于目标函数太复杂,导致在求解空间上的变化难以琢磨,对问题提供不同的初始值往往会导致不同的计算结果。这种情况是非线性优化的通病:大多数算法都容易陷入局部极小值。因此,无论是哪类科学问题,我们提供初始值都应该有科学依据,例如视觉 SLAM 问题中,我们会用 ICP,PnP 之类的算法提供优化初始值。总之,一个良好的初始值对最优化问题非常重要!</p>
+<h2 id="代码实践"><a href="#代码实践" class="headerlink" title="代码实践"></a>代码实践</h2><h3 id="使用-Ceres-拟合曲线"><a href="#使用-Ceres-拟合曲线" class="headerlink" title="使用 Ceres 拟合曲线"></a>使用 Ceres 拟合曲线</h3><ol>
+<li>编译Ceres有两个注意的点：当初编译sophus要求eigen版本是3.3，编译Ceres时要求是3.2。</li>
+<li>gcc版本我之前的是4.9，要升级为gcc-5</li>
+</ol>
+<p>用Ceres拟合曲线：</p>
+<script type="math/tex; mode=display">
+y=\exp \left(a x^{2}+b x+c\right)+w</script><p>其中 a, b, c 为曲线的参数,w 为高斯噪声。我们故意选择了这样一个非线性模型,以使问题不至于太简单。现在,假设我们有 N 个关于 x, y 的观测数据点,想根据这些数据点求出曲线的参数。那么,可以求解下面的最小二乘问题以估计曲线参数:</p>
+<script type="math/tex; mode=display">
+\min _{a, b, c} \frac{1}{2} \sum_{i=1}^{N}\left\|y_{i}-\exp \left(a x_{i}^{2}+b x_{i}+c\right)\right\|^{2}</script><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/core/core.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ceres/ceres.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 代价函数的计算模型</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">CURVE_FITTING_COST</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    CURVE_FITTING_COST ( <span class="keyword">double</span> x, <span class="keyword">double</span> y ) : _x ( x ), _y ( y ) &#123;&#125;</span><br><span class="line">    <span class="comment">// 残差的计算</span></span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">const</span> T* <span class="keyword">const</span> abc,     <span class="comment">// 模型参数，有3维</span></span></span></span><br><span class="line"><span class="function"><span class="params">        T* residual )</span> <span class="keyword">const</span>     <span class="comment">// 残差</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        residual[<span class="number">0</span>] = T ( _y ) - ceres::<span class="built_in">exp</span> ( abc[<span class="number">0</span>]*T ( _x ) *T ( _x ) + abc[<span class="number">1</span>]*T ( _x ) + abc[<span class="number">2</span>] ); <span class="comment">// y-exp(ax^2+bx+c)</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> _x, _y;    <span class="comment">// x,y数据</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">( <span class="keyword">int</span> argc, <span class="keyword">char</span>** argv )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> a=<span class="number">1.0</span>, b=<span class="number">2.0</span>, c=<span class="number">1.0</span>;         <span class="comment">// 真实参数值</span></span><br><span class="line">    <span class="keyword">int</span> N=<span class="number">100</span>;                          <span class="comment">// 数据点</span></span><br><span class="line">    <span class="keyword">double</span> w_sigma=<span class="number">1.0</span>;                 <span class="comment">// 噪声Sigma值</span></span><br><span class="line">    cv::RNG rng;                        <span class="comment">// OpenCV随机数产生器</span></span><br><span class="line">    <span class="keyword">double</span> abc[<span class="number">3</span>] = &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;;            <span class="comment">// abc参数的估计值</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; x_data, y_data;      <span class="comment">// 数据</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"generating data: "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">double</span> x = i/<span class="number">100.0</span>;</span><br><span class="line">        x_data.push_back ( x );</span><br><span class="line">        y_data.push_back (</span><br><span class="line">            <span class="built_in">exp</span> ( a*x*x + b*x + c ) + rng.gaussian ( w_sigma )</span><br><span class="line">        );</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;x_data[i]&lt;&lt;<span class="string">" "</span>&lt;&lt;y_data[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构建最小二乘问题</span></span><br><span class="line">    ceres::Problem problem;</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        problem.AddResidualBlock (     <span class="comment">// 向问题中添加误差项</span></span><br><span class="line">        <span class="comment">// 使用自动求导，模板参数：误差类型，输出维度，输入维度，维数要与前面struct中一致</span></span><br><span class="line">            <span class="keyword">new</span> ceres::AutoDiffCostFunction&lt;CURVE_FITTING_COST, <span class="number">1</span>, <span class="number">3</span>&gt; ( </span><br><span class="line">                <span class="keyword">new</span> CURVE_FITTING_COST ( x_data[i], y_data[i] )</span><br><span class="line">            ),</span><br><span class="line">            <span class="literal">nullptr</span>,            <span class="comment">// 核函数，这里不使用，为空</span></span><br><span class="line">            abc                 <span class="comment">// 待估计参数</span></span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 配置求解器</span></span><br><span class="line">    ceres::Solver::Options options;     <span class="comment">// 这里有很多配置项可以填</span></span><br><span class="line">    options.linear_solver_type = ceres::DENSE_QR;  <span class="comment">// 增量方程如何求解</span></span><br><span class="line">    options.minimizer_progress_to_stdout = <span class="literal">true</span>;   <span class="comment">// 输出到cout</span></span><br><span class="line"></span><br><span class="line">    ceres::Solver::Summary summary;                <span class="comment">// 优化信息</span></span><br><span class="line">    chrono::steady_clock::time_point t1 = chrono::steady_clock::now();</span><br><span class="line">    ceres::Solve ( options, &amp;problem, &amp;summary );  <span class="comment">// 开始优化</span></span><br><span class="line">    chrono::steady_clock::time_point t2 = chrono::steady_clock::now();</span><br><span class="line">    chrono::duration&lt;<span class="keyword">double</span>&gt; time_used = chrono::duration_cast&lt;chrono::duration&lt;<span class="keyword">double</span>&gt;&gt;( t2-t1 );</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"solve time cost = "</span>&lt;&lt;time_used.count()&lt;&lt;<span class="string">" seconds. "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出结果</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;summary.BriefReport() &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"estimated a,b,c = "</span>;</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">auto</span> a:abc ) <span class="built_in">cout</span>&lt;&lt;a&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>CMakeLists.txt:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required( VERSION 2.8 )</span><br><span class="line">project( ceres_curve_fitting )</span><br><span class="line"></span><br><span class="line">set( CMAKE_BUILD_TYPE &quot;Release&quot; )</span><br><span class="line">set( CMAKE_CXX_FLAGS &quot;-std=c++11 -O3&quot; )</span><br><span class="line"></span><br><span class="line"># 添加cmake模块以使用ceres库</span><br><span class="line">list( APPEND CMAKE_MODULE_PATH $&#123;PROJECT_SOURCE_DIR&#125;/cmake_modules )</span><br><span class="line"></span><br><span class="line"># 寻找Ceres库并添加它的头文件</span><br><span class="line">find_package( Ceres REQUIRED )</span><br><span class="line">include_directories( $&#123;CERES_INCLUDE_DIRS&#125; )</span><br><span class="line"></span><br><span class="line"># OpenCV</span><br><span class="line">find_package( OpenCV REQUIRED )</span><br><span class="line">include_directories( $&#123;OpenCV_DIRS&#125; )</span><br><span class="line"></span><br><span class="line">add_executable( curve_fitting main.cpp )</span><br><span class="line"># 与Ceres和OpenCV链接</span><br><span class="line">target_link_libraries( curve_fitting $&#123;CERES_LIBRARIES&#125; $&#123;OpenCV_LIBS&#125; )</span><br></pre></td></tr></table></figure></p>
+<h3 id="基于图优化的库-g2o"><a href="#基于图优化的库-g2o" class="headerlink" title="基于图优化的库:g2o"></a>基于图优化的库:g2o</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/base_vertex.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/base_unary_edge.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/block_solver.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/optimization_algorithm_levenberg.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/optimization_algorithm_gauss_newton.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/optimization_algorithm_dogleg.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/solvers/dense/linear_solver_dense.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Eigen/Core&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/core/core.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 曲线模型的顶点，模板参数：优化变量维度和数据类型</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CurveFittingVertex</span>:</span> <span class="keyword">public</span> g2o::BaseVertex&lt;<span class="number">3</span>, Eigen::Vector3d&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    EIGEN_MAKE_ALIGNED_OPERATOR_NEW</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">setToOriginImpl</span><span class="params">()</span> <span class="comment">// 重置</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        _estimate &lt;&lt; <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">oplusImpl</span><span class="params">( <span class="keyword">const</span> <span class="keyword">double</span>* update )</span> <span class="comment">// 更新</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        _estimate += Eigen::Vector3d(update);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 存盘和读盘：留空</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">read</span><span class="params">( istream&amp; in )</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">write</span><span class="params">( ostream&amp; out )</span> <span class="keyword">const</span> </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 误差模型 模板参数：观测值维度，类型，连接顶点类型</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CurveFittingEdge</span>:</span> <span class="keyword">public</span> g2o::BaseUnaryEdge&lt;<span class="number">1</span>,<span class="keyword">double</span>,CurveFittingVertex&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    EIGEN_MAKE_ALIGNED_OPERATOR_NEW</span><br><span class="line">    CurveFittingEdge( <span class="keyword">double</span> x ): BaseUnaryEdge(), _x(x) &#123;&#125;</span><br><span class="line">    <span class="comment">// 计算曲线模型误差</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">computeError</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> CurveFittingVertex* v = <span class="keyword">static_cast</span>&lt;<span class="keyword">const</span> CurveFittingVertex*&gt; (_vertices[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">const</span> Eigen::Vector3d abc = v-&gt;estimate();</span><br><span class="line">        _error(<span class="number">0</span>,<span class="number">0</span>) = _measurement - <span class="built_in">std</span>::<span class="built_in">exp</span>( abc(<span class="number">0</span>,<span class="number">0</span>)*_x*_x + abc(<span class="number">1</span>,<span class="number">0</span>)*_x + abc(<span class="number">2</span>,<span class="number">0</span>) ) ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">read</span><span class="params">( istream&amp; in )</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">write</span><span class="params">( ostream&amp; out )</span> <span class="keyword">const</span> </span>&#123;&#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">double</span> _x;  <span class="comment">// x 值， y 值为 _measurement</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">( <span class="keyword">int</span> argc, <span class="keyword">char</span>** argv )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> a=<span class="number">1.0</span>, b=<span class="number">2.0</span>, c=<span class="number">1.0</span>;         <span class="comment">// 真实参数值</span></span><br><span class="line">    <span class="keyword">int</span> N=<span class="number">100</span>;                          <span class="comment">// 数据点</span></span><br><span class="line">    <span class="keyword">double</span> w_sigma=<span class="number">1.0</span>;                 <span class="comment">// 噪声Sigma值</span></span><br><span class="line">    cv::RNG rng;                        <span class="comment">// OpenCV随机数产生器</span></span><br><span class="line">    <span class="keyword">double</span> abc[<span class="number">3</span>] = &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;;            <span class="comment">// abc参数的估计值</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; x_data, y_data;      <span class="comment">// 数据</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"generating data: "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">double</span> x = i/<span class="number">100.0</span>;</span><br><span class="line">        x_data.push_back ( x );</span><br><span class="line">        y_data.push_back (</span><br><span class="line">            <span class="built_in">exp</span> ( a*x*x + b*x + c ) + rng.gaussian ( w_sigma )</span><br><span class="line">        );</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;x_data[i]&lt;&lt;<span class="string">" "</span>&lt;&lt;y_data[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 构建图优化，先设定g2o</span></span><br><span class="line">    <span class="keyword">typedef</span> g2o::BlockSolver&lt; g2o::BlockSolverTraits&lt;<span class="number">3</span>,<span class="number">1</span>&gt; &gt; Block;  <span class="comment">// 每个误差项优化变量维度为3，误差值维度为1</span></span><br><span class="line">    Block::LinearSolverType* linearSolver = <span class="keyword">new</span> g2o::LinearSolverDense&lt;Block::PoseMatrixType&gt;(); <span class="comment">// 线性方程求解器</span></span><br><span class="line">    Block* solver_ptr = <span class="keyword">new</span> Block( linearSolver );      <span class="comment">// 矩阵块求解器</span></span><br><span class="line">    <span class="comment">// 梯度下降方法，从GN, LM, DogLeg 中选</span></span><br><span class="line">    g2o::OptimizationAlgorithmLevenberg* solver = <span class="keyword">new</span> g2o::OptimizationAlgorithmLevenberg( solver_ptr );</span><br><span class="line">    <span class="comment">// g2o::OptimizationAlgorithmGaussNewton* solver = new g2o::OptimizationAlgorithmGaussNewton( solver_ptr );</span></span><br><span class="line">    <span class="comment">// g2o::OptimizationAlgorithmDogleg* solver = new g2o::OptimizationAlgorithmDogleg( solver_ptr );</span></span><br><span class="line">    g2o::SparseOptimizer optimizer;     <span class="comment">// 图模型</span></span><br><span class="line">    optimizer.setAlgorithm( solver );   <span class="comment">// 设置求解器</span></span><br><span class="line">    optimizer.setVerbose( <span class="literal">true</span> );       <span class="comment">// 打开调试输出</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 往图中增加顶点</span></span><br><span class="line">    CurveFittingVertex* v = <span class="keyword">new</span> CurveFittingVertex();</span><br><span class="line">    v-&gt;setEstimate( Eigen::Vector3d(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>) );</span><br><span class="line">    v-&gt;setId(<span class="number">0</span>);</span><br><span class="line">    optimizer.addVertex( v );</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 往图中增加边</span></span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        CurveFittingEdge* edge = <span class="keyword">new</span> CurveFittingEdge( x_data[i] );</span><br><span class="line">        edge-&gt;setId(i);</span><br><span class="line">        edge-&gt;setVertex( <span class="number">0</span>, v );                <span class="comment">// 设置连接的顶点</span></span><br><span class="line">        edge-&gt;setMeasurement( y_data[i] );      <span class="comment">// 观测数值</span></span><br><span class="line">        edge-&gt;setInformation( Eigen::Matrix&lt;<span class="keyword">double</span>,<span class="number">1</span>,<span class="number">1</span>&gt;::Identity()*<span class="number">1</span>/(w_sigma*w_sigma) ); <span class="comment">// 信息矩阵：协方差矩阵之逆</span></span><br><span class="line">        optimizer.addEdge( edge );</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 执行优化</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"start optimization"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    chrono::steady_clock::time_point t1 = chrono::steady_clock::now();</span><br><span class="line">    optimizer.initializeOptimization();</span><br><span class="line">    optimizer.optimize(<span class="number">100</span>);</span><br><span class="line">    chrono::steady_clock::time_point t2 = chrono::steady_clock::now();</span><br><span class="line">    chrono::duration&lt;<span class="keyword">double</span>&gt; time_used = chrono::duration_cast&lt;chrono::duration&lt;<span class="keyword">double</span>&gt;&gt;( t2-t1 );</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"solve time cost = "</span>&lt;&lt;time_used.count()&lt;&lt;<span class="string">" seconds. "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 输出优化值</span></span><br><span class="line">    Eigen::Vector3d abc_estimate = v-&gt;estimate();</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"estimated model: "</span>&lt;&lt;abc_estimate.transpose()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>CMakeLists.txt<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">cmake_minimum_required( VERSION 2.8 )</span><br><span class="line">project( g2o_curve_fitting )</span><br><span class="line"></span><br><span class="line">set( CMAKE_BUILD_TYPE &quot;Release&quot; )</span><br><span class="line">set( CMAKE_CXX_FLAGS &quot;-std=c++11 -O3&quot; )</span><br><span class="line"></span><br><span class="line"># 添加cmake模块以使用ceres库</span><br><span class="line">list( APPEND CMAKE_MODULE_PATH $&#123;PROJECT_SOURCE_DIR&#125;/cmake_modules )</span><br><span class="line"></span><br><span class="line"># 寻找G2O</span><br><span class="line">find_package( G2O REQUIRED )</span><br><span class="line">include_directories( </span><br><span class="line">    $&#123;G2O_INCLUDE_DIRS&#125;</span><br><span class="line">    &quot;/usr/include/eigen3&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"># OpenCV</span><br><span class="line">find_package( OpenCV REQUIRED )</span><br><span class="line">include_directories( $&#123;OpenCV_DIRS&#125; )</span><br><span class="line"></span><br><span class="line">add_executable( curve_fitting main.cpp )</span><br><span class="line"># 与G2O和OpenCV链接</span><br><span class="line">target_link_libraries( curve_fitting </span><br><span class="line">    $&#123;OpenCV_LIBS&#125;</span><br><span class="line">    g2o_core g2o_stuff</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SLAM/" rel="tag"># SLAM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/slam3.html" rel="next" title="李群与李代数">
+                <i class="fa fa-chevron-left"></i> 李群与李代数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="jiajie">
+            
+              <p class="site-author-name" itemprop="name">jiajie</p>
+              <div class="site-description motion-element" itemprop="description">这是最好的时代，也是最坏的时代。</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Wjiajie" title="GitHub &rarr; https://github.com/Wjiajie" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="/3208920286@qq.com" title="E-Mail &rarr; 3208920286@qq.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://flymrwind.github.io/" title="https://flymrwind.github.io/" rel="noopener" target="_blank">南鱼北游</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          <div id="days"></div>
+    <script>
+    function show_date_time(){
+        window.setTimeout("show_date_time()", 1000);
+        BirthDay=new Date("05/01/2019 00:00:00");
+        today=new Date();
+        timeold=(today.getTime()-BirthDay.getTime());
+        sectimeold=timeold/1000
+        secondsold=Math.floor(sectimeold);
+        msPerDay=24*60*60*1000
+        e_daysold=timeold/msPerDay
+        daysold=Math.floor(e_daysold);
+        e_hrsold=(e_daysold-daysold)*24;
+        hrsold=setzero(Math.floor(e_hrsold));
+        e_minsold=(e_hrsold-hrsold)*60;
+        minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+        seconds=setzero(Math.floor((e_minsold-minsold)*60));
+        document.getElementById('days').innerHTML="已运行"+daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";
+    }
+function setzero(i){
+    if (i<10)
+    {i="0" + i};
+    return i;
+}
+show_date_time();
+</script>
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SLAM-模型的运动方程和观测方程"><span class="nav-number">1.</span> <span class="nav-text">SLAM 模型的运动方程和观测方程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非线性优化"><span class="nav-number">2.</span> <span class="nav-text">非线性优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gauss-Newton"><span class="nav-number">2.1.</span> <span class="nav-text">Gauss-Newton</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Levenberg-Marquadt"><span class="nav-number">2.2.</span> <span class="nav-text">Levenberg-Marquadt</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实践"><span class="nav-number">3.</span> <span class="nav-text">代码实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-Ceres-拟合曲线"><span class="nav-number">3.1.</span> <span class="nav-text">使用 Ceres 拟合曲线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于图优化的库-g2o"><span class="nav-number">3.2.</span> <span class="nav-text">基于图优化的库:g2o</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+    <div id="sidebar-dimmer"></div>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jiajie</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+  <script>
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66402682";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+      
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="true"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'y7ICC5jdzN1vLAJPPhHypnuJ-gzGzoHsz',
+    appKey: 'FvHfDNMHxSVsxKqgFGB3p99M',
+    placeholder: 'say something~maybe',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+  <script type="text/javascript" color="150,72,0" opacity="0.3" zindex="-2" count="10" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+  
+
+ 
+  
+<script type="text/javascript">
+    //微信二维码点击背景关闭
+    $('body').delegate('.-mob-share-weixin-qrcode-bg','click', function(){
+         $(".-mob-share-weixin-qrcode-close").trigger("click");
+    }); 
+</script>
+
+
+
+  <script type="text/javascript" src="/js/instantclick.min.js" data-no-instant></script>
+  <script data-no-instant>InstantClick.init();</script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>

@@ -1,3 +1,4 @@
+https://www.jiajiewu.cn/Nonlinear-optimization.html
 https://www.jiajiewu.cn/slam3.html
 https://www.jiajiewu.cn/slam2.html
 https://www.jiajiewu.cn/slam1.html
@@ -7,4 +8,3 @@ https://www.jiajiewu.cn/openMVG-openMVS.html
 https://www.jiajiewu.cn/signal-detect-and-estimate.html
 https://www.jiajiewu.cn/ubuntu-and-windows.html
 https://www.jiajiewu.cn/resnet-densenet.html
-https://www.jiajiewu.cn/barch-normal.html
