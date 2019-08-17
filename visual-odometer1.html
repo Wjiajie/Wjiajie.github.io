@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="cjNXc2AEYk3vl2-qiFXeVz-0jFUbTm5BiOPMiNROc2U">
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="0OsNUYuom8">
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":true,"dimmer":true},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="视觉 SLAM 主要分为视觉前端和优化后端。前端也称为视觉里程计(VO)。它根据相邻图像的信息,估计出粗略的相机运动,给后端提供较好的初始值。本节将记录从特征点法入手,学习如何提取、匹配图像特征点,然后估计两帧之间的相机运动和场景结构,从而实现一个基本的两帧间视觉里程计。摘自《视觉SLAM十四讲》。">
+<meta name="keywords" content="SLAM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="视觉里程计1">
+<meta property="og:url" content="https://www.jiajiewu.cn/visual-odometer1.html">
+<meta property="og:site_name" content="jiajie">
+<meta property="og:description" content="视觉 SLAM 主要分为视觉前端和优化后端。前端也称为视觉里程计(VO)。它根据相邻图像的信息,估计出粗略的相机运动,给后端提供较好的初始值。本节将记录从特征点法入手,学习如何提取、匹配图像特征点,然后估计两帧之间的相机运动和场景结构,从而实现一个基本的两帧间视觉里程计。摘自《视觉SLAM十四讲》。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/7z1BYmWsCZXcNSH.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/abDVJzp8TewirZG.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/15/Wq2k3H4zKPdaBmT.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/17/TOcICRD1oNtHXQq.png">
+<meta property="og:image" content="https://i.loli.net/2019/08/17/wsDncdKhSkQGUOF.png">
+<meta property="og:updated_time" content="2019-08-17T10:41:22.473Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="视觉里程计1">
+<meta name="twitter:description" content="视觉 SLAM 主要分为视觉前端和优化后端。前端也称为视觉里程计(VO)。它根据相邻图像的信息,估计出粗略的相机运动,给后端提供较好的初始值。本节将记录从特征点法入手,学习如何提取、匹配图像特征点,然后估计两帧之间的相机运动和场景结构,从而实现一个基本的两帧间视觉里程计。摘自《视觉SLAM十四讲》。">
+<meta name="twitter:image" content="https://i.loli.net/2019/08/15/7z1BYmWsCZXcNSH.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="jiajie" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.jiajiewu.cn/visual-odometer1">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>视觉里程计1 | jiajie</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-139409990-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-139409990-1');
+    }
+  </script>
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4935452b6c6a00d127c010608b531cc0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jiajie</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Cv 爱好者</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>时间线</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>聚类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-talk">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/talk/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>杂谈</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-photos">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/photos/" rel="section"><i class="menu-item-icon fa fa-fw fa-image"></i> <br>相册</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link/" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>有趣的链接</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于我与本博客</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/visual-odometer1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jiajie">
+      <meta itemprop="description" content="这是最好的时代，也是最坏的时代。">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jiajie">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">视觉里程计1
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-15 21:06:44" itemprop="dateCreated datePublished" datetime="2019-08-15T21:06:44+08:00">2019-08-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-17 18:41:22" itemprop="dateModified" datetime="2019-08-17T18:41:22+08:00">2019-08-17</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/SLAM/" itemprop="url" rel="index"><span itemprop="name">SLAM</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/visual-odometer1.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/visual-odometer1.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+	
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>视觉 SLAM 主要分为视觉前端和优化后端。前端也称为视觉里程计(VO)。它根据相邻图像的信息,估计出粗略的相机运动,给后端提供较好的初始值。本节将记录从特征点法入手,学习如何提取、匹配图像特征点,然后估计两帧之间的相机运动和场景结构,从而实现一个基本的两帧间视觉里程计。摘自《视觉SLAM十四讲》。</p>
+<a id="more"></a>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="特征点"><a href="#特征点" class="headerlink" title="特征点"></a>特征点</h3><p>特征点由关键点(Key-point)和描述子(Descriptor)两部分组成。比方说,当我们谈论 SIFT 特征时,是指“提取 SIFT 关键点,并计算 SIFT 描述子”两件事情。关键点是指该特征点在图像里的位置,有些特征点还具有朝向、大小等信息。描述子通常是一个向量,按照某种人为设计的方式,描述了该关键点周围像素的信息。描述子是按照“外观相似的特征应该有相似的描述子”的原则设计的。因此,只要两个特征点的描述子在向量空间上的距离相近,就可以认为它们是同样的特征点。</p>
+<h3 id="特征匹配"><a href="#特征匹配" class="headerlink" title="特征匹配"></a>特征匹配</h3><p>特征匹配是视觉 SLAM 中极为关键的一步,宽泛地说,特征匹配解决了 SLAM 中的数据关联问题(data association),即确定当前看到的路标与之前看到的路标之间的对应关系。通过对图像与图像,或者图像与地图之间的描述子进行准确的匹配,我们可以为后续的姿态估计,优化等操作减轻大量负担。</p>
+<h3 id="编程练习：特征提取和匹配"><a href="#编程练习：特征提取和匹配" class="headerlink" title="编程练习：特征提取和匹配"></a>编程练习：特征提取和匹配</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;iostream&gt;</span></span><br><span class="line"><span class="comment">#include &lt;opencv2/core/core.hpp&gt;</span></span><br><span class="line"><span class="comment">#include &lt;opencv2/features2d/features2d.hpp&gt;</span></span><br><span class="line"><span class="comment">#include &lt;opencv2/highgui/highgui.hpp&gt;</span></span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">using namespace cv;</span><br><span class="line"></span><br><span class="line">int main ( int argc, char** argv )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> ( argc != <span class="number">3</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">"usage: feature_extraction img1 img2"</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    //-- 读取图像</span><br><span class="line">    Mat img_1 = imread ( argv[<span class="number">1</span>], CV_LOAD_IMAGE_COLOR );</span><br><span class="line">    Mat img_2 = imread ( argv[<span class="number">2</span>], CV_LOAD_IMAGE_COLOR );</span><br><span class="line"></span><br><span class="line">    //-- 初始化</span><br><span class="line">    std::vector&lt;KeyPoint&gt; keypoints_1, keypoints_2;</span><br><span class="line">    Mat descriptors_1, descriptors_2;</span><br><span class="line">    Ptr&lt;FeatureDetector&gt; detector = ORB::create();</span><br><span class="line">    Ptr&lt;DescriptorExtractor&gt; descriptor = ORB::create();</span><br><span class="line">    // Ptr&lt;FeatureDetector&gt; detector = FeatureDetector::create(detector_name);</span><br><span class="line">    // Ptr&lt;DescriptorExtractor&gt; descriptor = DescriptorExtractor::create(descriptor_name);</span><br><span class="line">    Ptr&lt;DescriptorMatcher&gt; matcher  = DescriptorMatcher::create ( <span class="string">"BruteForce-Hamming"</span> );</span><br><span class="line"></span><br><span class="line">    //-- 第一步:检测 Oriented FAST 角点位置</span><br><span class="line">    detector-&gt;detect ( img_1,keypoints_1 );</span><br><span class="line">    detector-&gt;detect ( img_2,keypoints_2 );</span><br><span class="line"></span><br><span class="line">    //-- 第二步:根据角点位置计算 BRIEF 描述子</span><br><span class="line">    descriptor-&gt;compute ( img_1, keypoints_1, descriptors_1 );</span><br><span class="line">    descriptor-&gt;compute ( img_2, keypoints_2, descriptors_2 );</span><br><span class="line"></span><br><span class="line">    Mat outimg1;</span><br><span class="line">    drawKeypoints( img_1, keypoints_1, outimg1, Scalar::all(<span class="number">-1</span>), DrawMatchesFlags::DEFAULT );</span><br><span class="line">    imshow(<span class="string">"ORB特征点"</span>,outimg1);</span><br><span class="line"></span><br><span class="line">    //-- 第三步:对两幅图像中的BRIEF描述子进行匹配，使用 Hamming 距离</span><br><span class="line">    vector&lt;DMatch&gt; matches;</span><br><span class="line">    //BFMatcher matcher ( NORM_HAMMING );</span><br><span class="line">    matcher-&gt;match ( descriptors_1, descriptors_2, matches );</span><br><span class="line"></span><br><span class="line">    //-- 第四步:匹配点对筛选</span><br><span class="line">    double min_dist=<span class="number">10000</span>, max_dist=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    //找出所有匹配之间的最小距离和最大距离, 即是最相似的和最不相似的两组点之间的距离</span><br><span class="line">    <span class="keyword">for</span> ( int i = <span class="number">0</span>; i &lt; descriptors_1.rows; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        double dist = matches[i].distance;</span><br><span class="line">        <span class="keyword">if</span> ( dist &lt; min_dist ) min_dist = dist;</span><br><span class="line">        <span class="keyword">if</span> ( dist &gt; max_dist ) max_dist = dist;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 仅供娱乐的写法</span><br><span class="line">    min_dist = min_element( matches.begin(), matches.end(), [](const DMatch&amp; m1, const DMatch&amp; m2) &#123;return m1.distance&lt;m2.distance;&#125; )-&gt;distance;</span><br><span class="line">    max_dist = max_element( matches.begin(), matches.end(), [](const DMatch&amp; m1, const DMatch&amp; m2) &#123;return m1.distance&lt;m2.distance;&#125; )-&gt;distance;</span><br><span class="line"></span><br><span class="line">    printf ( <span class="string">"-- Max dist : %f \n"</span>, max_dist );</span><br><span class="line">    printf ( <span class="string">"-- Min dist : %f \n"</span>, min_dist );</span><br><span class="line"></span><br><span class="line">    //当描述子之间的距离大于两倍的最小距离时,即认为匹配有误.但有时候最小距离会非常小,设置一个经验值<span class="number">30</span>作为下限.</span><br><span class="line">    std::vector&lt; DMatch &gt; good_matches;</span><br><span class="line">    <span class="keyword">for</span> ( int i = <span class="number">0</span>; i &lt; descriptors_1.rows; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> ( matches[i].distance &lt;= max ( <span class="number">2</span>*min_dist, <span class="number">30.0</span> ) )</span><br><span class="line">        &#123;</span><br><span class="line">            good_matches.push_back ( matches[i] );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //-- 第五步:绘制匹配结果</span><br><span class="line">    Mat img_match;</span><br><span class="line">    Mat img_goodmatch;</span><br><span class="line">    drawMatches ( img_1, keypoints_1, img_2, keypoints_2, matches, img_match );</span><br><span class="line">    drawMatches ( img_1, keypoints_1, img_2, keypoints_2, good_matches, img_goodmatch );</span><br><span class="line">    imshow ( <span class="string">"所有匹配点对"</span>, img_match );</span><br><span class="line">    imshow ( <span class="string">"优化后匹配点对"</span>, img_goodmatch );</span><br><span class="line">    waitKey(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2019/08/15/7z1BYmWsCZXcNSH.png" alt><br><img src="https://i.loli.net/2019/08/15/abDVJzp8TewirZG.png" alt> </p>
+<h2 id="相机运动估计"><a href="#相机运动估计" class="headerlink" title="相机运动估计"></a>相机运动估计</h2><p>我们希望根据匹配的点对,估计相机的运动。</p>
+<ol>
+<li>当相机为单目时,我们只知道 2D 的像素坐标,因而问题是根据两组 2D 点估计运动。该问题用对极几何来解决。（无深度信息）</li>
+<li>当相机为双目、RGB-D 时,或者我们通过某种方法得到了距离信息,那问题就是根据两组 3D 点估计运动。该问题通常用 ICP 来解决。（两张深度图）</li>
+<li>如果我们有 3D 点和它们在相机的投影位置,也能估计相机的运动。该问题通过 PnP求解。（单张深度图）</li>
+</ol>
+<h3 id="2D-2D-对极几何"><a href="#2D-2D-对极几何" class="headerlink" title="2D-2D: 对极几何"></a>2D-2D: 对极几何</h3><p>如下图：<br><img src="https://i.loli.net/2019/08/15/Wq2k3H4zKPdaBmT.png" alt><br>在第一帧的坐标系下,设 P 的空间位置为:</p>
+<script type="math/tex; mode=display">
+\boldsymbol{P}=[X, Y, Z]^{T}</script><p>以第一个相机坐标系作为基准，空间点对应的像素坐标：</p>
+<script type="math/tex; mode=display">
+s_{1} \boldsymbol{p}_{1}=\boldsymbol{K} \boldsymbol{P}, \quad s_{2} \boldsymbol{p}_{2}=\boldsymbol{K}(\boldsymbol{R} \boldsymbol{P}+\boldsymbol{t})</script><p>在齐次坐标系下可以忽略掉常数项：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{p}_{1}=\boldsymbol{K} \boldsymbol{P}, \quad \boldsymbol{p}_{2}=\boldsymbol{K}(\boldsymbol{R} \boldsymbol{P}+\boldsymbol{t})</script><p>取：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{x}_{1}=\boldsymbol{K}^{-1} \boldsymbol{p}_{1}, \quad \boldsymbol{x}_{2}=\boldsymbol{K}^{-1} \boldsymbol{p}_{2}</script><p>化简有：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{x}_{2}=\boldsymbol{R} \boldsymbol{x}_{1}+\boldsymbol{t}</script><p>两边同时左乘$\boldsymbol{x}_{2}^{T} $：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{x}_{2}^{T} \boldsymbol{t}^{\wedge} \boldsymbol{x}_{2}=\boldsymbol{x}_{2}^{T} \boldsymbol{t}^{\wedge} \boldsymbol{R} \boldsymbol{x}_{1}</script><p>两侧同时再左乘$\boldsymbol{x}_{2}^{T}$：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{x}_{2}^{T} \boldsymbol{t}^{\wedge} \boldsymbol{x}_{2}=\boldsymbol{x}_{2}^{T} \boldsymbol{t}^{\wedge} \boldsymbol{R} \boldsymbol{x}_{1}</script><p>观察等式左侧,$\boldsymbol{t}^{\wedge} \boldsymbol{x}_{2}$是一个与 $\boldsymbol{t}$和 $\boldsymbol{x}_{2}$ 都垂直的向量。把它再和$\boldsymbol{x}_{2}$ 做内积时,将得到 0。</p>
+<script type="math/tex; mode=display">
+\boldsymbol{x}_{2}^{T} \boldsymbol{t}^{\wedge} \boldsymbol{R} \boldsymbol{x}_{1}=0</script><p>即：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{p}_{2}^{T} \boldsymbol{K}^{-T} \boldsymbol{t}^{\wedge} \boldsymbol{R} \boldsymbol{K}^{-1} \boldsymbol{p}_{1}=0</script><p>令：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{E}=\boldsymbol{t}^{\wedge} \boldsymbol{R}, \quad \boldsymbol{F}=\boldsymbol{K}^{-T} \boldsymbol{E} \boldsymbol{K}^{-1}, \quad \boldsymbol{x}_{2}^{T} \boldsymbol{E} \boldsymbol{x}_{1}=\boldsymbol{p}_{2}^{T} \boldsymbol{F} \boldsymbol{p}_{1}=0</script><p>这两个式子都称为对极约束,它以形式简洁著名。它的几何意义是$O_{1}, P, O_{2}$ 三者共<br>面。对极约束中同时包含了平移和旋转。</p>
+<p>对极约束简洁地给出了两个匹配点的空间位置关系。于是,相机位姿估计问题变为以<br>下两步:</p>
+<ol>
+<li>根据配对点的像素位置,求出 $\boldsymbol{E}$或者 $\boldsymbol{F}$;</li>
+<li>根据 $\boldsymbol{E}$ 或者 $\boldsymbol{F}$ ,求出 $\boldsymbol{R}$,$\boldsymbol{t}$。</li>
+</ol>
+<p>由于 $\boldsymbol{E}$ 和 $\boldsymbol{E}$ 只相差了相机内参,而内参在 SLAM 中通常是已知的 ,所以实践当往往使用形式更简单的 $\boldsymbol{E}$。</p>
+<p>E 具有五个自由度的事实,表明我们最少可以用五对点来求解 E。但是,E 的内在性质是一种非线性性质,在求解线性方程时会带来麻烦,因此,也可以只考虑它的尺度等价性,使用八对点来估计 E——这就是经典的八点法(Eight-point-algorithm)。</p>
+<p>根据已经估得的本质矩阵 E,恢复出相机的运动 R, t。这个过程是由奇异值分解(SVD)得到的。</p>
+<h3 id="编程练习：对极约束求解相机运动"><a href="#编程练习：对极约束求解相机运动" class="headerlink" title="编程练习：对极约束求解相机运动"></a>编程练习：对极约束求解相机运动</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/core/core.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/features2d/features2d.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/highgui/highgui.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/calib3d/calib3d.hpp&gt;</span></span></span><br><span class="line"><span class="comment">// #include "extra.h" // use this if in OpenCV2 </span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line"><span class="comment">/****************************************************</span></span><br><span class="line"><span class="comment"> * 本程序演示了如何使用2D-2D的特征匹配估计相机运动</span></span><br><span class="line"><span class="comment"> * **************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">find_feature_matches</span> <span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> Mat&amp; img_1, <span class="keyword">const</span> Mat&amp; img_2,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoints_1,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoints_2,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; DMatch &gt;&amp; matches )</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pose_estimation_2d2d</span> <span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt; keypoints_1,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt; keypoints_2,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; DMatch &gt; matches,</span></span></span><br><span class="line"><span class="function"><span class="params">    Mat&amp; R, Mat&amp; t )</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 像素坐标转相机归一化坐标</span></span><br><span class="line"><span class="function">Point2d <span class="title">pixel2cam</span> <span class="params">( <span class="keyword">const</span> Point2d&amp; p, <span class="keyword">const</span> Mat&amp; K )</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">( <span class="keyword">int</span> argc, <span class="keyword">char</span>** argv )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( argc != <span class="number">3</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"usage: pose_estimation_2d2d img1 img2"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//-- 读取图像</span></span><br><span class="line">    Mat img_1 = imread ( argv[<span class="number">1</span>], CV_LOAD_IMAGE_COLOR );</span><br><span class="line">    Mat img_2 = imread ( argv[<span class="number">2</span>], CV_LOAD_IMAGE_COLOR );</span><br><span class="line"></span><br><span class="line">    <span class="built_in">vector</span>&lt;KeyPoint&gt; keypoints_1, keypoints_2;</span><br><span class="line">    <span class="built_in">vector</span>&lt;DMatch&gt; matches;</span><br><span class="line">    find_feature_matches ( img_1, img_2, keypoints_1, keypoints_2, matches );</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"一共找到了"</span>&lt;&lt;matches.size() &lt;&lt;<span class="string">"组匹配点"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 估计两张图像间运动</span></span><br><span class="line">    Mat R,t;</span><br><span class="line">    pose_estimation_2d2d ( keypoints_1, keypoints_2, matches, R, t );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 验证E=t^R*scale</span></span><br><span class="line">    Mat t_x = ( Mat_&lt;<span class="keyword">double</span>&gt; ( <span class="number">3</span>,<span class="number">3</span> ) &lt;&lt;</span><br><span class="line">                <span class="number">0</span>,                      -t.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">2</span>,<span class="number">0</span> ),     t.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">1</span>,<span class="number">0</span> ),</span><br><span class="line">                t.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">2</span>,<span class="number">0</span> ),      <span class="number">0</span>,                      -t.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">0</span> ),</span><br><span class="line">                -t.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">1.0</span> ),     t.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">0</span> ),      <span class="number">0</span> );</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"t^R="</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;t_x*R&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 验证对极约束</span></span><br><span class="line">    Mat K = ( Mat_&lt;<span class="keyword">double</span>&gt; ( <span class="number">3</span>,<span class="number">3</span> ) &lt;&lt; <span class="number">520.9</span>, <span class="number">0</span>, <span class="number">325.1</span>, <span class="number">0</span>, <span class="number">521.0</span>, <span class="number">249.7</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span> );</span><br><span class="line">    <span class="keyword">for</span> ( DMatch m: matches )</span><br><span class="line">    &#123;</span><br><span class="line">        Point2d pt1 = pixel2cam ( keypoints_1[ m.queryIdx ].pt, K );</span><br><span class="line">        Mat y1 = ( Mat_&lt;<span class="keyword">double</span>&gt; ( <span class="number">3</span>,<span class="number">1</span> ) &lt;&lt; pt1.x, pt1.y, <span class="number">1</span> );</span><br><span class="line">        Point2d pt2 = pixel2cam ( keypoints_2[ m.trainIdx ].pt, K );</span><br><span class="line">        Mat y2 = ( Mat_&lt;<span class="keyword">double</span>&gt; ( <span class="number">3</span>,<span class="number">1</span> ) &lt;&lt; pt2.x, pt2.y, <span class="number">1</span> );</span><br><span class="line">        Mat d = y2.t() * t_x * R * y1;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"epipolar constraint = "</span> &lt;&lt; d &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">find_feature_matches</span> <span class="params">( <span class="keyword">const</span> Mat&amp; img_1, <span class="keyword">const</span> Mat&amp; img_2,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoints_1,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoints_2,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; DMatch &gt;&amp; matches )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//-- 初始化</span></span><br><span class="line">    Mat descriptors_1, descriptors_2;</span><br><span class="line">    <span class="comment">// used in OpenCV3 </span></span><br><span class="line">    Ptr&lt;FeatureDetector&gt; detector = ORB::create();</span><br><span class="line">    Ptr&lt;DescriptorExtractor&gt; descriptor = ORB::create();</span><br><span class="line">    <span class="comment">// use this if you are in OpenCV2 </span></span><br><span class="line">    <span class="comment">// Ptr&lt;FeatureDetector&gt; detector = FeatureDetector::create ( "ORB" );</span></span><br><span class="line">    <span class="comment">// Ptr&lt;DescriptorExtractor&gt; descriptor = DescriptorExtractor::create ( "ORB" );</span></span><br><span class="line">    Ptr&lt;DescriptorMatcher&gt; matcher  = DescriptorMatcher::create ( <span class="string">"BruteForce-Hamming"</span> );</span><br><span class="line">    <span class="comment">//-- 第一步:检测 Oriented FAST 角点位置</span></span><br><span class="line">    detector-&gt;detect ( img_1,keypoints_1 );</span><br><span class="line">    detector-&gt;detect ( img_2,keypoints_2 );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 第二步:根据角点位置计算 BRIEF 描述子</span></span><br><span class="line">    descriptor-&gt;compute ( img_1, keypoints_1, descriptors_1 );</span><br><span class="line">    descriptor-&gt;compute ( img_2, keypoints_2, descriptors_2 );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 第三步:对两幅图像中的BRIEF描述子进行匹配，使用 Hamming 距离</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;DMatch&gt; match;</span><br><span class="line">    <span class="comment">//BFMatcher matcher ( NORM_HAMMING );</span></span><br><span class="line">    matcher-&gt;match ( descriptors_1, descriptors_2, match );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 第四步:匹配点对筛选</span></span><br><span class="line">    <span class="keyword">double</span> min_dist=<span class="number">10000</span>, max_dist=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//找出所有匹配之间的最小距离和最大距离, 即是最相似的和最不相似的两组点之间的距离</span></span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; descriptors_1.rows; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">double</span> dist = match[i].distance;</span><br><span class="line">        <span class="keyword">if</span> ( dist &lt; min_dist ) min_dist = dist;</span><br><span class="line">        <span class="keyword">if</span> ( dist &gt; max_dist ) max_dist = dist;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span> ( <span class="string">"-- Max dist : %f \n"</span>, max_dist );</span><br><span class="line">    <span class="built_in">printf</span> ( <span class="string">"-- Min dist : %f \n"</span>, min_dist );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//当描述子之间的距离大于两倍的最小距离时,即认为匹配有误.但有时候最小距离会非常小,设置一个经验值30作为下限.</span></span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; descriptors_1.rows; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> ( match[i].distance &lt;= max ( <span class="number">2</span>*min_dist, <span class="number">30.0</span> ) )</span><br><span class="line">        &#123;</span><br><span class="line">            matches.push_back ( match[i] );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">Point2d <span class="title">pixel2cam</span> <span class="params">( <span class="keyword">const</span> Point2d&amp; p, <span class="keyword">const</span> Mat&amp; K )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Point2d</span><br><span class="line">           (</span><br><span class="line">               ( p.x - K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">2</span> ) ) / K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">0</span> ),</span><br><span class="line">               ( p.y - K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">1</span>,<span class="number">2</span> ) ) / K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">1</span>,<span class="number">1</span> )</span><br><span class="line">           );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pose_estimation_2d2d</span> <span class="params">( <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt; keypoints_1,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt; keypoints_2,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; DMatch &gt; matches,</span></span></span><br><span class="line"><span class="function"><span class="params">                            Mat&amp; R, Mat&amp; t )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 相机内参,TUM Freiburg2</span></span><br><span class="line">    Mat K = ( Mat_&lt;<span class="keyword">double</span>&gt; ( <span class="number">3</span>,<span class="number">3</span> ) &lt;&lt; <span class="number">520.9</span>, <span class="number">0</span>, <span class="number">325.1</span>, <span class="number">0</span>, <span class="number">521.0</span>, <span class="number">249.7</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 把匹配点转换为vector&lt;Point2f&gt;的形式</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;Point2f&gt; points1;</span><br><span class="line">    <span class="built_in">vector</span>&lt;Point2f&gt; points2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ( <span class="keyword">int</span> ) matches.size(); i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        points1.push_back ( keypoints_1[matches[i].queryIdx].pt );</span><br><span class="line">        points2.push_back ( keypoints_2[matches[i].trainIdx].pt );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 计算基础矩阵</span></span><br><span class="line">    Mat fundamental_matrix;</span><br><span class="line">    fundamental_matrix = findFundamentalMat ( points1, points2, CV_FM_8POINT );</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"fundamental_matrix is "</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt; fundamental_matrix&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 计算本质矩阵</span></span><br><span class="line">    <span class="function">Point2d <span class="title">principal_point</span> <span class="params">( <span class="number">325.1</span>, <span class="number">249.7</span> )</span></span>;	<span class="comment">//相机光心, TUM dataset标定值</span></span><br><span class="line">    <span class="keyword">double</span> focal_length = <span class="number">521</span>;			<span class="comment">//相机焦距, TUM dataset标定值</span></span><br><span class="line">    Mat essential_matrix;</span><br><span class="line">    essential_matrix = findEssentialMat ( points1, points2, focal_length, principal_point );</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"essential_matrix is "</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt; essential_matrix&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 计算单应矩阵</span></span><br><span class="line">    Mat homography_matrix;</span><br><span class="line">    homography_matrix = findHomography ( points1, points2, RANSAC, <span class="number">3</span> );</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"homography_matrix is "</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;homography_matrix&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 从本质矩阵中恢复旋转和平移信息.</span></span><br><span class="line">    recoverPose ( essential_matrix, points1, points2, R, t, focal_length, principal_point );</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"R is "</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;R&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"t is "</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;t&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三角化"><a href="#三角化" class="headerlink" title="三角化"></a>三角化</h3><p>在使用对极几何约束估计了相机运动后，下一步我们需要用相机的运动估计特征点的空间位置。在单目 SLAM 中,仅通过单张图像无法获得像素的深度信息,我们需要通过三角测量(Triangulation)(或三角化)的方法来估计地图点的深度。如下图：</p>
+<p><img src="https://i.loli.net/2019/08/17/TOcICRD1oNtHXQq.png" alt><br>按照对极几何中的定义,设$\boldsymbol{x}_{1}, \boldsymbol{x}_{2}$ 为两个特征点的归一化坐标，有：</p>
+<script type="math/tex; mode=display">
+s_{1} \boldsymbol{x}_{1}=s_{2} \boldsymbol{R} \boldsymbol{x}_{2}+\boldsymbol{t}</script><p>要算 $s_{2}$ ,那么先对上式两侧左乘一个 $\boldsymbol{x}_{1}^{\wedge}$,</p>
+<script type="math/tex; mode=display">
+s_{1} \boldsymbol{x}_{1}^{\wedge} \boldsymbol{x}_{1}=0=s_{2} \boldsymbol{x}_{1}^{\wedge} \boldsymbol{R} \boldsymbol{x}_{2}+\boldsymbol{x}_{1}^{\wedge} \boldsymbol{t}</script><p>右侧可看成 $s_{2}$的一个方程,可以根据它直接求得 $s_{2}$ 。有了 $s_{2},s_{1}$也非常容易求出。于是,我们就得到了两个帧下的点的深度,确定了它们的空间坐标。由于噪声的存在,我们估得的 $\boldsymbol{R}, \boldsymbol{t}$,不一定精确使上式为零,所以更常见的做法求最小二乘解而不是零解。</p>
+<h3 id="编程练习：三角测量"><a href="#编程练习：三角测量" class="headerlink" title="编程练习：三角测量"></a>编程练习：三角测量</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;iostream&gt;</span></span><br><span class="line"><span class="comment">#include &lt;opencv2/core/core.hpp&gt;</span></span><br><span class="line"><span class="comment">#include &lt;opencv2/features2d/features2d.hpp&gt;</span></span><br><span class="line"><span class="comment">#include &lt;opencv2/highgui/highgui.hpp&gt;</span></span><br><span class="line"><span class="comment">#include &lt;opencv2/calib3d/calib3d.hpp&gt;</span></span><br><span class="line">// <span class="comment">#include "extra.h" // used in opencv2 </span></span><br><span class="line">using namespace std;</span><br><span class="line">using namespace cv;</span><br><span class="line"></span><br><span class="line">void find_feature_matches (</span><br><span class="line">    const Mat&amp; img_1, const Mat&amp; img_2,</span><br><span class="line">    std::vector&lt;KeyPoint&gt;&amp; keypoints_1,</span><br><span class="line">    std::vector&lt;KeyPoint&gt;&amp; keypoints_2,</span><br><span class="line">    std::vector&lt; DMatch &gt;&amp; matches );</span><br><span class="line"></span><br><span class="line">void pose_estimation_2d2d (</span><br><span class="line">    const std::vector&lt;KeyPoint&gt;&amp; keypoints_1,</span><br><span class="line">    const std::vector&lt;KeyPoint&gt;&amp; keypoints_2,</span><br><span class="line">    const std::vector&lt; DMatch &gt;&amp; matches,</span><br><span class="line">    Mat&amp; R, Mat&amp; t );</span><br><span class="line"></span><br><span class="line">void triangulation (</span><br><span class="line">    const vector&lt;KeyPoint&gt;&amp; keypoint_1,</span><br><span class="line">    const vector&lt;KeyPoint&gt;&amp; keypoint_2,</span><br><span class="line">    const std::vector&lt; DMatch &gt;&amp; matches,</span><br><span class="line">    const Mat&amp; R, const Mat&amp; t,</span><br><span class="line">    vector&lt;Point3d&gt;&amp; points</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">// 像素坐标转相机归一化坐标</span><br><span class="line">Point2f pixel2cam( const Point2d&amp; p, const Mat&amp; K );</span><br><span class="line"></span><br><span class="line">int main ( int argc, char** argv )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> ( argc != <span class="number">3</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">"usage: triangulation img1 img2"</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    //-- 读取图像</span><br><span class="line">    Mat img_1 = imread ( argv[<span class="number">1</span>], CV_LOAD_IMAGE_COLOR );</span><br><span class="line">    Mat img_2 = imread ( argv[<span class="number">2</span>], CV_LOAD_IMAGE_COLOR );</span><br><span class="line"></span><br><span class="line">    vector&lt;KeyPoint&gt; keypoints_1, keypoints_2;</span><br><span class="line">    vector&lt;DMatch&gt; matches;</span><br><span class="line">    find_feature_matches ( img_1, img_2, keypoints_1, keypoints_2, matches );</span><br><span class="line">    cout&lt;&lt;<span class="string">"一共找到了"</span>&lt;&lt;matches.size() &lt;&lt;<span class="string">"组匹配点"</span>&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    //-- 估计两张图像间运动</span><br><span class="line">    Mat R,t;</span><br><span class="line">    pose_estimation_2d2d ( keypoints_1, keypoints_2, matches, R, t );</span><br><span class="line"></span><br><span class="line">    //-- 三角化</span><br><span class="line">    vector&lt;Point3d&gt; points;</span><br><span class="line">    triangulation( keypoints_1, keypoints_2, matches, R, t, points );</span><br><span class="line">    </span><br><span class="line">    //-- 验证三角化点与特征点的重投影关系</span><br><span class="line">    Mat K = ( Mat_&lt;double&gt; ( <span class="number">3</span>,<span class="number">3</span> ) &lt;&lt; <span class="number">520.9</span>, <span class="number">0</span>, <span class="number">325.1</span>, <span class="number">0</span>, <span class="number">521.0</span>, <span class="number">249.7</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span> );</span><br><span class="line">    <span class="keyword">for</span> ( int i=<span class="number">0</span>; i&lt;matches.size(); i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        Point2d pt1_cam = pixel2cam( keypoints_1[ matches[i].queryIdx ].pt, K );</span><br><span class="line">        Point2d pt1_cam_3d(</span><br><span class="line">            points[i].x/points[i].z, </span><br><span class="line">            points[i].y/points[i].z </span><br><span class="line">        );</span><br><span class="line">        </span><br><span class="line">        cout&lt;&lt;<span class="string">"point in the first camera frame: "</span>&lt;&lt;pt1_cam&lt;&lt;endl;</span><br><span class="line">        cout&lt;&lt;<span class="string">"point projected from 3D "</span>&lt;&lt;pt1_cam_3d&lt;&lt;<span class="string">", d="</span>&lt;&lt;points[i].z&lt;&lt;endl;</span><br><span class="line">        </span><br><span class="line">        // 第二个图</span><br><span class="line">        Point2f pt2_cam = pixel2cam( keypoints_2[ matches[i].trainIdx ].pt, K );</span><br><span class="line">        Mat pt2_trans = R*( Mat_&lt;double&gt;(<span class="number">3</span>,<span class="number">1</span>) &lt;&lt; points[i].x, points[i].y, points[i].z ) + t;</span><br><span class="line">        pt2_trans /= pt2_trans.at&lt;double&gt;(<span class="number">2</span>,<span class="number">0</span>);</span><br><span class="line">        cout&lt;&lt;<span class="string">"point in the second camera frame: "</span>&lt;&lt;pt2_cam&lt;&lt;endl;</span><br><span class="line">        cout&lt;&lt;<span class="string">"point reprojected from second frame: "</span>&lt;&lt;pt2_trans.t()&lt;&lt;endl;</span><br><span class="line">        cout&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void find_feature_matches ( const Mat&amp; img_1, const Mat&amp; img_2,</span><br><span class="line">                            std::vector&lt;KeyPoint&gt;&amp; keypoints_1,</span><br><span class="line">                            std::vector&lt;KeyPoint&gt;&amp; keypoints_2,</span><br><span class="line">                            std::vector&lt; DMatch &gt;&amp; matches )</span><br><span class="line">&#123;</span><br><span class="line">    //-- 初始化</span><br><span class="line">    Mat descriptors_1, descriptors_2;</span><br><span class="line">    // used <span class="keyword">in</span> OpenCV3 </span><br><span class="line">    Ptr&lt;FeatureDetector&gt; detector = ORB::create();</span><br><span class="line">    Ptr&lt;DescriptorExtractor&gt; descriptor = ORB::create();</span><br><span class="line">    // use this <span class="keyword">if</span> you are <span class="keyword">in</span> OpenCV2 </span><br><span class="line">    // Ptr&lt;FeatureDetector&gt; detector = FeatureDetector::create ( <span class="string">"ORB"</span> );</span><br><span class="line">    // Ptr&lt;DescriptorExtractor&gt; descriptor = DescriptorExtractor::create ( <span class="string">"ORB"</span> );</span><br><span class="line">    Ptr&lt;DescriptorMatcher&gt; matcher  = DescriptorMatcher::create(<span class="string">"BruteForce-Hamming"</span>);</span><br><span class="line">    //-- 第一步:检测 Oriented FAST 角点位置</span><br><span class="line">    detector-&gt;detect ( img_1,keypoints_1 );</span><br><span class="line">    detector-&gt;detect ( img_2,keypoints_2 );</span><br><span class="line"></span><br><span class="line">    //-- 第二步:根据角点位置计算 BRIEF 描述子</span><br><span class="line">    descriptor-&gt;compute ( img_1, keypoints_1, descriptors_1 );</span><br><span class="line">    descriptor-&gt;compute ( img_2, keypoints_2, descriptors_2 );</span><br><span class="line"></span><br><span class="line">    //-- 第三步:对两幅图像中的BRIEF描述子进行匹配，使用 Hamming 距离</span><br><span class="line">    vector&lt;DMatch&gt; match;</span><br><span class="line">   // BFMatcher matcher ( NORM_HAMMING );</span><br><span class="line">    matcher-&gt;match ( descriptors_1, descriptors_2, match );</span><br><span class="line"></span><br><span class="line">    //-- 第四步:匹配点对筛选</span><br><span class="line">    double min_dist=<span class="number">10000</span>, max_dist=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    //找出所有匹配之间的最小距离和最大距离, 即是最相似的和最不相似的两组点之间的距离</span><br><span class="line">    <span class="keyword">for</span> ( int i = <span class="number">0</span>; i &lt; descriptors_1.rows; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        double dist = match[i].distance;</span><br><span class="line">        <span class="keyword">if</span> ( dist &lt; min_dist ) min_dist = dist;</span><br><span class="line">        <span class="keyword">if</span> ( dist &gt; max_dist ) max_dist = dist;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    printf ( <span class="string">"-- Max dist : %f \n"</span>, max_dist );</span><br><span class="line">    printf ( <span class="string">"-- Min dist : %f \n"</span>, min_dist );</span><br><span class="line"></span><br><span class="line">    //当描述子之间的距离大于两倍的最小距离时,即认为匹配有误.但有时候最小距离会非常小,设置一个经验值<span class="number">30</span>作为下限.</span><br><span class="line">    <span class="keyword">for</span> ( int i = <span class="number">0</span>; i &lt; descriptors_1.rows; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> ( match[i].distance &lt;= max ( <span class="number">2</span>*min_dist, <span class="number">30.0</span> ) )</span><br><span class="line">        &#123;</span><br><span class="line">            matches.push_back ( match[i] );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void pose_estimation_2d2d (</span><br><span class="line">    const std::vector&lt;KeyPoint&gt;&amp; keypoints_1,</span><br><span class="line">    const std::vector&lt;KeyPoint&gt;&amp; keypoints_2,</span><br><span class="line">    const std::vector&lt; DMatch &gt;&amp; matches,</span><br><span class="line">    Mat&amp; R, Mat&amp; t )</span><br><span class="line">&#123;</span><br><span class="line">    // 相机内参,TUM Freiburg2</span><br><span class="line">    Mat K = ( Mat_&lt;double&gt; ( <span class="number">3</span>,<span class="number">3</span> ) &lt;&lt; <span class="number">520.9</span>, <span class="number">0</span>, <span class="number">325.1</span>, <span class="number">0</span>, <span class="number">521.0</span>, <span class="number">249.7</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span> );</span><br><span class="line"></span><br><span class="line">    //-- 把匹配点转换为vector&lt;Point2f&gt;的形式</span><br><span class="line">    vector&lt;Point2f&gt; points1;</span><br><span class="line">    vector&lt;Point2f&gt; points2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> ( int i = <span class="number">0</span>; i &lt; ( int ) matches.size(); i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        points1.push_back ( keypoints_1[matches[i].queryIdx].pt );</span><br><span class="line">        points2.push_back ( keypoints_2[matches[i].trainIdx].pt );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //-- 计算基础矩阵</span><br><span class="line">    Mat fundamental_matrix;</span><br><span class="line">    fundamental_matrix = findFundamentalMat ( points1, points2, CV_FM_8POINT );</span><br><span class="line">    cout&lt;&lt;<span class="string">"fundamental_matrix is "</span>&lt;&lt;endl&lt;&lt; fundamental_matrix&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    //-- 计算本质矩阵</span><br><span class="line">    Point2d principal_point ( <span class="number">325.1</span>, <span class="number">249.7</span> );				//相机主点, TUM dataset标定值</span><br><span class="line">    int focal_length = <span class="number">521</span>;						//相机焦距, TUM dataset标定值</span><br><span class="line">    Mat essential_matrix;</span><br><span class="line">    essential_matrix = findEssentialMat ( points1, points2, focal_length, principal_point );</span><br><span class="line">    cout&lt;&lt;<span class="string">"essential_matrix is "</span>&lt;&lt;endl&lt;&lt; essential_matrix&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    //-- 计算单应矩阵</span><br><span class="line">    Mat homography_matrix;</span><br><span class="line">    homography_matrix = findHomography ( points1, points2, RANSAC, <span class="number">3</span> );</span><br><span class="line">    cout&lt;&lt;<span class="string">"homography_matrix is "</span>&lt;&lt;endl&lt;&lt;homography_matrix&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    //-- 从本质矩阵中恢复旋转和平移信息.</span><br><span class="line">    recoverPose ( essential_matrix, points1, points2, R, t, focal_length, principal_point );</span><br><span class="line">    cout&lt;&lt;<span class="string">"R is "</span>&lt;&lt;endl&lt;&lt;R&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">"t is "</span>&lt;&lt;endl&lt;&lt;t&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void triangulation ( </span><br><span class="line">    const vector&lt; KeyPoint &gt;&amp; keypoint_1, </span><br><span class="line">    const vector&lt; KeyPoint &gt;&amp; keypoint_2, </span><br><span class="line">    const std::vector&lt; DMatch &gt;&amp; matches,</span><br><span class="line">    const Mat&amp; R, const Mat&amp; t, </span><br><span class="line">    vector&lt; Point3d &gt;&amp; points )</span><br><span class="line">&#123;</span><br><span class="line">    Mat T1 = (Mat_&lt;float&gt; (<span class="number">3</span>,<span class="number">4</span>) &lt;&lt;</span><br><span class="line">        <span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">        <span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">        <span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>);</span><br><span class="line">    Mat T2 = (Mat_&lt;float&gt; (<span class="number">3</span>,<span class="number">4</span>) &lt;&lt;</span><br><span class="line">        R.at&lt;double&gt;(<span class="number">0</span>,<span class="number">0</span>), R.at&lt;double&gt;(<span class="number">0</span>,<span class="number">1</span>), R.at&lt;double&gt;(<span class="number">0</span>,<span class="number">2</span>), t.at&lt;double&gt;(<span class="number">0</span>,<span class="number">0</span>),</span><br><span class="line">        R.at&lt;double&gt;(<span class="number">1</span>,<span class="number">0</span>), R.at&lt;double&gt;(<span class="number">1</span>,<span class="number">1</span>), R.at&lt;double&gt;(<span class="number">1</span>,<span class="number">2</span>), t.at&lt;double&gt;(<span class="number">1</span>,<span class="number">0</span>),</span><br><span class="line">        R.at&lt;double&gt;(<span class="number">2</span>,<span class="number">0</span>), R.at&lt;double&gt;(<span class="number">2</span>,<span class="number">1</span>), R.at&lt;double&gt;(<span class="number">2</span>,<span class="number">2</span>), t.at&lt;double&gt;(<span class="number">2</span>,<span class="number">0</span>)</span><br><span class="line">    );</span><br><span class="line">    </span><br><span class="line">    Mat K = ( Mat_&lt;double&gt; ( <span class="number">3</span>,<span class="number">3</span> ) &lt;&lt; <span class="number">520.9</span>, <span class="number">0</span>, <span class="number">325.1</span>, <span class="number">0</span>, <span class="number">521.0</span>, <span class="number">249.7</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span> );</span><br><span class="line">    vector&lt;Point2f&gt; pts_1, pts_2;</span><br><span class="line">    <span class="keyword">for</span> ( DMatch m:matches )</span><br><span class="line">    &#123;</span><br><span class="line">        // 将像素坐标转换至相机坐标</span><br><span class="line">        pts_1.push_back ( pixel2cam( keypoint_1[m.queryIdx].pt, K) );</span><br><span class="line">        pts_2.push_back ( pixel2cam( keypoint_2[m.trainIdx].pt, K) );</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    Mat pts_4d;</span><br><span class="line">    cv::triangulatePoints( T1, T2, pts_1, pts_2, pts_4d );</span><br><span class="line">    </span><br><span class="line">    // 转换成非齐次坐标</span><br><span class="line">    <span class="keyword">for</span> ( int i=<span class="number">0</span>; i&lt;pts_4d.cols; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        Mat x = pts_4d.col(i);</span><br><span class="line">        x /= x.at&lt;float&gt;(<span class="number">3</span>,<span class="number">0</span>); // 归一化</span><br><span class="line">        Point3d p (</span><br><span class="line">            x.at&lt;float&gt;(<span class="number">0</span>,<span class="number">0</span>), </span><br><span class="line">            x.at&lt;float&gt;(<span class="number">1</span>,<span class="number">0</span>), </span><br><span class="line">            x.at&lt;float&gt;(<span class="number">2</span>,<span class="number">0</span>) </span><br><span class="line">        );</span><br><span class="line">        points.push_back( p );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Point2f pixel2cam ( const Point2d&amp; p, const Mat&amp; K )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> Point2f</span><br><span class="line">    (</span><br><span class="line">        ( p.x - K.at&lt;double&gt;(<span class="number">0</span>,<span class="number">2</span>) ) / K.at&lt;double&gt;(<span class="number">0</span>,<span class="number">0</span>), </span><br><span class="line">        ( p.y - K.at&lt;double&gt;(<span class="number">1</span>,<span class="number">2</span>) ) / K.at&lt;double&gt;(<span class="number">1</span>,<span class="number">1</span>) </span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3D-2D-PnP"><a href="#3D-2D-PnP" class="headerlink" title="3D-2D: PnP"></a>3D-2D: PnP</h3><p>PnP(Perspective-n-Point)是求解 3D 到 2D 点对运动的方法。它描述了当我们知道n 个 3D 空间点以及它们的投影位置时,如何估计相机所在的位姿。PnP 问题有很多种求解方法,例如用三对点估计位姿的 P3P,直接线性变换(DLT),EPnP(Efficient PnP),UPnP 等等。此外,还能用非线性优化的方式,构建最<br>小二乘问题并迭代求解,也就是 Bundle Adjustment。</p>
+<h4 id="直接线性变换-Direct-Linear-Transform-DLT"><a href="#直接线性变换-Direct-Linear-Transform-DLT" class="headerlink" title="直接线性变换(Direct Linear Transform, DLT)"></a>直接线性变换(Direct Linear Transform, DLT)</h4><p>考虑某个空间点 \boldsymbol{P} ,它的齐次坐标为 $\boldsymbol{P}=(X, Y, Z, 1)^{T}$ 。在图像 $\boldsymbol{I_{1}}$ 中,投影到特征点$\boldsymbol{x}_{1}=\left(u_{1}, v_{1}, 1\right)^{T}$ (以归一化平面齐次坐标表示)。此时相机的位姿 $\boldsymbol{R}, \boldsymbol{t}$是未知的。与单应矩阵的求解类似,我们定义增广矩阵 $[\boldsymbol{R} | \boldsymbol{t}]$ 为一个 3 × 4 的矩阵,包含了旋转与平移信息 。</p>
+<script type="math/tex; mode=display">
+s\left(\begin{array}{c}{u_{1}} \\ {v_{1}} \\ {1}\end{array}\right)=\left(\begin{array}{cccc}{t_{1}} & {t_{2}} & {t_{3}} & {t_{4}} \\ {t_{5}} & {t_{6}} & {t_{7}} & {t_{8}} \\ {t_{9}} & {t_{10}} & {t_{11}} & {t_{12}}\end{array}\right)\left(\begin{array}{l}{X} \\ {Y} \\ {Z} \\ {1}\end{array}\right)</script><p>用最后一行把 s 消去,得到两个约束:</p>
+<script type="math/tex; mode=display">
+u_{1}=\frac{t_{1} X+t_{2} Y+t_{3} Z+t_{4}}{t_{9} X+t_{10} Y+t_{11} Z+t_{12}} \quad v_{1}=\frac{t_{5} X+t_{6} Y+t_{7} Z+t_{8}}{t_{9} X+t_{10} Y+t_{11} Z+t_{12}}</script><p>定义：</p>
+<script type="math/tex; mode=display">
+t_{1}=\left(t_{1}, t_{2}, t_{3}, t_{4}\right)^{T}, t_{2}=\left(t_{5}, t_{6}, t_{7}, t_{8}\right)^{T}, t_{3}=\left(t_{9}, t_{10}, t_{11}, t_{12}\right)^{T}</script><p>于是有:</p>
+<script type="math/tex; mode=display">
+\begin{array}{l}{\boldsymbol{t}_{1}^{T} \boldsymbol{P}-\boldsymbol{t}_{3}^{T} \boldsymbol{P} u_{1}=0} \\ {\boldsymbol{t}_{2}^{T} \boldsymbol{P}-\boldsymbol{t}_{3}^{T} \boldsymbol{P} v_{1}=0}\end{array}</script><p>假设一共有 N 个特征点,可以列出线性方程组:</p>
+<script type="math/tex; mode=display">
+\left(\begin{array}{ccc}{\boldsymbol{P}_{1}^{T}} & {0} & {-u_{1} \boldsymbol{P}_{1}^{T}} \\ {0} & {\boldsymbol{P}_{1}^{T}} & {-v_{1} \boldsymbol{P}_{1}^{T}} \\ {\vdots} & {\vdots} & {\vdots} \\ {\boldsymbol{P}_{N}^{T}} & {0} & {-u_{N} \boldsymbol{P}_{N}^{T}} \\ {0} & {\boldsymbol{P}_{N}^{T}} & {-v_{N} \boldsymbol{P}_{N}^{T}}\end{array}\right)\left(\begin{array}{l}{t_{1}} \\ {t_{2}} \\ {t_{3}}\end{array}\right)=0</script><p>由于 $\boldsymbol{t}$一共有 12 维,因此最少通过六对匹配点,即可实现矩阵 $\boldsymbol{T}$ 的线性求解,这种方法(也)称为直接线性变换(Direct Linear Transform, DLT)。在 DLT 求解可以由 QR 分解完成 ,相当于把结果从矩阵空间重新投影到 SE(3) 流形上,转换成旋转和平移两部分。</p>
+<h4 id="Bundle-Adjustment"><a href="#Bundle-Adjustment" class="headerlink" title="Bundle Adjustment"></a>Bundle Adjustment</h4><p><img src="https://i.loli.net/2019/08/17/wsDncdKhSkQGUOF.png" alt><br>前面说的线性方法,往往是先求相机位姿,再求空间点位置,而非线性优化则是把它们都看成优化变量,放在一起优化。这是一种非常通用的求解方式,我们可以用它对 PnP 或 ICP 给出的结果进行优化。在 PnP 中,这个 Bundle Adjustment 问题,是一个最小化重投影误差(Reprojection error)的问题。</p>
+<p>考虑 n 个三维空间点 P 和它们的投影 p,我们希望计算相机的位姿 $\boldsymbol{R}, \boldsymbol{t}$它的李代数表示为 $\boldsymbol{\xi}$。假设某空间点坐标为：$\boldsymbol{P}_{i}=\left[X_{i}, Y_{i}, Z_{i}\right]^{T}$ ,其投影的像素坐标为 $\boldsymbol{u}_{i}=\left[u_{i}, v_{i}\right]^{T}$ 。<br>像素位置与空间点位置的关系如下:</p>
+<script type="math/tex; mode=display">
+s_{i}\left[\begin{array}{c}{u_{i}} \\ {v_{i}} \\ {1}\end{array}\right]=\boldsymbol{K} \exp \left(\boldsymbol{\xi}^{\wedge}\right)\left[\begin{array}{c}{X_{i}} \\ {Y_{i}} \\ {Z_{i}} \\ {1}\end{array}\right]</script><p>写成矩阵形式就是:</p>
+<script type="math/tex; mode=display">
+s_{i} \boldsymbol{u}_{i}=\boldsymbol{K} \exp \left(\boldsymbol{\xi}^{\wedge}\right) \boldsymbol{P}_{i}</script><p>我们把误差求和,构建最小二乘问题,然后寻找最好的相机位姿,使它最小化:</p>
+<script type="math/tex; mode=display">
+\xi^{*}=\arg \min _{\xi} \frac{1}{2} \sum_{i=1}^{n}\left\|u_{i}-\frac{1}{s_{i}} K \exp \left(\xi^{\wedge}\right) P_{i}\right\|_{2}^{2}</script><p>该问题的误差项,是将像素坐标(观测到的投影位置)与 3D 点按照当前估计的位姿进行投影得到的位置相比较得到的误差,所以称之为重投影误差。可以通过 G-N, L-M 等优化算法进行求解。</p>
+<h3 id="编程练习：PnP"><a href="#编程练习：PnP" class="headerlink" title="编程练习：PnP"></a>编程练习：PnP</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/core/core.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/features2d/features2d.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/highgui/highgui.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/calib3d/calib3d.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Eigen/Core&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Eigen/Geometry&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/base_vertex.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/base_unary_edge.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/block_solver.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/optimization_algorithm_levenberg.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/solvers/csparse/linear_solver_csparse.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/types/sba/types_six_dof_expmap.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">find_feature_matches</span> <span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> Mat&amp; img_1, <span class="keyword">const</span> Mat&amp; img_2,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoints_1,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoints_2,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; DMatch &gt;&amp; matches )</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 像素坐标转相机归一化坐标</span></span><br><span class="line"><span class="function">Point2d <span class="title">pixel2cam</span> <span class="params">( <span class="keyword">const</span> Point2d&amp; p, <span class="keyword">const</span> Mat&amp; K )</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bundleAdjustment</span> <span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;Point3f&gt; points_3d,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;Point2f&gt; points_2d,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> Mat&amp; K,</span></span></span><br><span class="line"><span class="function"><span class="params">    Mat&amp; R, Mat&amp; t</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">( <span class="keyword">int</span> argc, <span class="keyword">char</span>** argv )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( argc != <span class="number">5</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"usage: pose_estimation_3d2d img1 img2 depth1 depth2"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//-- 读取图像</span></span><br><span class="line">    Mat img_1 = imread ( argv[<span class="number">1</span>], CV_LOAD_IMAGE_COLOR );</span><br><span class="line">    Mat img_2 = imread ( argv[<span class="number">2</span>], CV_LOAD_IMAGE_COLOR );</span><br><span class="line"></span><br><span class="line">    <span class="built_in">vector</span>&lt;KeyPoint&gt; keypoints_1, keypoints_2;</span><br><span class="line">    <span class="built_in">vector</span>&lt;DMatch&gt; matches;</span><br><span class="line">    find_feature_matches ( img_1, img_2, keypoints_1, keypoints_2, matches );</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"一共找到了"</span>&lt;&lt;matches.size() &lt;&lt;<span class="string">"组匹配点"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 建立3D点</span></span><br><span class="line">    Mat d1 = imread ( argv[<span class="number">3</span>], CV_LOAD_IMAGE_UNCHANGED );       <span class="comment">// 深度图为16位无符号数，单通道图像</span></span><br><span class="line">    Mat K = ( Mat_&lt;<span class="keyword">double</span>&gt; ( <span class="number">3</span>,<span class="number">3</span> ) &lt;&lt; <span class="number">520.9</span>, <span class="number">0</span>, <span class="number">325.1</span>, <span class="number">0</span>, <span class="number">521.0</span>, <span class="number">249.7</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span> );</span><br><span class="line">    <span class="built_in">vector</span>&lt;Point3f&gt; pts_3d;</span><br><span class="line">    <span class="built_in">vector</span>&lt;Point2f&gt; pts_2d;</span><br><span class="line">    <span class="keyword">for</span> ( DMatch m:matches )</span><br><span class="line">    &#123;</span><br><span class="line">        ushort d = d1.ptr&lt;<span class="keyword">unsigned</span> <span class="keyword">short</span>&gt; (<span class="keyword">int</span> ( keypoints_1[m.queryIdx].pt.y )) [ <span class="keyword">int</span> ( keypoints_1[m.queryIdx].pt.x ) ];</span><br><span class="line">        <span class="keyword">if</span> ( d == <span class="number">0</span> )   <span class="comment">// bad depth</span></span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">float</span> dd = d/<span class="number">5000.0</span>;</span><br><span class="line">        Point2d p1 = pixel2cam ( keypoints_1[m.queryIdx].pt, K );</span><br><span class="line">        pts_3d.push_back ( Point3f ( p1.x*dd, p1.y*dd, dd ) );</span><br><span class="line">        pts_2d.push_back ( keypoints_2[m.trainIdx].pt );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"3d-2d pairs: "</span>&lt;&lt;pts_3d.size() &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    Mat r, t;</span><br><span class="line">    solvePnP ( pts_3d, pts_2d, K, Mat(), r, t, <span class="literal">false</span> ); <span class="comment">// 调用OpenCV 的 PnP 求解，可选择EPNP，DLS等方法</span></span><br><span class="line">    Mat R;</span><br><span class="line">    cv::Rodrigues ( r, R ); <span class="comment">// r为旋转向量形式，用Rodrigues公式转换为矩阵</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"R="</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;R&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"t="</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;t&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"calling bundle adjustment"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    bundleAdjustment ( pts_3d, pts_2d, K, R, t );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">find_feature_matches</span> <span class="params">( <span class="keyword">const</span> Mat&amp; img_1, <span class="keyword">const</span> Mat&amp; img_2,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoints_1,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoints_2,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; DMatch &gt;&amp; matches )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//-- 初始化</span></span><br><span class="line">    Mat descriptors_1, descriptors_2;</span><br><span class="line">    <span class="comment">// used in OpenCV3</span></span><br><span class="line">    Ptr&lt;FeatureDetector&gt; detector = ORB::create();</span><br><span class="line">    Ptr&lt;DescriptorExtractor&gt; descriptor = ORB::create();</span><br><span class="line">    <span class="comment">// use this if you are in OpenCV2</span></span><br><span class="line">    <span class="comment">// Ptr&lt;FeatureDetector&gt; detector = FeatureDetector::create ( "ORB" );</span></span><br><span class="line">    <span class="comment">// Ptr&lt;DescriptorExtractor&gt; descriptor = DescriptorExtractor::create ( "ORB" );</span></span><br><span class="line">    Ptr&lt;DescriptorMatcher&gt; matcher  = DescriptorMatcher::create ( <span class="string">"BruteForce-Hamming"</span> );</span><br><span class="line">    <span class="comment">//-- 第一步:检测 Oriented FAST 角点位置</span></span><br><span class="line">    detector-&gt;detect ( img_1,keypoints_1 );</span><br><span class="line">    detector-&gt;detect ( img_2,keypoints_2 );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 第二步:根据角点位置计算 BRIEF 描述子</span></span><br><span class="line">    descriptor-&gt;compute ( img_1, keypoints_1, descriptors_1 );</span><br><span class="line">    descriptor-&gt;compute ( img_2, keypoints_2, descriptors_2 );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 第三步:对两幅图像中的BRIEF描述子进行匹配，使用 Hamming 距离</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;DMatch&gt; match;</span><br><span class="line">    <span class="comment">// BFMatcher matcher ( NORM_HAMMING );</span></span><br><span class="line">    matcher-&gt;match ( descriptors_1, descriptors_2, match );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 第四步:匹配点对筛选</span></span><br><span class="line">    <span class="keyword">double</span> min_dist=<span class="number">10000</span>, max_dist=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//找出所有匹配之间的最小距离和最大距离, 即是最相似的和最不相似的两组点之间的距离</span></span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; descriptors_1.rows; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">double</span> dist = match[i].distance;</span><br><span class="line">        <span class="keyword">if</span> ( dist &lt; min_dist ) min_dist = dist;</span><br><span class="line">        <span class="keyword">if</span> ( dist &gt; max_dist ) max_dist = dist;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span> ( <span class="string">"-- Max dist : %f \n"</span>, max_dist );</span><br><span class="line">    <span class="built_in">printf</span> ( <span class="string">"-- Min dist : %f \n"</span>, min_dist );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//当描述子之间的距离大于两倍的最小距离时,即认为匹配有误.但有时候最小距离会非常小,设置一个经验值30作为下限.</span></span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; descriptors_1.rows; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> ( match[i].distance &lt;= max ( <span class="number">2</span>*min_dist, <span class="number">30.0</span> ) )</span><br><span class="line">        &#123;</span><br><span class="line">            matches.push_back ( match[i] );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Point2d <span class="title">pixel2cam</span> <span class="params">( <span class="keyword">const</span> Point2d&amp; p, <span class="keyword">const</span> Mat&amp; K )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Point2d</span><br><span class="line">           (</span><br><span class="line">               ( p.x - K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">2</span> ) ) / K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">0</span> ),</span><br><span class="line">               ( p.y - K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">1</span>,<span class="number">2</span> ) ) / K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">1</span>,<span class="number">1</span> )</span><br><span class="line">           );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 在这个图优化中,节点和边的选择为:</span></span><br><span class="line"><span class="comment">// 1.节点:第二个相机的位姿节点 ξ ∈ se(3),以及所有特征点的空间位置 P ∈ R 3 。</span></span><br><span class="line"><span class="comment">// 2.边:每个 3D 点在第二个相机中的投影</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bundleAdjustment</span> <span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt; Point3f &gt; points_3d,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt; Point2f &gt; points_2d,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> Mat&amp; K,</span></span></span><br><span class="line"><span class="function"><span class="params">    Mat&amp; R, Mat&amp; t )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化g2o</span></span><br><span class="line">    <span class="keyword">typedef</span> g2o::BlockSolver&lt; g2o::BlockSolverTraits&lt;<span class="number">6</span>,<span class="number">3</span>&gt; &gt; Block;  <span class="comment">// pose 维度为 6, landmark 维度为 3</span></span><br><span class="line">    Block::LinearSolverType* linearSolver = <span class="keyword">new</span> g2o::LinearSolverCSparse&lt;Block::PoseMatrixType&gt;(); <span class="comment">// 线性方程求解器</span></span><br><span class="line">    Block* solver_ptr = <span class="keyword">new</span> Block ( linearSolver );     <span class="comment">// 矩阵块求解器</span></span><br><span class="line">    g2o::OptimizationAlgorithmLevenberg* solver = <span class="keyword">new</span> g2o::OptimizationAlgorithmLevenberg ( solver_ptr );</span><br><span class="line">    g2o::SparseOptimizer optimizer;</span><br><span class="line">    optimizer.setAlgorithm ( solver );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// vertex</span></span><br><span class="line">    g2o::VertexSE3Expmap* pose = <span class="keyword">new</span> g2o::VertexSE3Expmap(); <span class="comment">// camera pose</span></span><br><span class="line">    Eigen::Matrix3d R_mat;</span><br><span class="line">    R_mat &lt;&lt;</span><br><span class="line">          R.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">0</span> ), R.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">1</span> ), R.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">2</span> ),</span><br><span class="line">               R.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">1</span>,<span class="number">0</span> ), R.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">1</span>,<span class="number">1</span> ), R.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">1</span>,<span class="number">2</span> ),</span><br><span class="line">               R.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">2</span>,<span class="number">0</span> ), R.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">2</span>,<span class="number">1</span> ), R.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">2</span>,<span class="number">2</span> );</span><br><span class="line">    pose-&gt;setId ( <span class="number">0</span> );</span><br><span class="line">    pose-&gt;setEstimate ( g2o::SE3Quat (</span><br><span class="line">                            R_mat,</span><br><span class="line">                            Eigen::Vector3d ( t.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">0</span> ), t.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">1</span>,<span class="number">0</span> ), t.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">2</span>,<span class="number">0</span> ) )</span><br><span class="line">                        ) );</span><br><span class="line">    optimizer.addVertex ( pose );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> index = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">const</span> Point3f p:points_3d )   <span class="comment">// landmarks</span></span><br><span class="line">    &#123;</span><br><span class="line">        g2o::VertexSBAPointXYZ* point = <span class="keyword">new</span> g2o::VertexSBAPointXYZ();</span><br><span class="line">        point-&gt;setId ( index++ );</span><br><span class="line">        point-&gt;setEstimate ( Eigen::Vector3d ( p.x, p.y, p.z ) );</span><br><span class="line">        point-&gt;setMarginalized ( <span class="literal">true</span> ); <span class="comment">// g2o 中必须设置 marg 参见第十讲内容</span></span><br><span class="line">        optimizer.addVertex ( point );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// parameter: camera intrinsics</span></span><br><span class="line">    g2o::CameraParameters* camera = <span class="keyword">new</span> g2o::CameraParameters (</span><br><span class="line">        K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">0</span> ), Eigen::Vector2d ( K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">2</span> ), K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">1</span>,<span class="number">2</span> ) ), <span class="number">0</span></span><br><span class="line">    );</span><br><span class="line">    camera-&gt;setId ( <span class="number">0</span> );</span><br><span class="line">    optimizer.addParameter ( camera );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// edges</span></span><br><span class="line">    index = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">const</span> Point2f p:points_2d )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//投影边方程</span></span><br><span class="line">        g2o::EdgeProjectXYZ2UV* edge = <span class="keyword">new</span> g2o::EdgeProjectXYZ2UV();</span><br><span class="line">        edge-&gt;setId ( index );</span><br><span class="line">        <span class="comment">// 空间点位置</span></span><br><span class="line">        edge-&gt;setVertex ( <span class="number">0</span>, <span class="keyword">dynamic_cast</span>&lt;g2o::VertexSBAPointXYZ*&gt; ( optimizer.vertex ( index ) ) );</span><br><span class="line">        <span class="comment">// 位姿</span></span><br><span class="line">        edge-&gt;setVertex ( <span class="number">1</span>, pose );</span><br><span class="line">        edge-&gt;setMeasurement ( Eigen::Vector2d ( p.x, p.y ) );</span><br><span class="line">        edge-&gt;setParameterId ( <span class="number">0</span>,<span class="number">0</span> );</span><br><span class="line">        edge-&gt;setInformation ( Eigen::Matrix2d::Identity() );</span><br><span class="line">        optimizer.addEdge ( edge );</span><br><span class="line">        index++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    chrono::steady_clock::time_point t1 = chrono::steady_clock::now();</span><br><span class="line">    optimizer.setVerbose ( <span class="literal">true</span> );</span><br><span class="line">    optimizer.initializeOptimization();</span><br><span class="line">    optimizer.optimize ( <span class="number">100</span> );</span><br><span class="line">    chrono::steady_clock::time_point t2 = chrono::steady_clock::now();</span><br><span class="line">    chrono::duration&lt;<span class="keyword">double</span>&gt; time_used = chrono::duration_cast&lt;chrono::duration&lt;<span class="keyword">double</span>&gt;&gt; ( t2-t1 );</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"optimization costs time: "</span>&lt;&lt;time_used.count() &lt;&lt;<span class="string">" seconds."</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"after optimization:"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"T="</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;Eigen::Isometry3d ( pose-&gt;estimate() ).matrix() &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3D-3D-ICP"><a href="#3D-3D-ICP" class="headerlink" title="3D-3D: ICP"></a>3D-3D: ICP</h3><p>假设我们有一组配对好的 3D 点(比如我们对两个 RGB-D 图像进行了匹配):</p>
+<script type="math/tex; mode=display">
+\boldsymbol{P}=\left\{\boldsymbol{p}_{1}, \ldots, \boldsymbol{p}_{n}\right\}, \quad \boldsymbol{P}^{\prime}=\left\{\boldsymbol{p}_{1}^{\prime}, \ldots, \boldsymbol{p}_{n}^{\prime}\right\}</script><p>现在,想要找一个欧氏变换 $\boldsymbol{R}, \boldsymbol{t}$，使得:</p>
+<script type="math/tex; mode=display">
+\forall i, \boldsymbol{p}_{i}=\boldsymbol{R} \boldsymbol{p}_{i}^{\prime}+\boldsymbol{t}</script><p>这个问题可以用迭代最近点(Iterative Closest Point, ICP)求解。ICP 的求解也分为两种方式:利用线性代数的求解(主要是 SVD),以及利用非线性优化方式的求解(类似于 Bundle Adjustment)。</p>
+<h4 id="SVD方法"><a href="#SVD方法" class="headerlink" title="SVD方法"></a>SVD方法</h4><p>我们先定义第 i对点的误差项:</p>
+<script type="math/tex; mode=display">
+e_{i}=p_{i}-\left(R p_{i}^{\prime}+t\right)</script><p>然后,构建最小二乘问题,求使误差平方和达到极小的 $\boldsymbol{R}, \boldsymbol{t} $：</p>
+<script type="math/tex; mode=display">
+\min _{\boldsymbol{R}, \boldsymbol{t}} J=\frac{1}{2} \sum_{i=1}^{n}\left\|\left(\boldsymbol{p}_{i}-\left(\boldsymbol{R} \boldsymbol{p}_{i}^{\prime}+\boldsymbol{t}\right)\right)\right\|_{2}^{2}</script><p>首先,定义两组点的质心:</p>
+<script type="math/tex; mode=display">
+\boldsymbol{p}=\frac{1}{n} \sum_{i=1}^{n}\left(\boldsymbol{p}_{i}\right), \quad \boldsymbol{p}^{\prime}=\frac{1}{n} \sum_{i=1}^{n}\left(\boldsymbol{p}_{i}^{\prime}\right)</script><p>随后,在误差函数中,我们作如下的处理:</p>
+<script type="math/tex; mode=display">
+\begin{aligned} \frac{1}{2} \sum_{i=1}^{n}\left\|\boldsymbol{p}_{i}-\left(\boldsymbol{R} \boldsymbol{p}_{i}^{\prime}+\boldsymbol{t}\right)\right\|^{2} &=\frac{1}{2} \sum_{i=1}^{n}\left\|\boldsymbol{p}_{i}-\boldsymbol{R} \boldsymbol{p}_{i}^{\prime}-\boldsymbol{t}-\boldsymbol{p}+\boldsymbol{R} \boldsymbol{p}^{\prime}+\boldsymbol{p}-\boldsymbol{R} \boldsymbol{p}^{\prime}\right\|^{2} \\ &=\frac{1}{2} \sum_{i=1}^{n}\left\|\left(\boldsymbol{p}_{i}-\boldsymbol{p}-\boldsymbol{R}\left(\boldsymbol{p}_{i}^{\prime}-\boldsymbol{p}^{\prime}\right)\right)+\left(\boldsymbol{p}-\boldsymbol{R} \boldsymbol{p}^{\prime}-\boldsymbol{t}\right)\right\|^{2} \\ &=\frac{1}{2} \sum_{i=1}^{n}\left(\left\|\boldsymbol{p}_{i}-\boldsymbol{p}-\boldsymbol{R}\left(\boldsymbol{p}_{i}^{\prime}-\boldsymbol{p}^{\prime}\right)\right\|^{2}+\left\|\boldsymbol{p}-\boldsymbol{R} \boldsymbol{p}^{\prime}-\boldsymbol{t}\right\|^{2}+\right.\\ &\left.2\left(\boldsymbol{p}_{i}-\boldsymbol{p}-\boldsymbol{R}\left(\boldsymbol{p}_{i}^{\prime}-\boldsymbol{p}^{\prime}\right)\right)^{T}\left(\boldsymbol{p}-\boldsymbol{R} \boldsymbol{p}^{\prime}-\boldsymbol{t}\right)\right) \end{aligned}</script><p>注意到交叉项部分中,$\left(\boldsymbol{p}_{i}-\boldsymbol{p}-\boldsymbol{R}\left(\boldsymbol{p}_{i}^{\prime}-\boldsymbol{p}^{\prime}\right)\right)$ 在求和之后是为零的,因此优化目标函<br>数可以简化为:</p>
+<script type="math/tex; mode=display">
+\min _{\boldsymbol{R}, \boldsymbol{t}} J=\frac{1}{2} \sum_{i=1}^{n}\left\|\boldsymbol{p}_{i}-\boldsymbol{p}-\boldsymbol{R}\left(\boldsymbol{p}_{i}^{\prime}-\boldsymbol{p}^{\prime}\right)\right\|^{2}+\left\|\boldsymbol{p}-\boldsymbol{R} \boldsymbol{p}^{\prime}-\boldsymbol{t}\right\|^{2}</script><p>ICP 可以分为以下三个步骤求解:</p>
+<ol>
+<li>计算两组点的质心位置$\boldsymbol{p},\boldsymbol{p}^{\prime}$ ,然后计算每个点的去质心坐标:<script type="math/tex; mode=display">
+\boldsymbol{q}_{i}=\boldsymbol{p}_{i}-\boldsymbol{p}, \quad \boldsymbol{q}_{i}^{\prime}=\boldsymbol{p}_{i}^{\prime}-\boldsymbol{p}^{\prime}</script></li>
+<li>根据以下优化问题计算旋转矩阵:<script type="math/tex; mode=display">
+\boldsymbol{R}^{*}=\arg \min _{\boldsymbol{R}} \frac{1}{2} \sum_{i=1}^{n}\left\|\boldsymbol{q}_{i}-\boldsymbol{R} \boldsymbol{q}_{i}^{\prime}\right\|^{2}</script></li>
+<li>根据第二步的 $\boldsymbol{R}$,计算 $\boldsymbol{t}$:</li>
+</ol>
+<p>展开关于 $\boldsymbol{R}$的误差项,得:</p>
+<script type="math/tex; mode=display">
+\frac{1}{2} \sum_{i=1}^{n}\left\|\boldsymbol{q}_{i}-\boldsymbol{R} \boldsymbol{q}_{i}^{\prime}\right\|^{2}=\frac{1}{2} \sum_{i=1}^{n} \boldsymbol{q}_{i}^{T} \boldsymbol{q}_{i}+\boldsymbol{q}_{i}^{\prime T} \boldsymbol{R}^{T} \boldsymbol{R} \boldsymbol{q}_{i}^{\prime}-2 \boldsymbol{q}_{i}^{T} \boldsymbol{R} \boldsymbol{q}_{i}^{\prime}</script><p>注意到第一项和 $\boldsymbol{R}$ 无关,第二项由于 $\boldsymbol{R}^{T} \boldsymbol{R}=\boldsymbol{I}$,亦与 R 无关。因此,实际上优化目标函数变为:</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^{n}-\boldsymbol{q}_{i}^{T} \boldsymbol{R} \boldsymbol{q}_{i}^{\prime}=\sum_{i=1}^{n}-\operatorname{tr}\left(\boldsymbol{R} \boldsymbol{q}_{i}^{\prime} \boldsymbol{q}_{i}^{T}\right)=-\operatorname{tr}\left(\boldsymbol{R} \sum_{i=1}^{n} \boldsymbol{q}_{i}^{\prime} \boldsymbol{q}_{i}^{T}\right)</script><p>由SVD分解，定义：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{W}=\sum_{i=1}^{n} \boldsymbol{q}_{i}^{\prime} \boldsymbol{q}_{i}^{T}</script><p>对 $\boldsymbol{W}$ 进行 SVD 分解:</p>
+<script type="math/tex; mode=display">
+\boldsymbol{W}=\boldsymbol{U} \boldsymbol{\Sigma} \boldsymbol{V}^{T}</script><p>当 $\boldsymbol{W}$ 满秩时,$\boldsymbol{R}$ 为:</p>
+<script type="math/tex; mode=display">
+\boldsymbol{R}=\boldsymbol{U} \boldsymbol{V}^{T}</script><h4 id="非线性优化方法"><a href="#非线性优化方法" class="headerlink" title="非线性优化方法"></a>非线性优化方法</h4><p>目标函数可以写成:</p>
+<script type="math/tex; mode=display">
+\min _{\xi}=\frac{1}{2} \sum_{i=1}^{n}\left\|\left(\boldsymbol{p}_{i}-\exp \left(\boldsymbol{\xi}^{\wedge}\right) \boldsymbol{p}_{i}^{\prime}\right)\right\|_{2}^{2}</script><h3 id="编程练习：求解-ICP"><a href="#编程练习：求解-ICP" class="headerlink" title="编程练习：求解 ICP"></a>编程练习：求解 ICP</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/core/core.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/features2d/features2d.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/highgui/highgui.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/calib3d/calib3d.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Eigen/Core&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Eigen/Geometry&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;Eigen/SVD&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/base_vertex.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/base_unary_edge.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/block_solver.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/core/optimization_algorithm_gauss_newton.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/solvers/eigen/linear_solver_eigen.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;g2o/types/sba/types_six_dof_expmap.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">find_feature_matches</span> <span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> Mat&amp; img_1, <span class="keyword">const</span> Mat&amp; img_2,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoints_1,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoints_2,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; DMatch &gt;&amp; matches )</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 像素坐标转相机归一化坐标</span></span><br><span class="line"><span class="function">Point2d <span class="title">pixel2cam</span> <span class="params">( <span class="keyword">const</span> Point2d&amp; p, <span class="keyword">const</span> Mat&amp; K )</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pose_estimation_3d3d</span> <span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;Point3f&gt;&amp; pts1,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;Point3f&gt;&amp; pts2,</span></span></span><br><span class="line"><span class="function"><span class="params">    Mat&amp; R, Mat&amp; t</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bundleAdjustment</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;Point3f&gt;&amp; points_3d,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;Point3f&gt;&amp; points_2d,</span></span></span><br><span class="line"><span class="function"><span class="params">    Mat&amp; R, Mat&amp; t</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// g2o edge</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EdgeProjectXYZRGBDPoseOnly</span> :</span> <span class="keyword">public</span> g2o::BaseUnaryEdge&lt;<span class="number">3</span>, Eigen::Vector3d, g2o::VertexSE3Expmap&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    EIGEN_MAKE_ALIGNED_OPERATOR_NEW;</span><br><span class="line">    EdgeProjectXYZRGBDPoseOnly( <span class="keyword">const</span> Eigen::Vector3d&amp; point ) : _point(point) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">computeError</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> g2o::VertexSE3Expmap* pose = <span class="keyword">static_cast</span>&lt;<span class="keyword">const</span> g2o::VertexSE3Expmap*&gt; ( _vertices[<span class="number">0</span>] );</span><br><span class="line">        <span class="comment">// measurement is p, point is p'</span></span><br><span class="line">        _error = _measurement - pose-&gt;estimate().<span class="built_in">map</span>( _point );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">linearizeOplus</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        g2o::VertexSE3Expmap* pose = <span class="keyword">static_cast</span>&lt;g2o::VertexSE3Expmap *&gt;(_vertices[<span class="number">0</span>]);</span><br><span class="line">        g2o::<span class="function">SE3Quat <span class="title">T</span><span class="params">(pose-&gt;estimate())</span></span>;</span><br><span class="line">        Eigen::Vector3d xyz_trans = T.<span class="built_in">map</span>(_point);</span><br><span class="line">        <span class="keyword">double</span> x = xyz_trans[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">double</span> y = xyz_trans[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">double</span> z = xyz_trans[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">        _jacobianOplusXi(<span class="number">0</span>,<span class="number">0</span>) = <span class="number">0</span>;</span><br><span class="line">        _jacobianOplusXi(<span class="number">0</span>,<span class="number">1</span>) = -z;</span><br><span class="line">        _jacobianOplusXi(<span class="number">0</span>,<span class="number">2</span>) = y;</span><br><span class="line">        _jacobianOplusXi(<span class="number">0</span>,<span class="number">3</span>) = <span class="number">-1</span>;</span><br><span class="line">        _jacobianOplusXi(<span class="number">0</span>,<span class="number">4</span>) = <span class="number">0</span>;</span><br><span class="line">        _jacobianOplusXi(<span class="number">0</span>,<span class="number">5</span>) = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        _jacobianOplusXi(<span class="number">1</span>,<span class="number">0</span>) = z;</span><br><span class="line">        _jacobianOplusXi(<span class="number">1</span>,<span class="number">1</span>) = <span class="number">0</span>;</span><br><span class="line">        _jacobianOplusXi(<span class="number">1</span>,<span class="number">2</span>) = -x;</span><br><span class="line">        _jacobianOplusXi(<span class="number">1</span>,<span class="number">3</span>) = <span class="number">0</span>;</span><br><span class="line">        _jacobianOplusXi(<span class="number">1</span>,<span class="number">4</span>) = <span class="number">-1</span>;</span><br><span class="line">        _jacobianOplusXi(<span class="number">1</span>,<span class="number">5</span>) = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        _jacobianOplusXi(<span class="number">2</span>,<span class="number">0</span>) = -y;</span><br><span class="line">        _jacobianOplusXi(<span class="number">2</span>,<span class="number">1</span>) = x;</span><br><span class="line">        _jacobianOplusXi(<span class="number">2</span>,<span class="number">2</span>) = <span class="number">0</span>;</span><br><span class="line">        _jacobianOplusXi(<span class="number">2</span>,<span class="number">3</span>) = <span class="number">0</span>;</span><br><span class="line">        _jacobianOplusXi(<span class="number">2</span>,<span class="number">4</span>) = <span class="number">0</span>;</span><br><span class="line">        _jacobianOplusXi(<span class="number">2</span>,<span class="number">5</span>) = <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">read</span> <span class="params">( istream&amp; in )</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">write</span> <span class="params">( ostream&amp; out )</span> <span class="keyword">const</span> </span>&#123;&#125;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    Eigen::Vector3d _point;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">( <span class="keyword">int</span> argc, <span class="keyword">char</span>** argv )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( argc != <span class="number">5</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"usage: pose_estimation_3d3d img1 img2 depth1 depth2"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//-- 读取图像</span></span><br><span class="line">    Mat img_1 = imread ( argv[<span class="number">1</span>], CV_LOAD_IMAGE_COLOR );</span><br><span class="line">    Mat img_2 = imread ( argv[<span class="number">2</span>], CV_LOAD_IMAGE_COLOR );</span><br><span class="line"></span><br><span class="line">    <span class="built_in">vector</span>&lt;KeyPoint&gt; keypoints_1, keypoints_2;</span><br><span class="line">    <span class="built_in">vector</span>&lt;DMatch&gt; matches;</span><br><span class="line">    find_feature_matches ( img_1, img_2, keypoints_1, keypoints_2, matches );</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"一共找到了"</span>&lt;&lt;matches.size() &lt;&lt;<span class="string">"组匹配点"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 建立3D点</span></span><br><span class="line">    Mat depth1 = imread ( argv[<span class="number">3</span>], CV_LOAD_IMAGE_UNCHANGED );       <span class="comment">// 深度图为16位无符号数，单通道图像</span></span><br><span class="line">    Mat depth2 = imread ( argv[<span class="number">4</span>], CV_LOAD_IMAGE_UNCHANGED );       <span class="comment">// 深度图为16位无符号数，单通道图像</span></span><br><span class="line">    Mat K = ( Mat_&lt;<span class="keyword">double</span>&gt; ( <span class="number">3</span>,<span class="number">3</span> ) &lt;&lt; <span class="number">520.9</span>, <span class="number">0</span>, <span class="number">325.1</span>, <span class="number">0</span>, <span class="number">521.0</span>, <span class="number">249.7</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span> );</span><br><span class="line">    <span class="built_in">vector</span>&lt;Point3f&gt; pts1, pts2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> ( DMatch m:matches )</span><br><span class="line">    &#123;</span><br><span class="line">        ushort d1 = depth1.ptr&lt;<span class="keyword">unsigned</span> <span class="keyword">short</span>&gt; ( <span class="keyword">int</span> ( keypoints_1[m.queryIdx].pt.y ) ) [ <span class="keyword">int</span> ( keypoints_1[m.queryIdx].pt.x ) ];</span><br><span class="line">        ushort d2 = depth2.ptr&lt;<span class="keyword">unsigned</span> <span class="keyword">short</span>&gt; ( <span class="keyword">int</span> ( keypoints_2[m.trainIdx].pt.y ) ) [ <span class="keyword">int</span> ( keypoints_2[m.trainIdx].pt.x ) ];</span><br><span class="line">        <span class="keyword">if</span> ( d1==<span class="number">0</span> || d2==<span class="number">0</span> )   <span class="comment">// bad depth</span></span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        Point2d p1 = pixel2cam ( keypoints_1[m.queryIdx].pt, K );</span><br><span class="line">        Point2d p2 = pixel2cam ( keypoints_2[m.trainIdx].pt, K );</span><br><span class="line">        <span class="keyword">float</span> dd1 = <span class="keyword">float</span> ( d1 ) /<span class="number">5000.0</span>;</span><br><span class="line">        <span class="keyword">float</span> dd2 = <span class="keyword">float</span> ( d2 ) /<span class="number">5000.0</span>;</span><br><span class="line">        pts1.push_back ( Point3f ( p1.x*dd1, p1.y*dd1, dd1 ) );</span><br><span class="line">        pts2.push_back ( Point3f ( p2.x*dd2, p2.y*dd2, dd2 ) );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"3d-3d pairs: "</span>&lt;&lt;pts1.size() &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    Mat R, t;</span><br><span class="line">    pose_estimation_3d3d ( pts1, pts2, R, t );</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"ICP via SVD results: "</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"R = "</span>&lt;&lt;R&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"t = "</span>&lt;&lt;t&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"R_inv = "</span>&lt;&lt;R.t() &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"t_inv = "</span>&lt;&lt;-R.t() *t&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"calling bundle adjustment"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    bundleAdjustment( pts1, pts2, R, t );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// verify p1 = R*p2 + t</span></span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">5</span>; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"p1 = "</span>&lt;&lt;pts1[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"p2 = "</span>&lt;&lt;pts2[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"(R*p2+t) = "</span>&lt;&lt;</span><br><span class="line">            R * (Mat_&lt;<span class="keyword">double</span>&gt;(<span class="number">3</span>,<span class="number">1</span>)&lt;&lt;pts2[i].x, pts2[i].y, pts2[i].z) + t</span><br><span class="line">            &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">find_feature_matches</span> <span class="params">( <span class="keyword">const</span> Mat&amp; img_1, <span class="keyword">const</span> Mat&amp; img_2,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoints_1,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;KeyPoint&gt;&amp; keypoints_2,</span></span></span><br><span class="line"><span class="function"><span class="params">                            <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; DMatch &gt;&amp; matches )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//-- 初始化</span></span><br><span class="line">    Mat descriptors_1, descriptors_2;</span><br><span class="line">    <span class="comment">// used in OpenCV3</span></span><br><span class="line">    Ptr&lt;FeatureDetector&gt; detector = ORB::create();</span><br><span class="line">    Ptr&lt;DescriptorExtractor&gt; descriptor = ORB::create();</span><br><span class="line">    <span class="comment">// use this if you are in OpenCV2</span></span><br><span class="line">    <span class="comment">// Ptr&lt;FeatureDetector&gt; detector = FeatureDetector::create ( "ORB" );</span></span><br><span class="line">    <span class="comment">// Ptr&lt;DescriptorExtractor&gt; descriptor = DescriptorExtractor::create ( "ORB" );</span></span><br><span class="line">    Ptr&lt;DescriptorMatcher&gt; matcher  = DescriptorMatcher::create(<span class="string">"BruteForce-Hamming"</span>);</span><br><span class="line">    <span class="comment">//-- 第一步:检测 Oriented FAST 角点位置</span></span><br><span class="line">    detector-&gt;detect ( img_1,keypoints_1 );</span><br><span class="line">    detector-&gt;detect ( img_2,keypoints_2 );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 第二步:根据角点位置计算 BRIEF 描述子</span></span><br><span class="line">    descriptor-&gt;compute ( img_1, keypoints_1, descriptors_1 );</span><br><span class="line">    descriptor-&gt;compute ( img_2, keypoints_2, descriptors_2 );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 第三步:对两幅图像中的BRIEF描述子进行匹配，使用 Hamming 距离</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;DMatch&gt; match;</span><br><span class="line">   <span class="comment">// BFMatcher matcher ( NORM_HAMMING );</span></span><br><span class="line">    matcher-&gt;match ( descriptors_1, descriptors_2, match );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//-- 第四步:匹配点对筛选</span></span><br><span class="line">    <span class="keyword">double</span> min_dist=<span class="number">10000</span>, max_dist=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//找出所有匹配之间的最小距离和最大距离, 即是最相似的和最不相似的两组点之间的距离</span></span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; descriptors_1.rows; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">double</span> dist = match[i].distance;</span><br><span class="line">        <span class="keyword">if</span> ( dist &lt; min_dist ) min_dist = dist;</span><br><span class="line">        <span class="keyword">if</span> ( dist &gt; max_dist ) max_dist = dist;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span> ( <span class="string">"-- Max dist : %f \n"</span>, max_dist );</span><br><span class="line">    <span class="built_in">printf</span> ( <span class="string">"-- Min dist : %f \n"</span>, min_dist );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//当描述子之间的距离大于两倍的最小距离时,即认为匹配有误.但有时候最小距离会非常小,设置一个经验值30作为下限.</span></span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; descriptors_1.rows; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> ( match[i].distance &lt;= max ( <span class="number">2</span>*min_dist, <span class="number">30.0</span> ) )</span><br><span class="line">        &#123;</span><br><span class="line">            matches.push_back ( match[i] );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Point2d <span class="title">pixel2cam</span> <span class="params">( <span class="keyword">const</span> Point2d&amp; p, <span class="keyword">const</span> Mat&amp; K )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Point2d</span><br><span class="line">           (</span><br><span class="line">               ( p.x - K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">2</span> ) ) / K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">0</span>,<span class="number">0</span> ),</span><br><span class="line">               ( p.y - K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">1</span>,<span class="number">2</span> ) ) / K.at&lt;<span class="keyword">double</span>&gt; ( <span class="number">1</span>,<span class="number">1</span> )</span><br><span class="line">           );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pose_estimation_3d3d</span> <span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;Point3f&gt;&amp; pts1,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt;Point3f&gt;&amp; pts2,</span></span></span><br><span class="line"><span class="function"><span class="params">    Mat&amp; R, Mat&amp; t</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Point3f p1, p2;     <span class="comment">// center of mass</span></span><br><span class="line">    <span class="keyword">int</span> N = pts1.size();</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        p1 += pts1[i];</span><br><span class="line">        p2 += pts2[i];</span><br><span class="line">    &#125;</span><br><span class="line">    p1 = Point3f( Vec3f(p1) /  N);</span><br><span class="line">    p2 = Point3f( Vec3f(p2) / N);</span><br><span class="line">    <span class="built_in">vector</span>&lt;Point3f&gt;     q1 ( N ), q2 ( N ); <span class="comment">// remove the center</span></span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        q1[i] = pts1[i] - p1;</span><br><span class="line">        q2[i] = pts2[i] - p2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// compute q1*q2^T</span></span><br><span class="line">    Eigen::Matrix3d W = Eigen::Matrix3d::Zero();</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        W += Eigen::Vector3d ( q1[i].x, q1[i].y, q1[i].z ) * Eigen::Vector3d ( q2[i].x, q2[i].y, q2[i].z ).transpose();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"W="</span>&lt;&lt;W&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// SVD on W</span></span><br><span class="line">    Eigen::JacobiSVD&lt;Eigen::Matrix3d&gt; svd ( W, Eigen::ComputeFullU|Eigen::ComputeFullV );</span><br><span class="line">    Eigen::Matrix3d U = svd.matrixU();</span><br><span class="line">    Eigen::Matrix3d V = svd.matrixV();</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"U="</span>&lt;&lt;U&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"V="</span>&lt;&lt;V&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    Eigen::Matrix3d R_ = U* ( V.transpose() );</span><br><span class="line">    Eigen::Vector3d t_ = Eigen::Vector3d ( p1.x, p1.y, p1.z ) - R_ * Eigen::Vector3d ( p2.x, p2.y, p2.z );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// convert to cv::Mat</span></span><br><span class="line">    R = ( Mat_&lt;<span class="keyword">double</span>&gt; ( <span class="number">3</span>,<span class="number">3</span> ) &lt;&lt;</span><br><span class="line">          R_ ( <span class="number">0</span>,<span class="number">0</span> ), R_ ( <span class="number">0</span>,<span class="number">1</span> ), R_ ( <span class="number">0</span>,<span class="number">2</span> ),</span><br><span class="line">          R_ ( <span class="number">1</span>,<span class="number">0</span> ), R_ ( <span class="number">1</span>,<span class="number">1</span> ), R_ ( <span class="number">1</span>,<span class="number">2</span> ),</span><br><span class="line">          R_ ( <span class="number">2</span>,<span class="number">0</span> ), R_ ( <span class="number">2</span>,<span class="number">1</span> ), R_ ( <span class="number">2</span>,<span class="number">2</span> )</span><br><span class="line">        );</span><br><span class="line">    t = ( Mat_&lt;<span class="keyword">double</span>&gt; ( <span class="number">3</span>,<span class="number">1</span> ) &lt;&lt; t_ ( <span class="number">0</span>,<span class="number">0</span> ), t_ ( <span class="number">1</span>,<span class="number">0</span> ), t_ ( <span class="number">2</span>,<span class="number">0</span> ) );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bundleAdjustment</span> <span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt; Point3f &gt;&amp; pts1,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="built_in">vector</span>&lt; Point3f &gt;&amp; pts2,</span></span></span><br><span class="line"><span class="function"><span class="params">    Mat&amp; R, Mat&amp; t )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化g2o</span></span><br><span class="line">    <span class="keyword">typedef</span> g2o::BlockSolver&lt; g2o::BlockSolverTraits&lt;<span class="number">6</span>,<span class="number">3</span>&gt; &gt; Block;  <span class="comment">// pose维度为 6, landmark 维度为 3</span></span><br><span class="line">    Block::LinearSolverType* linearSolver = <span class="keyword">new</span> g2o::LinearSolverEigen&lt;Block::PoseMatrixType&gt;(); <span class="comment">// 线性方程求解器</span></span><br><span class="line">    Block* solver_ptr = <span class="keyword">new</span> Block( linearSolver );      <span class="comment">// 矩阵块求解器</span></span><br><span class="line">    g2o::OptimizationAlgorithmGaussNewton* solver = <span class="keyword">new</span> g2o::OptimizationAlgorithmGaussNewton( solver_ptr );</span><br><span class="line">    g2o::SparseOptimizer optimizer;</span><br><span class="line">    optimizer.setAlgorithm( solver );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// vertex</span></span><br><span class="line">    g2o::VertexSE3Expmap* pose = <span class="keyword">new</span> g2o::VertexSE3Expmap(); <span class="comment">// camera pose</span></span><br><span class="line">    pose-&gt;setId(<span class="number">0</span>);</span><br><span class="line">    pose-&gt;setEstimate( g2o::SE3Quat(</span><br><span class="line">        Eigen::Matrix3d::Identity(),</span><br><span class="line">        Eigen::Vector3d( <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span> )</span><br><span class="line">    ) );</span><br><span class="line">    optimizer.addVertex( pose );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// edges</span></span><br><span class="line">    <span class="keyword">int</span> index = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;EdgeProjectXYZRGBDPoseOnly*&gt; edges;</span><br><span class="line">    <span class="keyword">for</span> ( <span class="keyword">size_t</span> i=<span class="number">0</span>; i&lt;pts1.size(); i++ )</span><br><span class="line">    &#123;</span><br><span class="line">        EdgeProjectXYZRGBDPoseOnly* edge = <span class="keyword">new</span> EdgeProjectXYZRGBDPoseOnly(</span><br><span class="line">            Eigen::Vector3d(pts2[i].x, pts2[i].y, pts2[i].z) );</span><br><span class="line">        edge-&gt;setId( index );</span><br><span class="line">        edge-&gt;setVertex( <span class="number">0</span>, <span class="keyword">dynamic_cast</span>&lt;g2o::VertexSE3Expmap*&gt; (pose) );</span><br><span class="line">        edge-&gt;setMeasurement( Eigen::Vector3d(</span><br><span class="line">            pts1[i].x, pts1[i].y, pts1[i].z) );</span><br><span class="line">        edge-&gt;setInformation( Eigen::Matrix3d::Identity()*<span class="number">1e4</span> );</span><br><span class="line">        optimizer.addEdge(edge);</span><br><span class="line">        index++;</span><br><span class="line">        edges.push_back(edge);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    chrono::steady_clock::time_point t1 = chrono::steady_clock::now();</span><br><span class="line">    optimizer.setVerbose( <span class="literal">true</span> );</span><br><span class="line">    optimizer.initializeOptimization();</span><br><span class="line">    optimizer.optimize(<span class="number">10</span>);</span><br><span class="line">    chrono::steady_clock::time_point t2 = chrono::steady_clock::now();</span><br><span class="line">    chrono::duration&lt;<span class="keyword">double</span>&gt; time_used = chrono::duration_cast&lt;chrono::duration&lt;<span class="keyword">double</span>&gt;&gt;(t2-t1);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"optimization costs time: "</span>&lt;&lt;time_used.count()&lt;&lt;<span class="string">" seconds."</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"after optimization:"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"T="</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;Eigen::Isometry3d( pose-&gt;estimate() ).matrix()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SLAM/" rel="tag"># SLAM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Nonlinear-optimization.html" rel="next" title="非线性优化">
+                <i class="fa fa-chevron-left"></i> 非线性优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/python-note.html" rel="prev" title="python学习笔记">
+                python学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="jiajie">
+            
+              <p class="site-author-name" itemprop="name">jiajie</p>
+              <div class="site-description motion-element" itemprop="description">这是最好的时代，也是最坏的时代。</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">34</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Wjiajie" title="GitHub &rarr; https://github.com/Wjiajie" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="/3208920286@qq.com" title="E-Mail &rarr; 3208920286@qq.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://flymrwind.github.io/" title="https://flymrwind.github.io/" rel="noopener" target="_blank">南鱼北游</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          <div id="days"></div>
+    <script>
+    function show_date_time(){
+        window.setTimeout("show_date_time()", 1000);
+        BirthDay=new Date("05/01/2019 00:00:00");
+        today=new Date();
+        timeold=(today.getTime()-BirthDay.getTime());
+        sectimeold=timeold/1000
+        secondsold=Math.floor(sectimeold);
+        msPerDay=24*60*60*1000
+        e_daysold=timeold/msPerDay
+        daysold=Math.floor(e_daysold);
+        e_hrsold=(e_daysold-daysold)*24;
+        hrsold=setzero(Math.floor(e_hrsold));
+        e_minsold=(e_hrsold-hrsold)*60;
+        minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+        seconds=setzero(Math.floor((e_minsold-minsold)*60));
+        document.getElementById('days').innerHTML="已运行"+daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";
+    }
+function setzero(i){
+    if (i<10)
+    {i="0" + i};
+    return i;
+}
+show_date_time();
+</script>
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特征点"><span class="nav-number">1.1.</span> <span class="nav-text">特征点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征匹配"><span class="nav-number">1.2.</span> <span class="nav-text">特征匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编程练习：特征提取和匹配"><span class="nav-number">1.3.</span> <span class="nav-text">编程练习：特征提取和匹配</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相机运动估计"><span class="nav-number">2.</span> <span class="nav-text">相机运动估计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2D-2D-对极几何"><span class="nav-number">2.1.</span> <span class="nav-text">2D-2D: 对极几何</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编程练习：对极约束求解相机运动"><span class="nav-number">2.2.</span> <span class="nav-text">编程练习：对极约束求解相机运动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三角化"><span class="nav-number">2.3.</span> <span class="nav-text">三角化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编程练习：三角测量"><span class="nav-number">2.4.</span> <span class="nav-text">编程练习：三角测量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3D-2D-PnP"><span class="nav-number">2.5.</span> <span class="nav-text">3D-2D: PnP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#直接线性变换-Direct-Linear-Transform-DLT"><span class="nav-number">2.5.1.</span> <span class="nav-text">直接线性变换(Direct Linear Transform, DLT)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bundle-Adjustment"><span class="nav-number">2.5.2.</span> <span class="nav-text">Bundle Adjustment</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编程练习：PnP"><span class="nav-number">2.6.</span> <span class="nav-text">编程练习：PnP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3D-3D-ICP"><span class="nav-number">2.7.</span> <span class="nav-text">3D-3D: ICP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SVD方法"><span class="nav-number">2.7.1.</span> <span class="nav-text">SVD方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非线性优化方法"><span class="nav-number">2.7.2.</span> <span class="nav-text">非线性优化方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编程练习：求解-ICP"><span class="nav-number">2.8.</span> <span class="nav-text">编程练习：求解 ICP</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+    <div id="sidebar-dimmer"></div>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jiajie</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+  <script>
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66402682";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+      
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="true"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'y7ICC5jdzN1vLAJPPhHypnuJ-gzGzoHsz',
+    appKey: 'FvHfDNMHxSVsxKqgFGB3p99M',
+    placeholder: 'say something~maybe',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+  <script type="text/javascript" color="150,72,0" opacity="0.3" zindex="-2" count="10" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+  
+
+ 
+  
+<script type="text/javascript">
+    //微信二维码点击背景关闭
+    $('body').delegate('.-mob-share-weixin-qrcode-bg','click', function(){
+         $(".-mob-share-weixin-qrcode-close").trigger("click");
+    }); 
+</script>
+
+
+
+  <script type="text/javascript" src="/js/instantclick.min.js" data-no-instant></script>
+  <script data-no-instant>InstantClick.init();</script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
