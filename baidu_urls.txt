@@ -1,3 +1,4 @@
+https://www.jiajiewu.cn/construct-function.html
 https://www.jiajiewu.cn/python-note.html
 https://www.jiajiewu.cn/visual-odometer1.html
 https://www.jiajiewu.cn/Nonlinear-optimization.html
@@ -7,4 +8,3 @@ https://www.jiajiewu.cn/slam1.html
 https://www.jiajiewu.cn/slam-total.html
 https://www.jiajiewu.cn/SFM-intro.html
 https://www.jiajiewu.cn/openMVG-openMVS.html
-https://www.jiajiewu.cn/signal-detect-and-estimate.html
