@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.jiajiewu.cn/link/index.html</loc>
+    
+    <lastmod>2019-11-04T14:17:52.764Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.jiajiewu.cn/about/index.html</loc>
     
     <lastmod>2019-11-04T14:11:28.344Z</lastmod>
@@ -145,13 +152,6 @@
     <loc>https://www.jiajiewu.cn/resnet-densenet.html</loc>
     
     <lastmod>2019-07-03T03:19:54.654Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.jiajiewu.cn/link/index.html</loc>
-    
-    <lastmod>2019-07-02T14:12:19.161Z</lastmod>
     
   </url>
   
