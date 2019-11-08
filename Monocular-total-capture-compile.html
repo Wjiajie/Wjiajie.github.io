@@ -143,35 +143,18 @@
 
 
 
-  <meta name="description" content="记录信号检测与估值的学习笔记，以后不知道用不用得着，但先保存下来吧。">
-<meta name="keywords" content="学习笔记">
+  <meta name="description" content="本文是cmu开源项目MonocularTotalCapture在ubuntu上的编译过程，把一些比较大的坑记录好说不定哪天得再编译一遍。环境是Ubuntu 18.04，gtx1060,显卡驱动4.10。cuda和cudnn版本因为在配置openpose和MonocularTotalCapture，我装了两个版本，留在下面再说。">
+<meta name="keywords" content="环境配置,人体重建">
 <meta property="og:type" content="article">
-<meta property="og:title" content="信号检测与估值笔记">
-<meta property="og:url" content="https://www.jiajiewu.cn/signal-detect-and-estimate.html">
+<meta property="og:title" content="Ubuntu18.04编译MonocularTotalCapture">
+<meta property="og:url" content="https://www.jiajiewu.cn/Monocular-total-capture-compile.html">
 <meta property="og:site_name" content="jiajie">
-<meta property="og:description" content="记录信号检测与估值的学习笔记，以后不知道用不用得着，但先保存下来吧。">
+<meta property="og:description" content="本文是cmu开源项目MonocularTotalCapture在ubuntu上的编译过程，把一些比较大的坑记录好说不定哪天得再编译一遍。环境是Ubuntu 18.04，gtx1060,显卡驱动4.10。cuda和cudnn版本因为在配置openpose和MonocularTotalCapture，我装了两个版本，留在下面再说。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d2830735829219442.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d2831347da1b48400.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d28314893b9350367.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d28315dcaebc12885.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d28319daf73929244.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d2831b014ad720418.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d2831bfd80d631219.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d2831d05dd2f71601.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d2831e0a307510870.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d2831faf273972690.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d28320db871629279.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d28321ecc9fd36216.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d283232ae2b593047.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d283243a1c2338465.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d283254bca4881336.jpg">
-<meta property="og:image" content="https://i.loli.net/2019/07/12/5d283266c74f696101.jpg">
-<meta property="og:updated_time" content="2019-07-12T07:10:53.589Z">
+<meta property="og:updated_time" content="2019-11-08T03:22:48.646Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="信号检测与估值笔记">
-<meta name="twitter:description" content="记录信号检测与估值的学习笔记，以后不知道用不用得着，但先保存下来吧。">
-<meta name="twitter:image" content="https://i.loli.net/2019/07/12/5d2830735829219442.jpg">
+<meta name="twitter:title" content="Ubuntu18.04编译MonocularTotalCapture">
+<meta name="twitter:description" content="本文是cmu开源项目MonocularTotalCapture在ubuntu上的编译过程，把一些比较大的坑记录好说不定哪天得再编译一遍。环境是Ubuntu 18.04，gtx1060,显卡驱动4.10。cuda和cudnn版本因为在配置openpose和MonocularTotalCapture，我装了两个版本，留在下面再说。">
 
 
 
@@ -181,7 +164,7 @@
 
   
   
-  <link rel="canonical" href="https://www.jiajiewu.cn/signal-detect-and-estimate">
+  <link rel="canonical" href="https://www.jiajiewu.cn/Monocular-total-capture-compile">
 
 
 
@@ -191,7 +174,7 @@
   };
 </script>
 
-  <title>信号检测与估值笔记 | jiajie</title>
+  <title>Ubuntu18.04编译MonocularTotalCapture | jiajie</title>
   
 
 
@@ -487,7 +470,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/signal-detect-and-estimate.html">
+    <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/Monocular-total-capture-compile.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jiajie">
@@ -504,7 +487,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">信号检测与估值笔记
+          <h1 class="post-title" itemprop="name headline">Ubuntu18.04编译MonocularTotalCapture
 
               
             
@@ -530,12 +513,24 @@
                 
               
 
-              <time title="创建时间：2019-07-12 14:48:59 / 修改时间：15:10:53" itemprop="dateCreated datePublished" datetime="2019-07-12T14:48:59+08:00">2019-07-12</time>
+              <time title="创建时间：2019-11-07 21:25:47" itemprop="dateCreated datePublished" datetime="2019-11-07T21:25:47+08:00">2019-11-07</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-11-08 11:22:48" itemprop="dateModified" datetime="2019-11-08T11:22:48+08:00">2019-11-08</time>
               
             
           </span>
@@ -552,7 +547,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/环境配置/" itemprop="url" rel="index"><span itemprop="name">环境配置</span></a></span>
 
                 
                 
@@ -571,8 +566,8 @@
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/signal-detect-and-estimate.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/signal-detect-and-estimate.html" itemprop="commentCount"></span>
+                <a href="/Monocular-total-capture-compile.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/Monocular-total-capture-compile.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -609,24 +604,48 @@
       
 
       
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>记录信号检测与估值的学习笔记，以后不知道用不用得着，但先保存下来吧。</p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>本文是cmu开源项目MonocularTotalCapture在ubuntu上的编译过程，把一些比较大的坑记录好说不定哪天得再编译一遍。环境是Ubuntu 18.04，gtx1060,显卡驱动4.10。cuda和cudnn版本因为在配置openpose和MonocularTotalCapture，我装了两个版本，留在下面再说。</p>
 <a id="more"></a>
-<p><img src="https://i.loli.net/2019/07/12/5d2830735829219442.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d2831347da1b48400.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d28314893b9350367.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d28315dcaebc12885.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d28319daf73929244.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d2831b014ad720418.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d2831bfd80d631219.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d2831d05dd2f71601.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d2831e0a307510870.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d2831faf273972690.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d28320db871629279.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d28321ecc9fd36216.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d283232ae2b593047.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d283243a1c2338465.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d283254bca4881336.jpg" alt></p>
-<p><img src="https://i.loli.net/2019/07/12/5d283266c74f696101.jpg" alt></p>
+<h2 id="Dependencies"><a href="#Dependencies" class="headerlink" title="Dependencies"></a>Dependencies</h2><ol>
+<li><a href="https://ffmpeg.org/download.html" target="_blank" rel="noopener">ffmpeg</a></li>
+<li>Python 3.5 (with TensorFlow 1.5.0, OpenCV, Matplotlib, packages installed with pip3)</li>
+<li>cmake &gt;= 2.8</li>
+<li>OpenCV 2.4.13 (compiled from source with CUDA 9.0, CUDNN 7.0)</li>
+<li>Ceres-Solver 1.13.0 (with SuiteSparse)</li>
+<li>OpenGL, GLUT, GLEW</li>
+<li><a href="https://github.com/libigl/libigl" target="_blank" rel="noopener">libigl</a></li>
+<li>wget</li>
+<li><a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose" target="_blank" rel="noopener">openPose</a></li>
+</ol>
+<p>配置过程中遇到问题较多的是配置Opencv 2.4.13+CUDA 9.0+CUDNN对应版本，以及配置openpose。CUDNN不一定要7.0版本，与CUDA9.0适配即可。在ubuntu18.04配置openpose需要安装cuda10以及对应版本，我装的是cuda10.0。</p>
+<p>首先说明其他问题不是很大的依赖项：</p>
+<ol>
+<li><a href="https://ffmpeg.org/download.html" target="_blank" rel="noopener">ffmpeg</a>下载最新版压缩包解压编译即可。</li>
+<li>Python 3.5 (with TensorFlow 1.5.0, OpenCV, Matplotlib, packages installed with pip3)：如果你常用的python版本不是3.5,建议创建一个conda 环境，然后安装TensorFlow 1.5.0和对应依赖项，我装的是不带gpu版本。tensorflow各版本与cuda,cudnn的对应关系看：<a href="https://blog.csdn.net/qq_27825451/article/details/89082978" target="_blank" rel="noopener">tensorflow各个版本的CUDA以及Cudnn版本对应关系</a></li>
+<li>cmake，Ceres-Solver 1.13.0 (with SuiteSparse)，OpenGL, GLUT,wget都可以通过apt直接装，GLEW到官网下载压缩包编译即可，<a href="https://github.com/libigl/libigl" target="_blank" rel="noopener">libigl</a>可以<code>git clone</code> github上的源码安装。</li>
+</ol>
+<h2 id="编译openpose"><a href="#编译openpose" class="headerlink" title="编译openpose"></a>编译openpose</h2><p>主要参考文章：<br><a href="https://blog.csdn.net/qq_35468937/article/details/81514198" target="_blank" rel="noopener">openpose环境搭建</a></p>
+<p><a href="https://blog.csdn.net/qq_34163820/article/details/94544468" target="_blank" rel="noopener">ubuntu18.04+caffe+cuda10.1 + openpose工作环境搭建-2019-07-03</a></p>
+<p>由于我是在Ubuntu18.04安装openpose，需要安装cuda10.0和对应cudnn版本，安装cuda10.0和对应cudnn版本的有关文章网上很多，我这里就不写了。完整的安装过程看<a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose" target="_blank" rel="noopener">openPose</a>的安装文档。</p>
+<h3 id="关于依赖项Prerequisites"><a href="#关于依赖项Prerequisites" class="headerlink" title="关于依赖项Prerequisites"></a>关于依赖项Prerequisites</h3><p>重要！如果已经安装了Anaconda，要卸载anaconda里面的Protobuf ，不然后面会报错。</p>
+<h3 id="关于Custom-Caffe"><a href="#关于Custom-Caffe" class="headerlink" title="关于Custom Caffe"></a>关于Custom Caffe</h3><p>openpose配置文档建议用cmu自家的caffe，但我配置的时候出错了。貌似是Protobuf的版本问题我一直不能解决。上面的文章建议安装官方的caffe，但我最后发现最新版的caffe修改了一些网络层，导致caffe的预训练不能用了。所以我安装的是：<a href="https://github.com/BVLC/caffe/tree/f019d0dfe86f49d1140961f8c7dec22130c83154" target="_blank" rel="noopener">caffe f019</a>。</p>
+<p>其他没有什么很大的问题了。</p>
+<h2 id="编译Opencv-2-4-13-CUDA-9-0-CUDNN对应版本"><a href="#编译Opencv-2-4-13-CUDA-9-0-CUDNN对应版本" class="headerlink" title="编译Opencv 2.4.13+CUDA 9.0+CUDNN对应版本"></a>编译Opencv 2.4.13+CUDA 9.0+CUDNN对应版本</h2><p>参考文章：</p>
+<p>[ubuntu16.04 在cuda9.0环境下编译安装opencv2.4.13.7](<a href="https://blog.csdn.net/zhuangwu116/article/details/81136117）" target="_blank" rel="noopener">https://blog.csdn.net/zhuangwu116/article/details/81136117）</a></p>
+<p><a href="https://blog.csdn.net/weixin_41994751/article/details/85208111" target="_blank" rel="noopener">ubuntu16.04+CUDA8.0+GTX1050Ti+caffe（GPU）的opencv2.4.10+CUDA环境配置</a></p>
+<p>按照上面文章修改opencv的一部分配置文件来适配cuda9.0，没错，这里需要装一个cuda9.0和对应cudnn版本。</p>
+<h3 id="编译错误记录"><a href="#编译错误记录" class="headerlink" title="编译错误记录"></a>编译错误记录</h3><p>首先看这篇文章，里面有一些常见的坑：<br><a href="https://blog.csdn.net/tingyue_/article/details/53456597" target="_blank" rel="noopener">编译cuda版opencv遇到的坑</a></p>
+<p>我的gpu是gtx1060，GPU arch/PTX archs都要设置为6.1，不然后面运行代码会报错。</p>
+<p>其他错误：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">modules<span class="regexp">/highgui/</span>CMakeFiles<span class="regexp">/opencv_highgui.dir/</span>build.<span class="string">make:</span><span class="number">230</span>: recipe <span class="keyword">for</span> target <span class="string">'modules/highgui/CMakeFiles/opencv_highgui.dir/src/cap_ffmpeg.cpp.o'</span> failed</span><br></pre></td></tr></table></figure>
+<p>参考：<br><a href="https://www.cnblogs.com/jiu0821/p/9332513.html" target="_blank" rel="noopener">Error in building opencv with ffmpeg</a></p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">relocation <span class="type">R_ARM_MOVW_ABS_NC</span> against a local symbol' can <span class="keyword">not</span> be used <span class="keyword">when</span> making a <span class="literal">shared</span> <span class="keyword">object</span>; recompile <span class="keyword">with</span> -fPIC</span><br></pre></td></tr></table></figure>
+<p>参考：<br><a href="https://blog.csdn.net/wangruqin1986/article/details/53041008" target="_blank" rel="noopener">opencv交叉编译错误处理</a></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[ <span class="number">50</span>%] Linking CXX <span class="built_in">executable</span> extract_cpu</span><br><span class="line">/usr/bin/ld: cannot <span class="keyword">find</span> -lopencv_dep_nppial</span><br><span class="line">/usr/bin/ld: cannot <span class="keyword">find</span> -lopencv_dep_nppicc</span><br><span class="line">/usr/bin/ld: cannot <span class="keyword">find</span> -lopencv_dep_nppicom</span><br><span class="line">/usr/bin/ld: cannot <span class="keyword">find</span> -lopencv_dep_nppidei</span><br><span class="line">/usr/bin/ld: cannot <span class="keyword">find</span> -lopencv_dep_nppif</span><br><span class="line">/usr/bin/ld: cannot <span class="keyword">find</span> -lopencv_dep_nppig</span><br><span class="line">/usr/bin/ld: cannot <span class="keyword">find</span> -lopencv_dep_nppim</span><br><span class="line">/usr/bin/ld: cannot <span class="keyword">find</span> -lopencv_dep_nppist</span><br><span class="line">/usr/bin/ld: cannot <span class="keyword">find</span> -lopencv_dep_nppisu</span><br><span class="line">/usr/bin/ld: cannot <span class="keyword">find</span> -lopencv_dep_nppitc</span><br><span class="line">collect2: error: ld returned <span class="number">1</span> <span class="keyword">exit</span> status</span><br><span class="line">CMakeFiles/extract_cpu.dir/build.<span class="keyword">make</span>:<span class="number">121</span>: recipe <span class="keyword">for</span> target <span class="string">'extract_cpu'</span> failed</span><br><span class="line"><span class="keyword">make</span>[<span class="number">2</span>]: *** [extract_cpu] Error <span class="number">1</span></span><br><span class="line">CMakeFiles/Makefile2:<span class="number">104</span>: recipe <span class="keyword">for</span> target <span class="string">'CMakeFiles/extract_cpu.dir/all'</span> failed</span><br><span class="line"><span class="keyword">make</span>[<span class="number">1</span>]: *** [CMakeFiles/extract_cpu.dir/<span class="keyword">all</span>] Error <span class="number">2</span></span><br><span class="line">Makefile:<span class="number">83</span>: recipe <span class="keyword">for</span> target <span class="string">'all'</span> failed</span><br><span class="line"><span class="keyword">make</span>: *** [<span class="keyword">all</span>] Error <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>参考：<br><a href="https://stackoverflow.com/questions/48373922/cannot-find-nppi-series-when-building-dense-flow-with-opencv2-4-13" target="_blank" rel="noopener">cannot find nppi series when building dense_flow with opencv2.4.13</a></p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">How can you <span class="keyword">link</span> GLEW <span class="keyword">to</span> a project <span class="keyword">with</span> CMake?</span><br></pre></td></tr></table></figure>
+<p>参考：</p>
+<p><a href="https://stackoverflow.com/questions/27472813/linking-glew-with-cmake/27487567#27487567" target="_blank" rel="noopener">Linking GLEW with CMake</a></p>
 
       
     </div>
@@ -650,7 +669,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+            <a href="/tags/环境配置/" rel="tag"># 环境配置</a>
+          
+            <a href="/tags/人体重建/" rel="tag"># 人体重建</a>
           
         </div>
       
@@ -663,8 +684,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/ubuntu-and-windows.html" rel="next" title="UEFI模式下Windows10上安装Ubuntu 18.04.1 LTS双系统">
-                <i class="fa fa-chevron-left"></i> UEFI模式下Windows10上安装Ubuntu 18.04.1 LTS双系统
+              <a href="/vo-2.html" rel="next" title="vo-2">
+                <i class="fa fa-chevron-left"></i> vo-2
               </a>
             
           </div>
@@ -672,10 +693,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/openMVG-openMVS.html" rel="prev" title="三维重建系统搭建-openMVG和openMVS">
-                三维重建系统搭建-openMVG和openMVS <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -723,8 +740,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -952,6 +978,23 @@ show_date_time();
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dependencies"><span class="nav-number">1.</span> <span class="nav-text">Dependencies</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译openpose"><span class="nav-number">2.</span> <span class="nav-text">编译openpose</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于依赖项Prerequisites"><span class="nav-number">2.1.</span> <span class="nav-text">关于依赖项Prerequisites</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于Custom-Caffe"><span class="nav-number">2.2.</span> <span class="nav-text">关于Custom Caffe</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译Opencv-2-4-13-CUDA-9-0-CUDNN对应版本"><span class="nav-number">3.</span> <span class="nav-text">编译Opencv 2.4.13+CUDA 9.0+CUDNN对应版本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编译错误记录"><span class="nav-number">3.1.</span> <span class="nav-text">编译错误记录</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       
