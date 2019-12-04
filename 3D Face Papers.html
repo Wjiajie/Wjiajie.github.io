@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="cjNXc2AEYk3vl2-qiFXeVz-0jFUbTm5BiOPMiNROc2U">
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="0OsNUYuom8">
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":true,"dimmer":true},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="一些3d Face的相关论文，不定期更新。">
+<meta name="keywords" content="dl,face-reconstruction">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3D Face 论文索引">
+<meta property="og:url" content="https://www.jiajiewu.cn/3D Face Papers.html">
+<meta property="og:site_name" content="jiajie">
+<meta property="og:description" content="一些3d Face的相关论文，不定期更新。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-04T14:31:49.250Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3D Face 论文索引">
+<meta name="twitter:description" content="一些3d Face的相关论文，不定期更新。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="jiajie" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.jiajiewu.cn/3D Face Papers">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>3D Face 论文索引 | jiajie</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-139409990-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-139409990-1');
+    }
+  </script>
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4935452b6c6a00d127c010608b531cc0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">jiajie</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Cv 爱好者</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>时间线</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>聚类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-talk">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/talk/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>杂谈</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-photos">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/photos/" rel="section"><i class="menu-item-icon fa fa-fw fa-image"></i> <br>相册</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-link">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/link/" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>有趣的链接</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于我与本博客</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.jiajiewu.cn/3D Face Papers.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jiajie">
+      <meta itemprop="description" content="这是最好的时代，也是最坏的时代。">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jiajie">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">3D Face 论文索引
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-04 18:05:33 / 修改时间：22:31:49" itemprop="dateCreated datePublished" datetime="2019-12-04T18:05:33+08:00">2019-12-04</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/face-reconstruction/" itemprop="url" rel="index"><span itemprop="name">face-reconstruction</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/3D Face Papers.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/3D Face Papers.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+	
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>一些3d Face的相关论文，不定期更新。</p>
+<a id="more"></a>
+<h1 id="3D-Face"><a href="#3D-Face" class="headerlink" title="3D Face"></a>3D Face</h1><h2 id="Surveys-amp-Doctoral-Thesis"><a href="#Surveys-amp-Doctoral-Thesis" class="headerlink" title="Surveys &amp; Doctoral Thesis"></a>Surveys &amp; Doctoral Thesis</h2><ul>
+<li><p>Face Image Analysis using a Multiple Features Fitting Strategy(2005, Basel)</p>
+</li>
+<li><p>3D Face Modelling for 2D+3D Face Recognition(2007, Surrey)</p>
+</li>
+<li><p>Image Based 3D Face Reconstruction: A Survey(IJIG2009, Georgios Stylianou, Andreas Lanitis, EUC, CUT) </p>
+<p><code>early 3D facial acquisition approaches</code></p>
+</li>
+<li><p>animation reconstruction of deformable surfaces(2010, Hao Li, ETHz)</p>
+</li>
+<li><p>Inverse Rendering of Faces with a 3D Morphable Model(2012, Oswald Aldrian, York)</p>
+</li>
+<li><p>Digital Geometry Processing Theory and Applications(2012, Kun Zhou, Zhengjiang, 中文)</p>
+</li>
+<li><p><strong><em>State of the Art on Monocular 3D Face Reconstruction, Tracking, and Applications</em></strong> </p>
+<p><strong>State of the Art on 3D Reconstruction with RGB-D Cameras</strong>(EG2018, MZ, CT, MPI, Stanford, TUM, Disney, Technicolor, UEN) <a href="http://web.stanford.edu/~zollhoef/papers/EG18_FaceSTAR/page.html" target="_blank" rel="noopener">[talks]</a></p>
+</li>
+</ul>
+<h2 id="Papers-amp-Codes"><a href="#Papers-amp-Codes" class="headerlink" title="Papers &amp; Codes"></a>Papers &amp; Codes</h2><h3 id="Reconstruction-amp-3D-Alignment-amp-Correspondences"><a href="#Reconstruction-amp-3D-Alignment-amp-Correspondences" class="headerlink" title="Reconstruction&amp;3D Alignment&amp;Correspondences"></a>Reconstruction&amp;3D Alignment&amp;Correspondences</h3><h4 id="1998-2015"><a href="#1998-2015" class="headerlink" title="1998 - 2015"></a>1998 - 2015</h4><ul>
+<li><p>A Morphable Model For The Synthesis Of 3D Faces</p>
+<p>   (SIGGRAPH1998, <a href="https://scholar.google.com.hk/citations?user=jYCidWgAAAAJ&amp;hl=zh-CN&amp;oi=sra" target="_blank" rel="noopener">V Blanz</a>, <a href="https://scholar.google.com.hk/citations?user=HKLgZpYAAAAJ&amp;hl=zh-CN&amp;oi=sra" target="_blank" rel="noopener">T Vetter</a> , MPI) </p>
+<p>   <code>3dmm,analysis-by-synthesis(cascaded, coarse to fine, using texture information), mid-detail</code></p>
+</li>
+<li><p>Efficient, Robust and Accurate Fitting of a 3D Morphable Model</p>
+<p>   (ICCV2003, S Romdhani, <a href="https://scholar.google.com.hk/citations?user=HKLgZpYAAAAJ&amp;hl=zh-CN&amp;oi=sra" target="_blank" rel="noopener">T Vetter</a> , Basel) </p>
+<p>   <code>3dmm, fitting Algorithm needs: Efficient, Robust, Accurate, Automatic. Mid-detail</code></p>
+</li>
+<li><p>Estimating 3D Shape and Texture Using Pixel Intensity, Edges, Specular Highlights, Texture Constraints and a Prior</p>
+<p> (CVPR2005, S Romdhani, <a href="https://scholar.google.com.hk/citations?user=HKLgZpYAAAAJ&amp;hl=zh-CN&amp;oi=sra" target="_blank" rel="noopener">T Vetter</a> , Basel)</p>
+<p> <code>3dmm, multiple features</code></p>
+</li>
+<li><p>A 3D Face Model for Pose and Illumination Invariant Face Recognition</p>
+<p>(AVSS2009, Paysan, P., Knothe, R., Amberg, B., Romdhani, S., &amp; Vetter, T. , Basel) <a href="https://faces.cs.unibas.ch/bfm/" target="_blank" rel="noopener"><a href="BFM">data</a></a></p>
+</li>
+<li><p>3D Face Reconstruction from a Single Image Using a Single Reference Face Shape</p>
+<p>   (TPAMI2011, <a href="https://scholar.google.com.hk/citations?user=P97vI1EAAAAJ&amp;hl=zh-CN&amp;oi=sra" target="_blank" rel="noopener">I Kemelmacher-Shlizerman</a>, Basri R, UW)</p>
+<p>   <code>template, sfs, texture information, mid-detail</code></p>
+</li>
+<li><p>Face Reconstruction in the Wild</p>
+<p>   (ICCV2011, Kemelmacher-Shlizerman I, Seitz S M , UW)</p>
+<p>   <code>collection, sparse correspondence, warp template,  low-rank approximation(photometric stereo, for expression normalization), mid-detail</code></p>
+</li>
+<li><p>A FACS Valid 3D Dynamic Action Unit Database with Applications to 3D Dynamic Morphable Facial Modeling</p>
+<p>   (ICCV2011, Cosker D, Krumhuber E, Hilton A. , UofSurrey)</p>
+<p>   <code>aam, expression</code></p>
+</li>
+<li><p>Viewing Real-World Faces in 3D</p>
+<p>   (ICCV2013, <a href="https://scholar.google.com.hk/citations?user=ehe5pyIAAAAJ&amp;hl=zh-CN&amp;oi=sra" target="_blank" rel="noopener">T Hassner</a>, Open U Israel)</p>
+<p>   <code>template, sparse correspondence, pose adjustment, depth optimization(SIFT)</code> </p>
+</li>
+<li><p>Improving 3D Face Details based on Normal Map of Hetero-source Images</p>
+<p>(CVPRW2014, Yang, C., Chen, J., Su, N., &amp; Su, G. , Tsinghua University)</p>
+</li>
+<li><p>Total Moving Face Reconstruction</p>
+<p> (LNCS2014, Suwajanakorn S, Kemelmacher-Shlizerman I, Seitz S M. , Washington)</p>
+<p> <code>video(collections), template, average shape, pose estimation, 3d flow(correspondence), refinement, high-detail</code></p>
+</li>
+<li><p>FaceWarehouse: a 3D Facial Expression Database for Visual Computing</p>
+<p>(VCG2014, Cao, C., Weng, Y., Zhou, S., Tong, Y., &amp; Zhou, K., Zhejiang) <a href>[data]</a></p>
+</li>
+<li><p>Intrinsic Face Image Decomposition with Human Face Priors</p>
+<p>(ECCV2014, Li C, Zhou K, Lin S , Zhejiang)</p>
+</li>
+<li><p>Fitting 3D Morphable Models using Local Features</p>
+<p>(ICIP2015, Huber, P., Feng, Z. H., Christmas, W., Kittler, J., &amp; Ratsch, M, Surrey)</p>
+<p> <code>sparse correspondence, 3dmm, regression</code></p>
+</li>
+<li><p>What Makes Tom Hanks Look Like Tom Hanks</p>
+<p>(ICCV2015, Suwajanakorn S, Seitz S M, Kemelmacher-Shlizerman I. , Washington)</p>
+<p><code>collection, template, average model, 3D flow, correspondence, deformation vector, TPS, expression sililarity weighted, high-frequency details, Laplacian pyramid</code></p>
+</li>
+<li><p>Unconstrained Realtime Facial Performance Capture</p>
+<p>(CVPR2015, Hsieh, P. L., Ma, C., Yu, J., &amp; Li, H. , USC)</p>
+<p><code>video,image collections, occlusion, segmentation, landmarks</code></p>
+</li>
+<li><p>Unconstrained 3D Face Reconstruction</p>
+<p>(CVPR2015, Roth, J., Tong, Y., &amp; Liu, X, MSU)</p>
+<p><code>collection, sparse correspondence(landmarks), template, photometric stereo(SVD), matrix completion,</code></p>
+</li>
+<li><p>Pose-Invariant 3D Face Alignment</p>
+<p>(ICCV2015, Jourabloo, A., &amp; Liu, X., MSU)</p>
+<p><code>alignment, dense correspondence, visibility, cascaded regressor, 3DPDM.</code></p>
+</li>
+<li><p>Discriminative 3D Morphable Model Fitting</p>
+<p>(CVPR2015)</p>
+</li>
+</ul>
+<h4 id="2016"><a href="#2016" class="headerlink" title="2016"></a>2016</h4><p><strong>#CVPR</strong></p>
+<ul>
+<li><p>Large-pose Face Alignment via CNN-based Dense 3D Model Fitting</p>
+<p>(CVPR2016, Jourabloo, A., &amp; Liu, X., MSU)</p>
+<p> <code>alignment, 3dmm</code></p>
+</li>
+<li><p>Automated 3D Face Reconstruction from Multiple Images using Quality Measures</p>
+<p>(CVPR2016, Piotraschke, M., &amp; Blanz, V , Siegen)</p>
+</li>
+<li><p>A Robust Multilinear Model Learning Framework for 3D Faces</p>
+<p>(CVPR2016, Bolkart, T., &amp; Wuhrer, S., Saarland)</p>
+</li>
+<li><p>Face Alignment Across Large Poses: A 3D Solution</p>
+<p>(CVPR2016, Zhu, X., Lei, Z., Liu, X., Shi, H., &amp; Li, S. Z. , MSU, CASIA)</p>
+</li>
+<li><p>Adaptive 3D Face Reconstruction from Unconstrained Photo Collections</p>
+<p>(CVPR2016, Roth, J., Tong, Y., &amp; Liu, X, MSU)</p>
+<p> <code>landmarks, 3dmm, coarse-to-fine,photometric stereo, time: 7 minutes</code></p>
+</li>
+<li><p>Augmented Blendshapes for Real-time Simultaneous 3D Head Modeling and Facial Motion Capture</p>
+<p>(CVPR2016, Thomas, D., &amp; Taniguchi, R. I. , Kyushu University)</p>
+</li>
+<li><p>A 3D Morphable Model learnt from 10,000 faces</p>
+<p>(CVPR2016, Booth, J., Roussos, A., Zafeiriou, S., Ponniah, A., &amp; Dunaway, D., ICL)</p>
+</li>
+</ul>
+<p><strong>#ECCV</strong></p>
+<ul>
+<li><p>Joint Face Alignment and 3D Face Reconstruction</p>
+<p>(ECCV2016, Liu, F., Zeng, D., Zhao, Q., &amp; Liu, X, MSU, Sichuan U) </p>
+<p><code>alignment, landmarks</code></p>
+</li>
+<li><p>Real-Time Facial Segmentation and Performance Capture from RGB Input</p>
+<p>(ECCV2016, Saito, S., Li, T., &amp; Li, H. , USC)</p>
+<p> <code>occlusions, tracking</code> </p>
+</li>
+</ul>
+<p><strong>#Others</strong></p>
+<ul>
+<li><p>3D Face Reconstruction by Learning from Synthetic Data</p>
+<p>(3DV2016, Richardson, E., Sela, M., &amp; Kimmel, R, IIT)</p>
+<p> <code>3dmm, cnn, regress 3dmm parameters, sfs</code></p>
+</li>
+<li><p>Face Reconstruction on Mobile Devices Using a Height Map Shape Model and Fast Regularization</p>
+<p>(3DV2016, Maninchedda, F., Häne, C., Oswald, M. R., &amp; Pollefeys, M., ETH)</p>
+</li>
+<li><p>A Multiresolution 3D Morphable Face Model and Fitting Framework  <a href="https://github.com/patrikhuber/eos" target="_blank" rel="noopener">[code]</a></p>
+<p>(IJCV2016, Huber, P., Hu, G., Tena, R., Mortazavian, P., Koppen, P., Christmas, W. J., … &amp; Kittler, J. ，Surrey)</p>
+</li>
+<li><p>Rapid Photorealistic Blendshape Modeling from RGB-D Sensors</p>
+<p>(2016, USC)</p>
+</li>
+<li><p>3D Face Reconstruction with Region Based Best Fit Blending Using Mobile Phone for Virtual Reality Based Social Media</p>
+<p>(2016, Anbarjafari, G., Haamer, R. E., Lusi, I., Tikk, T., &amp; Valgma, L. , Turkey)</p>
+<p><code>landmarks, uv texture, region</code></p>
+</li>
+</ul>
+<h4 id="2017"><a href="#2017" class="headerlink" title="2017"></a>2017</h4><p><strong>#CVPR</strong></p>
+<ul>
+<li><p>3D Face Morphable Models “In-the-Wild”  </p>
+<p>(CVPR2017, Booth, J., Antonakos, E., Ploumpis, S., Trigeorgis, G., Panagakis, Y., &amp; Zafeiriou, S., ICL)</p>
+<p> <code>3dmm, register, UV</code></p>
+</li>
+<li><p>Face Normals “in-the-wild” using Fully Convolutional Networks</p>
+<p>(CVPR2017, Trigeorgis, G., Snape, P., Kokkinos, I., &amp; Zafeiriou, S. , ICL)</p>
+</li>
+<li><p>Regressing Robust and Discriminative 3D Morphable Models with a very Deep Neural Network</p>
+<p>(CVPR2017, Tran, A. T., Hassner, T., Masi, I., &amp; Medioni, G. , USC)</p>
+</li>
+<li><p>Fast 3D Reconstruction of Faces with Glasses</p>
+<p>(CVPR2017, Maninchedda, F., Oswald, M. R., &amp; Pollefeys, M., ETH)</p>
+</li>
+<li><p>DenseReg: Fully Convolutional Dense Shape Regression In-the-Wild</p>
+<p>(CVPR2017, Güler, R. A., Trigeorgis, G., Antonakos, E., Snape, P., Zafeiriou, S., &amp; Kokkinos, I. , ICL)</p>
+<p><code>dense correspondence, uv</code></p>
+</li>
+<li><p>Learning Detailed Face Reconstruction from a Single Image</p>
+<p>(CVPR2017, Richardson, E., Sela, M., Or-El, R., &amp; Kimmel, R. , Washington)</p>
+</li>
+<li><p>End-to-end 3D face reconstruction with deep neural networks</p>
+<p>(CVPR2017, Dou, P., Shah, S. K., &amp; Kakadiaris, I. A., UofHouston)</p>
+<p><code>3dmm, dl, directly learn 3dmm parameters</code></p>
+</li>
+<li><p>A Generative Model for Depth-based Robust 3D Facial Pose Tracking</p>
+<p>(CVPR2017, Cai, L. S. J., Pavlovic, T. J. C. V., &amp; Ngan, K. N. , CUHK) </p>
+<p> <code>occlusions</code> </p>
+</li>
+</ul>
+<p><strong>#ICCV</strong></p>
+<ul>
+<li><p>3D Morphable Models as Spatial Transformer Networks</p>
+<p> (ICCV2017, Bas, A., Huber, P., Smith, W. A., Awais, M., &amp; Kittler, J. , York, Surrey )</p>
+<p> <code>dl, cnn, uv texture, landmarks, stn, 3dmm</code></p>
+</li>
+<li><p>Faster Than Real-time Facial Alignment: A 3D Spatial Transformer Network Approach in Unconstrained Poses</p>
+<p>(ICCV2017, Bhagavatula, C., Zhu, C., Luu, K., &amp; Savvides, M., CMU)</p>
+</li>
+<li><p>Pose-Invariant Face Alignment with a Single CNN</p>
+<p>(ICCV2017, Jourabloo, A., Ye, M., Liu, X., &amp; Ren, L. , MSU)</p>
+<p><code>alignment, 3dmm, dl, cnn</code></p>
+</li>
+<li><p>Large Pose 3D Face Reconstruction from a Single Image via Direct Volumetric CNN Regression <a href="https://github.com/AaronJackson/vrn" target="_blank" rel="noopener">code</a></p>
+<p>(ICCV2017, Jackson, A. S., Bulat, A., Argyriou, V., &amp; Tzimiropoulos, G. , Nottingham)</p>
+<p><code>end-to-end, 3dmm, dl, cnn, landmarks, voxel</code> </p>
+</li>
+<li><p>Unrestricted Facial Geometry Reconstruction Using Image-to-Image Translation</p>
+<p>(ICCV2017, Sela, M., Richardson, E., &amp; Kimmel, R. , IIT)</p>
+</li>
+<li><p>MoFA: Model-based Deep Convolutional Face Autoencoder for Unsupervised Monocular Reconstruction</p>
+<p> (ICCV2017, Tewari, A., Zollhöfer, M., Kim, H., Garrido, P., Bernard, F., Pérez, P., &amp; Theobalt, C. , MPI)</p>
+</li>
+<li><p>Dense Face Alignment <a href="http://cvlab.cse.msu.edu/project-pifa.html" target="_blank" rel="noopener">code</a></p>
+<p> (ICCVW2017, Liu, Y., Jourabloo, A., Ren, W., &amp; Liu, X. , MSU)</p>
+</li>
+<li><p>Realtime Dynamic 3D Facial Reconstruction for Monocular Video In-the-Wild</p>
+<p> (ICCVW2017) </p>
+</li>
+<li><p>Learning Dense Facial Correspondences in Unconstrained Images</p>
+<p>(ICCV2017, Yu, R., Saito, S., Li, H., Ceylan, D., &amp; Li, H.  , USC)</p>
+<p><code>dense correspondence</code></p>
+</li>
+</ul>
+<p><strong>#others</strong></p>
+<ul>
+<li><p>Large Scale 3D Morphable Models <a href="https://faces.cs.unibas.ch/bfm/" target="_blank" rel="noopener"><a href="LSFM">data</a></a></p>
+<p>(IJCV2017, Booth, J., Roussos, A., Ponniah, A., Dunaway, D., &amp; Zafeiriou, S. , ICL) </p>
+<p><code>for alignment, template, cnn, dl, sparse correspondence, landmarks, tps warping</code></p>
+</li>
+<li><p>What does 2D geometric information really tell us about 3D face shape?  (2017, Bas, A., &amp; Smith, W. A )</p>
+<p><code>shape from landmarks, shape from contours</code></p>
+</li>
+<li><p>Pix2Face: Direct 3D Face Model Estimation</p>
+<p> (2017)</p>
+<p> <code>dense correspondence, 3dmm</code></p>
+</li>
+<li><p>3D Face Reconstruction with Geometry Details from a Single Image</p>
+<p> (TIP2017, Jiang, L., Zhang, J., Deng, B., Li, H., &amp; Liu, L. , USC, USTC)</p>
+<p> <code>coarse-to-fine, landmarks, corrective deformatio, sfs</code></p>
+</li>
+</ul>
+<h4 id="2018"><a href="#2018" class="headerlink" title="2018"></a>2018</h4><p><strong>#CVPR</strong></p>
+<ul>
+<li><p>Unsupervised Training for 3D Morphable Model Regression  <a href="https://github.com/google/tf_mesh_renderer" target="_blank" rel="noopener">code</a></p>
+<p>(CVPR2018, Genova, K., Cole, F., Maschinot, A., Sarna, A., Vlasic, D., &amp; Freeman, W. T , Google)</p>
+</li>
+</ul>
+<ul>
+<li><p>4DFAB: A Large Scale 4D Database for Facial Expression Analysis and Biometric Applications  <a href>data</a></p>
+<p>(CVPR2018, Cheng, S., Kotsia, I., Pantic, M., &amp; Zafeiriou, S., ICL) </p>
+</li>
+<li><p>Sparse Photometric 3D Face Reconstruction Guided by Morphable Models</p>
+<p>(CVPR2018, Cao, X., Chen, Z., Chen, A., Chen, X., Li, S., &amp; Yu, J.  , shanghaitech)</p>
+<p><code>5 input images, 3dmm, shadow processing, light calibration, photometric stereo, denoising</code></p>
+</li>
+<li><p>Disentangling Features in 3D Face Shapes for Joint Face Reconstruction and Recognition</p>
+<p>(CVPR2018, Liu, F., Zhu, R., Zeng, D., Zhao, Q., &amp; Liu, X. , MSU, Sichuan)</p>
+</li>
+<li><p>Mesoscopic Facial Geometry Inference Using Deep Neural Networks</p>
+<p>(CVPR2018, Hao Li, USC)</p>
+<p><code>high-detail, dl, scan, uv texture, displacement</code></p>
+</li>
+<li><p>Self-supervised Multi-level Face Model Learning for Monocular Reconstruction at over 250 Hz</p>
+<p>(CVPR2018, Tewari, A., Zollhöfer, M., Garrido, P., Bernard, F., Kim, H., Pérez, P., &amp; Theobalt, C., MPI)</p>
+</li>
+<li><p>SfSNet : Learning Shape, Reflectance and Illuminance of Faces in the Wild</p>
+<p>(CVPR2018, Sengupta, S., Kanazawa, A., Castillo, C. D., &amp; Jacobs, D.  , Maryland, UCB )</p>
+</li>
+<li><p>Probabilistic Joint Face-Skull Modelling for Facial Reconstruction</p>
+<p>(CVPR2018, Madsen, D., Lüthi, M., Schneider, A., &amp; Vetter, T. , Basel)</p>
+</li>
+<li><p>Alive Caricature from 2D to 3D</p>
+<p>(CVPR2018, Wu, Q., Zhang, J., Lai, Y. K., Zheng, J., &amp; Cai, J, USTC)</p>
+</li>
+<li><p>Nonlinear 3D Face Morphable Model</p>
+<p>(CVPR2018, Tran, L., &amp; Liu, X. , MSU)</p>
+</li>
+<li><p>InverseFaceNet: Deep Monocular Inverse Face Rendering</p>
+<p>(CVPR2018, Kim, H., Zollhöfer, M., Tewari, A., Thies, J., Richardt, C., &amp; Theobalt, C. , MPI)</p>
+<p><code>Self-Supervised Bootstrapping</code></p>
+</li>
+<li><p>Extreme 3D Face Reconstruction: Looking Past Occlusions</p>
+<p>(CVPR2018, Tran, A. T., Hassner, T., Masi, I., Paz, E., Nirkin, Y., &amp; Medioni, G. , USC)</p>
+</li>
+<li><p>Total Capture: A 3D Deformation Model for Tracking Faces, Hands, and Bodies</p>
+<p>(CVPR2018, best student paper, Joo, H., Simon, T., &amp; Sheikh, Y. , CMU)</p>
+</li>
+<li><p>Modeling Facial Geometry using Compositional VAEs</p>
+<p>(CVPR2018, Bagautdinov, T., Wu, C., Saragih, J., Fua, P., &amp; Sheikh, Y., EPEL, FRL )</p>
+</li>
+</ul>
+<p><strong>#ECCV</strong></p>
+<ul>
+<li><p>3D Face Reconstruction from Light Field Images: A Model-free Approach</p>
+<p> (ECCV2018, Feng, M., Gilani, S. Z., Wang, Y., &amp; Mian, A., Western Australia, Hunan)</p>
+<p> <code>epopolar plane images</code></p>
+</li>
+<li><p>Generating 3D Faces using Convolutional Mesh Autoencoders <a href="https://github.com/anuragranj/coma" target="_blank" rel="noopener">[code]</a></p>
+<p> (ECCV2018, Ranjan, A., Bolkart, T., Sanyal, S., &amp; Black, M. J., MPI)</p>
+</li>
+<li><p>Joint 3D Face Reconstruction and Dense Alignment with Position Map Regression Network <a href="https://github.com/YadiraF/PRNet" target="_blank" rel="noopener">[code]</a></p>
+<p> (ECCV2018, Feng, Y., Wu, F., Shao, X., Wang, Y., &amp; Zhou, X., SJTU)</p>
+</li>
+</ul>
+<p><strong>#others</strong></p>
+<ul>
+<li><p>Morphable Face Models - An Open Framework</p>
+<p> (FG2018, Gerig, T., Morel-Forster, A., Blumer, C., Egger, B., Luthi, M., Schönborn, S., &amp; Vetter, T. , Basel)</p>
+</li>
+<li><p>CNN-based Real-time Dense Face Reconstruction with Inverse-rendered Photo-realistic Face Images <a href="https://github.com/Juyong/3DFace" target="_blank" rel="noopener">[data&amp;code]</a></p>
+<p> (TPAMI2018, Yudong Guo, Juyong Zhang, Jianfei Cai, Boyi Jiang, Jianmin Zheng, USTC)</p>
+</li>
+<li><p>Multilinear Autoencoder for 3D Face Model Learning(WACV 2018,  Universite Grenoble Alpes (LJK), France)</p>
+<p> <code>3d scan to registered mesh. dl. height map</code></p>
+</li>
+<li><p>On Face Segmentation, Face Swapping, and Face Perception(AFGR,2018, HT)</p>
+</li>
+<li><p>Evaluation of Dense 3D Reconstruction from 2D Face Images in the Wild(FG2018) <a href>data</a></p>
+</li>
+</ul>
+<p><strong>#arxiv</strong></p>
+<ul>
+<li><p>Joint Face Alignment and 3D Face Reconstruction with Application to Face Recognition(2017, Feng Liu, Xiaoming Liu)</p>
+</li>
+<li><p>Convolutional Point-set Representation: A Convolutional Bridge Between a Densely Annotated Image and 3D Face Alignment(20180317)</p>
+</li>
+<li><p>Unsupervised Depth Estimation, 3D Face Rotation and Replacement(20180325)</p>
+</li>
+</ul>
+<h3 id="Production-level-Reconstruction"><a href="#Production-level-Reconstruction" class="headerlink" title="Production-level Reconstruction"></a>Production-level Reconstruction</h3><blockquote>
+<p>more in computer graphics  </p>
+</blockquote>
+<ul>
+<li><p>High-Quality Single-Shot Capture of Facial Geometry(TOG2010, ETHZ, Disney)</p>
+<p> <code>cg, high-detail,stereo system, calibration, surface refinement, normal direction, mesoscopic</code></p>
+</li>
+<li><p>Multiview Face Capture using Polarized Spherical Gradient Illumination(TOG2011)</p>
+<p> <code>image collecitons</code></p>
+</li>
+<li><p>High-Quality Passive Facial Performance Capture using Anchor Frames(SIGGRAPH2011, ETHZ, Disney)</p>
+<p> <code>cg, stereo,anchor frame, tracking, mesh progration, physical movement, motion estimation, refinement</code></p>
+</li>
+<li><p>Lightweight binocular facial perfor- mance capture under uncontrolled lighting(TOG2012, MPI)</p>
+<p> <code>cg, high-detail, stereo, template,flow,data term, geometry term, smoothness term, mesh tracking, motion refinement, shape refinement, sfs</code></p>
+</li>
+<li><p>Reconstructing Detailed Dynamic Face Geometry from Monocular Video(TOG2013,  MPI)</p>
+<p> <code>cg, dynamic, high-detail, blend model, sparse correspondence, dense correspondence(appearance matching, LBP), pose estimation , shape refinement, sfs</code></p>
+</li>
+<li><p>3D Shape Regression for Real-time Facial Animation(TOG2013, ZJU)</p>
+</li>
+<li><p>Real-Time High-Fidelity Facial Performance Capture (TOG2015, ZJU)</p>
+<p> <code>cg, landmarks, optical flow, train a regressor to learn detail</code></p>
+</li>
+<li><p>Dynamic 3D Avatar Creation from Hand-held Video Input(TOG2015,  EPEL)</p>
+<p> <code>cg, dynamic, mobile, high-detail, avatar, 3dmm,sparse correspondence, eye mesh, tracking, refinement, sfs, detail map</code> </p>
+</li>
+<li><p>Reconstruction of Personalized 3D Face Rigs from Monocular Video(TOG2016,  MPI)</p>
+<p> <code>parametric shape prior, coarse-scale reconstruction, fine-scale(sfs), coase-&gt;medium-&gt;fine, 3dmm, corrective</code></p>
+</li>
+<li><p>Production-Level Facial Performance Capture Using Deep Convolutional Neural Networks（ASCA2017,  USC)</p>
+</li>
+<li><p>Multi-View Stereo on Consistent Face Topology(EG2017, USC)</p>
+<p> <code>cg, high-detail, landmarks, template, pose estimation, refinement</code></p>
+</li>
+<li><p>Avatar Digitization From a Single Image For Real-Time Rendering(SIGGRAPH Asia 2017, USC)</p>
+<p> <code>cg, avatar, segmentation, head, hair, 3DMM, landmarks, texture completion</code></p>
+</li>
+<li><p>Learning a model of facial shape and expression from 4D scans(TOG2017, USC, MPI)</p>
+</li>
+<li><p>DeepSketch2Face: A Deep Learning Based Sketching System for 3D Face and Caricature Modeling(SIGGRAPH2017)  </p>
+</li>
+<li><p>High-Fidelity Facial Reflectance and Geometry Inference From an Unconstrained Image(SIGGRAPH2018, USC)</p>
+</li>
+</ul>
+<h3 id="Texture"><a href="#Texture" class="headerlink" title="Texture"></a>Texture</h3><blockquote>
+<p>3D-aid texture generation/ UV texture completion<br>Keys: GAN</p>
+</blockquote>
+<ul>
+<li><p>Face Synthesis from Facial Identity Features(CVPR2017, google)</p>
+<p> <code>3dmm, dl, landmarks</code></p>
+</li>
+<li><p>Photorealistic Facial Texture Inference Using Deep Neural Networks(CVPR2017, Hao Li, USC)</p>
+<p> <code>texture completion</code></p>
+</li>
+<li><p>UV-GAN: Adversarial Facial UV Map Completion for Pose-invariant Face Recognition(CVPR2018, SZ, ICL)</p>
+<p> <code>gan, 3dmm, uv texture completion</code></p>
+</li>
+<li><p>Multi-Attribute Robust Component Analysis for Facial UV Maps(2017, SZ, ICL)</p>
+</li>
+<li><p>Realistic Dynamic Facial Textures from a Single Image using GANs(CVPR2017, Hao Li, USC, DeepMind)</p>
+</li>
+<li><p>Semi-supervised Adversarial Learning to Generate Photorealistic Face Images of New Identities from 3D Morphable Model(2018)</p>
+</li>
+<li><p>Side Information for Face Completion: a Robust PCA Approach(20180120, SZ, ICL)</p>
+<p>​    </p>
+</li>
+</ul>
+<h3 id="Transfer-amp-Reenactment-Applications"><a href="#Transfer-amp-Reenactment-Applications" class="headerlink" title="Transfer&amp;Reenactment(Applications)"></a>Transfer&amp;Reenactment(Applications)</h3><ul>
+<li><p>Face Transfer with Multilinear Models (SIGGRAPH2005)</p>
+<p> <code>Cartesian product(ID x EX x VI)</code></p>
+</li>
+<li><p>Online Modeling For Realtime Facial Animation(TOG2013)</p>
+<p> <code>rgbd, blendshape, corrective field</code></p>
+</li>
+<li><p>Displaced Dynamic Expression Regression for Real-time Facial Tracking and Animation(SIGGRAPH2014)</p>
+</li>
+<li><p>Real-time Expression Transfer for Facial Reenactment(SIGGRAPH AISA 2015)</p>
+</li>
+<li><p>Face2Face: Real-time Face Capture and Reenactment of RGB Videos(CVPR2016)</p>
+<p> <code>capture, transfer, 3dmm, landmarks, texture, expression, mouth retrieval</code></p>
+</li>
+<li><p>Synthesizing Obama: Learning Lip Sync from Audio(SIGGRAPH2017)</p>
+</li>
+<li><p>Deep Video Portrait(SIGGRAPH2018)</p>
+</li>
+<li><p>HeadOn: Real-time Reenactment of Human Portrait Videos(SIGGRAPH2018)</p>
+</li>
+</ul>
+<h3 id="3D-aid-2D-face-recognition"><a href="#3D-aid-2D-face-recognition" class="headerlink" title="3D-aid 2D face recognition"></a>3D-aid 2D face recognition</h3><ul>
+<li><p>Tom-vs-Pete Classifiers and Identity-Preserving Alignment for Face Verification(ECCV2012, Columbia University)</p>
+</li>
+<li><p>Face Recognition from a Single Training Image under Arbitrary Unknown Lighting Using Spherical Harmonics(PAMI2006)</p>
+</li>
+<li><p>3D-aided face recognition robust to expression and pose variations (CVPR2014)</p>
+</li>
+<li><p>Effective 3D based Frontalization for Unconstrained Face Recognition(ICPR2016, MICC, Florence)</p>
+</li>
+<li><p>Effective Face Frontalization in Unconstrained Images(CVPR2015, TH, Israel)</p>
+</li>
+<li><p>Do We Really Need to Collect Millions of Faces for Effective Face Recognition(ECCV2016, TH, USC, Israel)</p>
+</li>
+<li><p>High-Fidelity Pose and Expression Normalization for Face Recognition in the Wild(CVPR2015)</p>
+</li>
+<li><p>When 3D-Aided 2D Face Recognition Meets Deep Learning: An extended UR2D for Pose-Invariant Face Recognition(2017)</p>
+</li>
+<li><p>Towards Large-Pose Face Frontalization in the Wild    </p>
+</li>
+<li><p>Fully Automatic Pose-Invariant Face Recognition via 3D Pose Normalization   (ICCV2011, Cambridge, MA, USA)</p>
+</li>
+</ul>
+<h3 id="3D-face-recognition"><a href="#3D-face-recognition" class="headerlink" title="3D face recognition"></a>3D face recognition</h3><ul>
+<li><p>Face Identification across Different Poses and Illuminations with a 3D Morphable Model(Automatic Face and Gesture Recognition2002, VB&amp;TV)</p>
+</li>
+<li><p>Preliminary Face Recognition Grand Challenge Results(2006)</p>
+</li>
+<li><p>expression Invariant 3D Face Recognition with a Morphable Model(FG2008, TV, Basel)</p>
+</li>
+<li><p>Bosphorus Database for 3D Face Analysis(2008)<a href>data</a></p>
+</li>
+<li><p>Robust Learning from Normals for 3D face recognition(ECCV2012, SZ, ICL)</p>
+</li>
+<li><p>Static and dynamic 3D facial expression recognition: A comprehensive survey(IVC2012, SZ, LijunYin)</p>
+</li>
+<li><p>Deep 3D Face Identification(2017, USC)</p>
+</li>
+<li><p>Robust Face Recognition with Deeply Normalized Depth Images (2018)</p>
+<p> <code>depth image(front&amp;neural)</code></p>
+</li>
+<li><p>Learning from Millions of 3D Scans for Large-scale 3D Face Recognition(CVPR2018, Western Australia) </p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/dl/" rel="tag"># dl</a>
+          
+            <a href="/tags/face-reconstruction/" rel="tag"># face-reconstruction</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Monocular-total-capture-compile.html" rel="next" title="Ubuntu18.04编译MonocularTotalCapture">
+                <i class="fa fa-chevron-left"></i> Ubuntu18.04编译MonocularTotalCapture
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="jiajie">
+            
+              <p class="site-author-name" itemprop="name">jiajie</p>
+              <div class="site-description motion-element" itemprop="description">这是最好的时代，也是最坏的时代。</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">44</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Wjiajie" title="GitHub &rarr; https://github.com/Wjiajie" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="/3208920286@qq.com" title="E-Mail &rarr; 3208920286@qq.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://flymrwind.github.io/" title="https://flymrwind.github.io/" rel="noopener" target="_blank">南鱼北游</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          <div id="days"></div>
+    <script>
+    function show_date_time(){
+        window.setTimeout("show_date_time()", 1000);
+        BirthDay=new Date("05/01/2019 00:00:00");
+        today=new Date();
+        timeold=(today.getTime()-BirthDay.getTime());
+        sectimeold=timeold/1000
+        secondsold=Math.floor(sectimeold);
+        msPerDay=24*60*60*1000
+        e_daysold=timeold/msPerDay
+        daysold=Math.floor(e_daysold);
+        e_hrsold=(e_daysold-daysold)*24;
+        hrsold=setzero(Math.floor(e_hrsold));
+        e_minsold=(e_hrsold-hrsold)*60;
+        minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+        seconds=setzero(Math.floor((e_minsold-minsold)*60));
+        document.getElementById('days').innerHTML="已运行"+daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";
+    }
+function setzero(i){
+    if (i<10)
+    {i="0" + i};
+    return i;
+}
+show_date_time();
+</script>
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3D-Face"><span class="nav-number">1.</span> <span class="nav-text">3D Face</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Surveys-amp-Doctoral-Thesis"><span class="nav-number">1.1.</span> <span class="nav-text">Surveys &amp; Doctoral Thesis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Papers-amp-Codes"><span class="nav-number">1.2.</span> <span class="nav-text">Papers &amp; Codes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Reconstruction-amp-3D-Alignment-amp-Correspondences"><span class="nav-number">1.2.1.</span> <span class="nav-text">Reconstruction&amp;3D Alignment&amp;Correspondences</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1998-2015"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1998 - 2015</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2016"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2016</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2017"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">2017</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2018"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">2018</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Production-level-Reconstruction"><span class="nav-number">1.2.2.</span> <span class="nav-text">Production-level Reconstruction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Texture"><span class="nav-number">1.2.3.</span> <span class="nav-text">Texture</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transfer-amp-Reenactment-Applications"><span class="nav-number">1.2.4.</span> <span class="nav-text">Transfer&amp;Reenactment(Applications)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3D-aid-2D-face-recognition"><span class="nav-number">1.2.5.</span> <span class="nav-text">3D-aid 2D face recognition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3D-face-recognition"><span class="nav-number">1.2.6.</span> <span class="nav-text">3D face recognition</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+    <div id="sidebar-dimmer"></div>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jiajie</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+  <script>
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=66402682";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+      
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="true"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'y7ICC5jdzN1vLAJPPhHypnuJ-gzGzoHsz',
+    appKey: 'FvHfDNMHxSVsxKqgFGB3p99M',
+    placeholder: 'say something~maybe',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+  <script type="text/javascript" color="150,72,0" opacity="0.3" zindex="-2" count="10" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+  
+
+ 
+  
+<script type="text/javascript">
+    //微信二维码点击背景关闭
+    $('body').delegate('.-mob-share-weixin-qrcode-bg','click', function(){
+         $(".-mob-share-weixin-qrcode-close").trigger("click");
+    }); 
+</script>
+
+
+
+  <script type="text/javascript" src="/js/instantclick.min.js" data-no-instant></script>
+  <script data-no-instant>InstantClick.init();</script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left"},"mobile":{"show":false},"react":{"opacityDefault":0.9,"opacityOnHover":0.5},"log":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>

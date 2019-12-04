@@ -1,3 +1,4 @@
+https://www.jiajiewu.cn/3D Face Papers.html
 https://www.jiajiewu.cn/Monocular-total-capture-compile.html
 https://www.jiajiewu.cn/vo-2.html
 https://www.jiajiewu.cn/pytorch图像分类.html
@@ -7,4 +8,3 @@ https://www.jiajiewu.cn/pytorch-保存和加载模型.html
 https://www.jiajiewu.cn/pytorch-数据加载和处理.html
 https://www.jiajiewu.cn/pytorch1-0-基本步骤.html
 https://www.jiajiewu.cn/construct-function.html
-https://www.jiajiewu.cn/python-note.html
