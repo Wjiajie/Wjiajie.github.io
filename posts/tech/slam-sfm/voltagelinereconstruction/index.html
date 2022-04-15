@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+    <meta charset="UTF-8" />
+
+    <meta name="generator" content="Hugo 0.95.0" /><meta name="theme-color" content="#fff" />
+    <meta name="color-scheme" content="light dark">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <title>“Demo for 3D Reconstruction” | jiajie</title>
+
+    <link rel="stylesheet" href="/css/meme.min.c0c9763f609fd19f632a00717e1feea8e64ee5df691794d89dac3c9e75eb921f.css"/>
+
+    
+    
+        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" defer></script><script src="/js/meme.min.b7135309bcfa41c19375e04a9fc0a077e179f7ed00af3f7e66f0418016982689.js"></script>
+
+    
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM&#43;Plex&#43;Serif:ital,wght@0,400;0,500;0,700;1,400;1,700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;family=Comfortaa:wght@700&amp;display=swap" media="print" onload="this.media='all'" />
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM&#43;Plex&#43;Serif:ital,wght@0,400;0,500;0,700;1,400;1,700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;family=Comfortaa:wght@700&amp;display=swap" /></noscript>
+
+    <meta name="author" content="JiaJie" /><meta name="description" content="记录三维重建的流程和代码。
+" />
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#2a6df4" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="jiajie" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="jiajie" />
+    <meta name="msapplication-starturl" content="../../../../" />
+    <meta name="msapplication-TileColor" content="#fff" />
+    <meta name="msapplication-TileImage" content="../../../../icons/mstile-150x150.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    
+    
+
+    
+    <link rel="canonical" href="https://wjiajie.github.io/posts/tech/slam-sfm/voltagelinereconstruction/" />
+    
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "datePublished": "2020-02-29T17:28:00+08:00",
+        "dateModified": "2020-02-29T09:56:14+08:00",
+        "url": "https://wjiajie.github.io/posts/tech/slam-sfm/voltagelinereconstruction/",
+        "headline": "“Demo for 3D Reconstruction”",
+        "description": "记录三维重建的流程和代码。\n",
+        "inLanguage" : "zh-CN",
+        "articleSection": "posts",
+        "wordCount":  1301 ,
+        "image": ["https://i.loli.net/2020/02/29/zO1xmyTVeZECY9w.png","https://i.loli.net/2020/02/29/TlnezgNFDphrKjX.png"],
+        "author": {
+            "@type": "Person",
+            "description": "静心得意",
+            "email": "3208920286@qq.com",
+            "image": "https://images.cnblogs.com/cnblogs_com/jiajiewu/1756037/o_200502040806760242504.jpg",
+            "url": "https://wjiajie.github.io/",
+            "name": "JiaJie"
+        },
+        "license": "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)",
+        "publisher": {
+            "@type": "Organization",
+            "name": "jiajie",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://wjiajie.github.io/icons/apple-touch-icon.png"
+            },
+            "url": "https://wjiajie.github.io/"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "@id": "https://wjiajie.github.io/"
+        }
+    }
+</script>
+
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+
+
+
+    
+
+
+
+<meta property="og:title" content="“Demo for 3D Reconstruction”" />
+<meta property="og:description" content="记录三维重建的流程和代码。
+" />
+<meta property="og:url" content="https://wjiajie.github.io/posts/tech/slam-sfm/voltagelinereconstruction/" />
+<meta property="og:site_name" content="jiajie" />
+<meta property="og:locale" content="zh-cn" /><meta property="og:image" content="https://i.loli.net/2020/02/29/zO1xmyTVeZECY9w.png" />
+<meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2020-02-29T17:28:00&#43;08:00" />
+    <meta property="article:modified_time" content="2020-02-29T09:56:14&#43;08:00" />
+    
+    <meta property="article:section" content="posts" />
+
+
+
+    
+    
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@700&amp;text=reuixiy&amp;display=swap" media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@700&amp;text=reuixiy&amp;display=swap" /></noscript>
+
+
+
+
+
+</head>
+
+    <body>
+        <div class="container">
+            
+    <header class="header">
+        
+            <div class="header-wrapper">
+                <div class="header-inner single">
+                    
+    <div class="site-brand">
+        
+            <a href="/" class="brand">jiajie</a>
+        
+    </div>
+
+                    <nav class="nav">
+    <ul class="menu" id="menu">
+        
+            
+        
+        
+        
+        
+            
+                <li class="menu-item"><a href="/posts/tech/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon wpexplorer"><path d="M512 256c0 141.2-114.7 256-256 256C114.8 512 0 397.3 0 256S114.7 0 256 0s256 114.7 256 256zm-32 0c0-123.2-100.3-224-224-224C132.5 32 32 132.5 32 256s100.5 224 224 224 224-100.5 224-224zM160.9 124.6l86.9 37.1-37.1 86.9-86.9-37.1 37.1-86.9zm110 169.1l46.6 94h-14.6l-50-100-48.9 100h-14l51.1-106.9-22.3-9.4 6-14 68.6 29.1-6 14.3-16.5-7.1zm-11.8-116.3l68.6 29.4-29.4 68.3L230 246l29.1-68.6zm80.3 42.9l54.6 23.1-23.4 54.3-54.3-23.1 23.1-54.3z"/></svg><span class="menu-item-name">Tech</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/posts/life/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon pencil-alt"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg><span class="menu-item-name">Life</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/categories/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon folder"><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg><span class="menu-item-name">Categories</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/photos/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="icon eye"><path d="M288 144a110.94 110.94 0 0 0-31.24 5 55.4 55.4 0 0 1 7.24 27 56 56 0 0 1-56 56 55.4 55.4 0 0 1-27-7.24A111.71 111.71 0 1 0 288 144zm284.52 97.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400c-98.65 0-189.09-55-237.93-144C98.91 167 189.34 112 288 112s189.09 55 237.93 144C477.1 345 386.66 400 288 400z"/></svg><span class="menu-item-name">Photos</span></a>
+                </li>
+            
+        
+            
+                <li class="menu-item"><a href="/about/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon plus-circle"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"/></svg><span class="menu-item-name">About</span></a>
+                </li>
+            
+        
+            
+                
+                    
+                    
+                        <li class="menu-item">
+                            <a id="theme-switcher" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5l48.8-97.5a18 18 0 0128 0l48.8 97.5 103.4 -34.5a18 18 0 0119.8 19.8l-34.5 103.4l97.5 48.8a18 18 0 010 28l-97.5 48.8 34.5 103.4a18 18 0 01-19.8 19.8l-103.4-34.5-48.8 97.5a18 18 0 01-28 0l-48.8-97.5l-103.4 34.5a18 18 0 01-19.8-19.8l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8-34.5-103.4a18 18 0 0119.8-19.8zM256 128a128 128 0 10.01 0M256 160a96 96 0 10.01 0"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412a256 256 0 10154-407a11.5 11.5 0 00-5 20a201.5 201.5 0 01-134 374a11.5 11.5 0 00-15 13"/></svg></a>
+                        </li>
+                    
+                
+            
+        
+            
+                
+            
+        
+            
+                <li class="menu-item search-item">
+                        <form id="search" class="search" role="search">
+    <label for="search-input"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon search-icon"><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg></label>
+    <input type="search" id="search-input" class="search-input">
+</form>
+
+<template id="search-result" hidden>
+    <article class="content post">
+        <h2 class="post-title"><a class="summary-title-link"></a></h2>
+        <summary class="summary"></summary>
+        <div class="read-more-container">
+            <a class="read-more-link"> »</a>
+        </div>
+    </article>
+</template>
+
+                    </li>
+                
+            
+        
+    </ul>
+</nav>
+
+                    
+                </div>
+            </div>
+            
+    <input type="checkbox" id="nav-toggle" aria-hidden="true" />
+    <label for="nav-toggle" class="nav-toggle"></label>
+    <label for="nav-toggle" class="nav-curtain"></label>
+
+
+        
+    </header>
+
+
+
+
+            
+            
+    <main class="main single" id="main">
+    <div class="main-inner">
+
+        
+
+        <article class="content post h-entry" data-small-caps="true" data-align="justify" data-type="posts" data-toc-num="true">
+
+            <h1 class="post-title p-name">“Demo for 3D Reconstruction”</h1>
+
+            
+
+            
+
+            
+                
+
+<div class="post-meta">
+    
+        
+        <time datetime="2020-02-29T17:28:00&#43;08:00" class="post-meta-item published dt-published"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;2020.2.29</time>
+    
+    
+        
+        <time datetime="2020-02-29T09:56:14&#43;08:00" class="post-meta-item modified dt-updated"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M400 64h-48V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H160V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V160h352v298a6 6 0 0 1-6 6zm-52.849-200.65L198.842 404.519c-4.705 4.667-12.303 4.637-16.971-.068l-75.091-75.699c-4.667-4.705-4.637-12.303.068-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l44.104 44.461 111.072-110.181c4.705-4.667 12.303-4.637 16.971.068l22.536 22.718c4.667 4.705 4.636 12.303-.069 16.97z"/></svg>&nbsp;2020.2.29</time>
+    
+    
+    
+        
+        
+            
+            
+                
+                
+                
+                
+                    
+                    
+                    
+                        
+                            
+                            
+                        
+                    
+                
+            
+            
+            
+                <span class="post-meta-item category"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>&nbsp;<a href="/posts/tech/slam-sfm/" class="category-link p-category">posts\Tech\SLAM-SFM\</a></span>
+            
+        
+        
+    
+    
+        
+        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;1301</span>
+    
+    
+        
+        <span class="post-meta-item reading-time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;3&nbsp;</span>
+    
+    
+        
+            
+            <span class="post-meta-item busuanzi-page-pv" id="busuanzi_container_page_pv"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="icon post-meta-icon"><path d="M288 144a110.94 110.94 0 0 0-31.24 5 55.4 55.4 0 0 1 7.24 27 56 56 0 0 1-56 56 55.4 55.4 0 0 1-27-7.24A111.71 111.71 0 1 0 288 144zm284.52 97.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400c-98.65 0-189.09-55-237.93-144C98.91 167 189.34 112 288 112s189.09 55 237.93 144C477.1 345 386.66 400 288 400z"/></svg>&nbsp;<span id="busuanzi_value_page_pv"></span></span>
+        
+    
+    
+</div>
+
+            
+
+            <nav class="contents">
+  <h2 id="contents" class="contents-title"></h2><ol class="toc">
+    <li><a id="contents:特征提取和匹配" href="#特征提取和匹配">特征提取和匹配</a></li>
+    <li><a id="contents:由算出来的-rt--算出-f" href="#由算出来的-rt--算出-f">由算出来的 $R,t$  算出 $F$</a></li>
+    <li><a id="contents:电线提取匹配重建" href="#电线提取匹配重建">电线提取，匹配，重建</a></li>
+  </ol>
+</nav><div class="post-body e-content">
+                <p>记录三维重建的流程和代码。</p>
+<img src="https://i.loli.net/2020/02/29/zO1xmyTVeZECY9w.png" width = "100%" height = "30%" div align = center />
+<h2 id="特征提取和匹配"><a href="#特征提取和匹配" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:特征提取和匹配" class="headings">特征提取和匹配</a></h2>
+<p>一些常见的特征提取和匹配方法很多，利用opencv集成的‘SIFT,SURF,ORB’等算法可以完成特征提取和匹配的流程。由于本文中提取的是电线的特征（如下图，需要重建的是中间的电线），不能用上面的方法，所以首先用传统算法提取图像中地面部分的特征点，匹配点算出相机外参数（相对的），由对极约束找出电线的匹配点。</p>
+<img src="https://i.loli.net/2020/02/29/TlnezgNFDphrKjX.png" width = "100%" height = "30%" div align = center />
+<p>这里提供一个demo:</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;opencv2/core/core.hpp&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;opencv2/features2d/features2d.hpp&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;opencv2/highgui/highgui.hpp&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">cv</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">argc</span> <span class="o">!=</span> <span class="mi">3</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;usage: feature_extraction img1 img2&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//-- 读取图像
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Mat</span> <span class="n">img_1</span> <span class="o">=</span> <span class="n">imread</span> <span class="p">(</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">CV_LOAD_IMAGE_COLOR</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Mat</span> <span class="n">img_2</span> <span class="o">=</span> <span class="n">imread</span> <span class="p">(</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">CV_LOAD_IMAGE_COLOR</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//-- 初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">KeyPoint</span><span class="o">&gt;</span> <span class="n">keypoints_1</span><span class="p">,</span> <span class="n">keypoints_2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Mat</span> <span class="n">descriptors_1</span><span class="p">,</span> <span class="n">descriptors_2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">FeatureDetector</span><span class="o">&gt;</span> <span class="n">detector</span> <span class="o">=</span> <span class="n">ORB</span><span class="o">::</span><span class="n">create</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">DescriptorExtractor</span><span class="o">&gt;</span> <span class="n">descriptor</span> <span class="o">=</span> <span class="n">ORB</span><span class="o">::</span><span class="n">create</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Ptr&lt;FeatureDetector&gt; detector = FeatureDetector::create(detector_name);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// Ptr&lt;DescriptorExtractor&gt; descriptor = DescriptorExtractor::create(descriptor_name);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">DescriptorMatcher</span><span class="o">&gt;</span> <span class="n">matcher</span>  <span class="o">=</span> <span class="n">DescriptorMatcher</span><span class="o">::</span><span class="n">create</span> <span class="p">(</span> <span class="s">&#34;BruteForce-Hamming&#34;</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//-- 第一步:检测 Oriented FAST 角点位置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">detector</span><span class="o">-&gt;</span><span class="n">detect</span> <span class="p">(</span> <span class="n">img_1</span><span class="p">,</span><span class="n">keypoints_1</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">detector</span><span class="o">-&gt;</span><span class="n">detect</span> <span class="p">(</span> <span class="n">img_2</span><span class="p">,</span><span class="n">keypoints_2</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//-- 第二步:根据角点位置计算 BRIEF 描述子
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">descriptor</span><span class="o">-&gt;</span><span class="n">compute</span> <span class="p">(</span> <span class="n">img_1</span><span class="p">,</span> <span class="n">keypoints_1</span><span class="p">,</span> <span class="n">descriptors_1</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">descriptor</span><span class="o">-&gt;</span><span class="n">compute</span> <span class="p">(</span> <span class="n">img_2</span><span class="p">,</span> <span class="n">keypoints_2</span><span class="p">,</span> <span class="n">descriptors_2</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Mat</span> <span class="n">outimg1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">drawKeypoints</span><span class="p">(</span> <span class="n">img_1</span><span class="p">,</span> <span class="n">keypoints_1</span><span class="p">,</span> <span class="n">outimg1</span><span class="p">,</span> <span class="n">Scalar</span><span class="o">::</span><span class="n">all</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">DrawMatchesFlags</span><span class="o">::</span><span class="n">DEFAULT</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">imshow</span><span class="p">(</span><span class="s">&#34;ORB特征点&#34;</span><span class="p">,</span><span class="n">outimg1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//-- 第三步:对两幅图像中的BRIEF描述子进行匹配，使用 Hamming 距离
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">vector</span><span class="o">&lt;</span><span class="n">DMatch</span><span class="o">&gt;</span> <span class="n">matches</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//BFMatcher matcher ( NORM_HAMMING );
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">matcher</span><span class="o">-&gt;</span><span class="n">match</span> <span class="p">(</span> <span class="n">descriptors_1</span><span class="p">,</span> <span class="n">descriptors_2</span><span class="p">,</span> <span class="n">matches</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//-- 第四步:匹配点对筛选
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">double</span> <span class="n">min_dist</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">max_dist</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//找出所有匹配之间的最小距离和最大距离, 即是最相似的和最不相似的两组点之间的距离
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">descriptors_1</span><span class="p">.</span><span class="n">rows</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">double</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">matches</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">distance</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="n">min_dist</span> <span class="p">)</span> <span class="n">min_dist</span> <span class="o">=</span> <span class="n">dist</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="n">dist</span> <span class="o">&gt;</span> <span class="n">max_dist</span> <span class="p">)</span> <span class="n">max_dist</span> <span class="o">=</span> <span class="n">dist</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// 仅供娱乐的写法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">min_dist</span> <span class="o">=</span> <span class="n">min_element</span><span class="p">(</span> <span class="n">matches</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">matches</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="p">[](</span><span class="k">const</span> <span class="n">DMatch</span><span class="o">&amp;</span> <span class="n">m1</span><span class="p">,</span> <span class="k">const</span> <span class="n">DMatch</span><span class="o">&amp;</span> <span class="n">m2</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="n">m1</span><span class="p">.</span><span class="n">distance</span><span class="o">&lt;</span><span class="n">m2</span><span class="p">.</span><span class="n">distance</span><span class="p">;}</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">distance</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">max_dist</span> <span class="o">=</span> <span class="n">max_element</span><span class="p">(</span> <span class="n">matches</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">matches</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="p">[](</span><span class="k">const</span> <span class="n">DMatch</span><span class="o">&amp;</span> <span class="n">m1</span><span class="p">,</span> <span class="k">const</span> <span class="n">DMatch</span><span class="o">&amp;</span> <span class="n">m2</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="n">m1</span><span class="p">.</span><span class="n">distance</span><span class="o">&lt;</span><span class="n">m2</span><span class="p">.</span><span class="n">distance</span><span class="p">;}</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">distance</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span> <span class="p">(</span> <span class="s">&#34;-- Max dist : %f </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">max_dist</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span> <span class="p">(</span> <span class="s">&#34;-- Min dist : %f </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">min_dist</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//当描述子之间的距离大于两倍的最小距离时,即认为匹配有误.但有时候最小距离会非常小,设置一个经验值30作为下限.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span> <span class="n">DMatch</span> <span class="o">&gt;</span> <span class="n">good_matches</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">descriptors_1</span><span class="p">.</span><span class="n">rows</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="n">matches</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">distance</span> <span class="o">&lt;=</span> <span class="n">max</span> <span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">min_dist</span><span class="p">,</span> <span class="mf">30.0</span> <span class="p">)</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">good_matches</span><span class="p">.</span><span class="n">push_back</span> <span class="p">(</span> <span class="n">matches</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//-- 第五步:绘制匹配结果
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Mat</span> <span class="n">img_match</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Mat</span> <span class="n">img_goodmatch</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">drawMatches</span> <span class="p">(</span> <span class="n">img_1</span><span class="p">,</span> <span class="n">keypoints_1</span><span class="p">,</span> <span class="n">img_2</span><span class="p">,</span> <span class="n">keypoints_2</span><span class="p">,</span> <span class="n">matches</span><span class="p">,</span> <span class="n">img_match</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">drawMatches</span> <span class="p">(</span> <span class="n">img_1</span><span class="p">,</span> <span class="n">keypoints_1</span><span class="p">,</span> <span class="n">img_2</span><span class="p">,</span> <span class="n">keypoints_2</span><span class="p">,</span> <span class="n">good_matches</span><span class="p">,</span> <span class="n">img_goodmatch</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">imshow</span> <span class="p">(</span> <span class="s">&#34;所有匹配点对&#34;</span><span class="p">,</span> <span class="n">img_match</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">imshow</span> <span class="p">(</span> <span class="s">&#34;优化后匹配点对&#34;</span><span class="p">,</span> <span class="n">img_goodmatch</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h2 id="由算出来的-rt--算出-f"><a href="#由算出来的-rt--算出-f" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:由算出来的-rt--算出-f" class="headings">由算出来的 $R,t$  算出 $F$</a></h2>
+<p>这里假设得到的$R,t$是世界坐标系下的参数，计算F需要先折算会相机坐标系下的相对参数。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">CaclulateFByRGlobal</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3d</span> <span class="n">Rl0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/*Rl0 &lt;&lt; 0.775071, -0.631781, -0.0108743,
+</span></span></span><span class="line"><span class="cl"><span class="cm">		0.0352285, 0.0603884, -0.997553,
+</span></span></span><span class="line"><span class="cl"><span class="cm">		0.630892, 0.772791, 0.069062;*/</span> <span class="c1">//BA huzhou
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">Rl0</span> <span class="o">&lt;&lt;</span> <span class="o">-</span><span class="mf">0.75596</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.654554</span><span class="p">,</span> <span class="mf">0.00914511</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="o">-</span><span class="mf">0.0120758</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.38882e-05</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.999927</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="mf">0.654507</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.756015</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0078862</span><span class="p">;</span>  <span class="c1">//dalian
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">cl0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/*cl0 &lt;&lt; 943.42, 1019.13, 54.7952;*/</span>    <span class="c1">//huzhou
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">cl0</span> <span class="o">&lt;&lt;</span> <span class="mf">974.676</span><span class="p">,</span> <span class="mf">1021.41</span><span class="p">,</span> <span class="mf">16.9945</span><span class="p">;</span>   <span class="c1">//dalian
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3d</span> <span class="n">Rm0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/*Rm0 &lt;&lt; 0.785548, -0.618716, -0.010268,
+</span></span></span><span class="line"><span class="cl"><span class="cm">		0.0190466, 0.0407612, -0.998987,
+</span></span></span><span class="line"><span class="cl"><span class="cm">		0.618508, 0.784557, 0.0438043;*/</span>    <span class="c1">//huzhou
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">Rm0</span> <span class="o">&lt;&lt;</span> <span class="o">-</span><span class="mf">0.740306</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.672267</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.00202373</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="mf">0.00930091</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.00723215</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.999931</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="mf">0.672205</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.740274</span><span class="p">,</span> <span class="mf">0.0116067</span><span class="p">;</span>   <span class="c1">//dalian
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">cm0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/*cm0 &lt;&lt; 947.823, 1016.18, 54.5612;*/</span>   <span class="c1">//huzhou
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">cm0</span> <span class="o">&lt;&lt;</span> <span class="mf">970.431</span><span class="p">,</span> <span class="mf">1017.26</span><span class="p">,</span> <span class="mf">15.493</span><span class="p">;</span>   <span class="c1">//dalian
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3d</span> <span class="n">Rr0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/*Rr0 &lt;&lt; 0.79421, -0.60764, 0.00190083,
+</span></span></span><span class="line"><span class="cl"><span class="cm">		0.0225506, 0.0263483, -0.999398,
+</span></span></span><span class="line"><span class="cl"><span class="cm">		0.607224, 0.793775, 0.0346288; */</span>   <span class="c1">//huzhou
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">Rr0</span> <span class="o">&lt;&lt;</span> <span class="o">-</span><span class="mf">0.762675</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.646221</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0269323</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="mf">0.0197389</span><span class="p">,</span> <span class="mf">0.0183655</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.999636</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="mf">0.64648</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.76293</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.00125122</span><span class="p">;</span>  <span class="c1">//dalian
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">cr0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/*cr0 &lt;&lt; 951.094, 1014.74, 54.7585;*/</span>   <span class="c1">//huzhou
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">cr0</span> <span class="o">&lt;&lt;</span> <span class="mf">966.922</span><span class="p">,</span> <span class="mf">1014.19</span><span class="p">,</span> <span class="mf">17.0275</span><span class="p">;</span> <span class="c1">//dalian
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3d</span> <span class="n">Kl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/*Kl &lt;&lt; 3.7612906067774788e+003, 0., 2.0457995013785016e+003, 0.,
+</span></span></span><span class="line"><span class="cl"><span class="cm">		3.7159736130516289e+003, 1.4796241830921265e+003, 0., 0., 1.;*/</span> <span class="c1">//huzhou
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">Kl</span> <span class="o">&lt;&lt;</span> <span class="mf">3.7343664904677757e+003</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">2.0458971603779855e+003</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="mf">3.6840622549040932e+003</span><span class="p">,</span> <span class="mf">1.5309521054590580e+003</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">;</span>  <span class="c1">//dalian
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3d</span> <span class="n">Km</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/*Km &lt;&lt; 3.7516261809333914e+003, 0., 2.0321668349416393e+003, 0.,
+</span></span></span><span class="line"><span class="cl"><span class="cm">		3.7075460080696898e+003, 1.4757973862050546e+003, 0., 0., 1.;*/</span><span class="c1">//huzhou
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">Km</span> <span class="o">&lt;&lt;</span> <span class="mf">3.6807406030598072e+003</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">2.0575809009145160e+003</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="mf">3.6316348410018245e+003</span><span class="p">,</span> <span class="mf">1.5323338632609398e+003</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">;</span>  <span class="c1">//dalian
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3d</span> <span class="n">Kr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="cm">/*Kr &lt;&lt; 3.7604405383652875e+003, 0., 2.0415438075955501e+003, 0.,
+</span></span></span><span class="line"><span class="cl"><span class="cm">		3.7160779331549415e+003, 1.4845370511494227e+003, 0., 0., 1.;*/</span> <span class="c1">//huzhou
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">Kr</span> <span class="o">&lt;&lt;</span> <span class="mf">3.6902009246169255e+003</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">2.0795207000036444e+003</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="mf">3.6414589667424284e+003</span><span class="p">,</span> <span class="mf">1.5276047177099535e+003</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">;</span> <span class="c1">//dalian
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3d</span><span class="o">&gt;</span> <span class="n">vec_rotation</span><span class="p">{</span> <span class="n">Rl0</span><span class="p">,</span><span class="n">Rm0</span><span class="p">,</span><span class="n">Rr0</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">	<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span><span class="o">&gt;</span> <span class="n">vec_center</span><span class="p">{</span> <span class="n">cl0</span><span class="p">,</span><span class="n">cm0</span><span class="p">,</span><span class="n">cr0</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">	<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3d</span><span class="o">&gt;</span> <span class="n">vec_k_inv</span><span class="p">{</span> <span class="n">Kl</span><span class="p">.</span><span class="n">inverse</span><span class="p">(),</span><span class="n">Km</span><span class="p">.</span><span class="n">inverse</span><span class="p">(),</span><span class="n">Kr</span><span class="p">.</span><span class="n">inverse</span><span class="p">()</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;0: l0, 1: m0, 2 r0 &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="n">uint</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">vec_rotation</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">for</span> <span class="p">(</span><span class="n">uint</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">vec_rotation</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3d</span> <span class="n">R_relative</span> <span class="o">=</span> <span class="n">vec_rotation</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">vec_rotation</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">transpose</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">			<span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">t_relative</span> <span class="o">=</span> <span class="n">vec_rotation</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">vec_center</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">vec_center</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3d</span> <span class="n">t_relative_AntisymmetricMatrix</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">t_relative_AntisymmetricMatrix</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">t_relative</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">t_relative</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">				                              <span class="n">t_relative</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">t_relative</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">				                              <span class="o">-</span><span class="n">t_relative</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">t_relative</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">			<span class="c1">//cout &lt;&lt; &#34;t_relative_AntisymmetricMatrix&#34; &lt;&lt; endl &lt;&lt; t_relative_AntisymmetricMatrix &lt;&lt; endl;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">			<span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3d</span> <span class="n">F</span> <span class="o">=</span> <span class="n">vec_k_inv</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">transpose</span><span class="p">()</span> <span class="o">*</span> <span class="n">t_relative_AntisymmetricMatrix</span> <span class="o">*</span> <span class="n">R_relative</span> <span class="o">*</span> <span class="n">vec_k_inv</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">			<span class="n">F</span> <span class="o">/=</span> <span class="n">F</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;i: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&#34; , j: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">j</span> <span class="o">&lt;&lt;</span> <span class="s">&#34; F:&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">F</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;c_relative: &#34;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="o">-</span><span class="n">R_relative</span><span class="p">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">*</span> <span class="n">t_relative</span><span class="p">).</span><span class="n">transpose</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><h2 id="电线提取匹配重建"><a href="#电线提取匹配重建" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:电线提取匹配重建" class="headings">电线提取，匹配，重建</a></h2>
+<p>代码我放<a href="https://github.com/Wjiajie/VoltageLineReconstruction" target="_blank" rel="noopener">github</a>了。</p>
+            </div>
+
+            
+
+
+        </article>
+
+        
+
+        
+    <div class="updated-badge-container">
+        <span title="Updated @ 2020-02-29 09:56:14 CST" style="cursor:help">
+
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2020-02-29</text><text x="915" y="140" textLength="650" transform="scale(.1)">2020-02-29</text></g></svg>
+        </span></div>
+
+
+
+        
+
+
+        <div class="post-share">
+
+        
+            <div class="share-text"></div>
+        
+
+        <div class="share-items">
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+                <div class="share-item qrcode">
+                    <div class="qrcode-container" title=""><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon qrcode-icon"><path d="M0 224h192V32H0v192zM64 96h64v64H64V96zm192-64v192h192V32H256zm128 128h-64V96h64v64zM0 480h192V288H0v192zm64-128h64v64H64v-64zm352-64h32v128h-96v-32h-32v96h-64V288h96v32h64v-32zm0 160h32v32h-32v-32zm-64 0h32v32h-32v-32z"/></svg><div id="qrcode-img"></div>
+                    </div>
+                    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+
+<script>
+    var typeNumber = 0;
+    var errorCorrectionLevel = 'L';
+    var qr = qrcode(typeNumber, errorCorrectionLevel);
+    qr.addData('https:\/\/wjiajie.github.io\/posts\/tech\/slam-sfm\/voltagelinereconstruction\/');
+    qr.make();
+    document.getElementById('qrcode-img').innerHTML = qr.createImgTag();
+</script>
+
+                </div>
+            
+
+        </div>
+
+    </div>
+
+
+
+
+        
+    
+    
+        <div class="related-posts">
+            <h2 class="related-title"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon related-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"/></svg></h2>
+            <ul class="related-list">
+                
+                    <li class="related-item">
+                        <a href="/posts/tech/slam-sfm/sfm-intro/" class="related-link">SFM算法原理初简介</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/posts/tech/slam-sfm/openmvg-openmvs/" class="related-link">三维重建系统搭建-openMVG和openMVS</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/posts/tech/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/trimmed-icp/" class="related-link">关于trimmed-icp的一些理解</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
+
+
+
+        
+
+
+        
+    <footer class="minimal-footer">
+        
+            <div class="post-tag"><a href="/tags/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" rel="tag" class="post-tag-link">#三维重建</a> <a href="/tags/sfm/" rel="tag" class="post-tag-link">#sfm</a></div>
+        
+        
+            <div class="post-category">
+                <a href="/posts/" class="post-category-link active">posts</a>
+            </div>
+        
+        
+    </footer>
+
+
+
+        
+
+
+        
+    
+        
+        
+    
+    
+    
+    
+        <ul class="post-nav">
+            
+            
+                <li class="post-nav-next">
+                    <a href="/posts/tech/slam-sfm/kinectfusion/" rel="next">KinectFusion框架 &gt;</a>
+                </li>
+            
+        </ul>
+    
+
+
+
+        
+    
+
+        
+
+        
+
+        
+            <div id="vcomments"></div>
+        
+
+        
+
+        
+    
+
+
+
+    </div>
+</main>
+
+
+            
+    <div id="back-to-top" class="back-to-top">
+        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a>
+    </div>
+
+
+            
+    <footer id="footer" class="footer">
+        <div class="footer-inner">
+            <div class="site-info">2019–2022&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;JiaJie</div>
+
+            
+    
+        <ul class="socials"><li class="socials-item">
+                    <a href="https://s2.loli.net/2022/03/20/f6lhgGukJ9QT2Yv.jpg" target="_blank" rel="external noopener" title="wechat"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon social-icon"><path d="M0 224h192V32H0v192zM64 96h64v64H64V96zm192-64v192h192V32H256zm128 128h-64V96h64v64zM0 480h192V288H0v192zm64-128h64v64H64v-64zm352-64h32v128h-96v-32h-32v96h-64V288h96v32h64v-32zm0 160h32v32h-32v-32zm-64 0h32v32h-32v-32z"/></svg></a>
+                </li><li class="socials-item">
+                    <a href="https://github.com/Wjiajie" target="_blank" rel="external noopener" title="GitHub"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon social-icon"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+                </li></ul>
+    
+
+
+
+            
+
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+           
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+              
+                
+                
+                <div class="social-share" data-initialized="true" data-wechat-qrcode-title="扫一扫分享到微信">
+    <center>
+    <font style="font-size:18px;color:darkcyan;">分享到：</font>
+    <a href=" " class="social-share-icon icon-weibo"></a >
+    <a href="#" class="social-share-icon icon-wechat"></a >
+    <a href="#" class="social-share-icon icon-twitter"></a >
+    <a href="#" class="social-share-icon icon-linkedin"></a >
+    <a href="#" class="social-share-icon icon-facebook"></a >
+    <a href="#" class="social-share-icon icon-qq"></a >
+    <a href="#" class="social-share-icon icon-qzone"></a >
+    </center>
+</div>
+
+
+<link rel="stylesheet" href="https://wjiajie.github.io/css/share.min.css" />
+<script src="https://hugo-picture.oss-cn-beijing.aliyuncs.com/social-share.min.js"></script>
+
+                
+                
+            </article>
+
+
+
+        </div>
+    </footer>
+
+
+        </div>
+        
+
+        
+
+
+    <script>
+    if (typeof MathJax === 'undefined') {
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/mhchem']
+            },
+            
+            tex: {
+                inlineMath: {'[+]': [['$', '$']]},
+                tags: 'ams',
+                packages: {'[+]': ['mhchem']}
+            }
+        };
+        (function() {
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        })();
+    } else {
+        MathJax.texReset();
+        MathJax.typeset();
+    }
+</script>
+
+
+
+
+
+
+    
+
+        
+
+        
+            <script>
+    function loadComments() {
+        if (typeof Valine === 'undefined') {
+            var getScript = (options) => {
+                var script = document.createElement('script');
+                script.defer = true;
+                script.crossOrigin = 'anonymous';
+                Object.keys(options).forEach((key) => {
+                    script[key] = options[key];
+                });
+                document.body.appendChild(script);
+            };
+            getScript({
+                src: 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+                onload: () => {
+                    newValine();
+                }
+            });
+        } else {
+            newValine();
+        }
+    }
+    function newValine() {
+        new Valine({
+            el: '#vcomments',
+            appId: '89UvtzmC7wWPIQexRrnXe6i4-gzGzoHsz',
+            appKey: 'pX4vnA7XCr3nIrorngnNNHX8',
+            placeholder: 'Just go go',
+            path: location.pathname,
+            avatar: 'mm',
+            meta: ["nick","mail","link"],
+            pageSize:  10 ,
+            lang: 'zh-cn',
+            visitor:  false ,
+            highlight:  true ,
+            avatarForce:  false ,
+            recordIP:  false ,
+            serverURLs: '',
+            emojiCDN: '',
+            emojiMaps: {},
+            enableQQ:  false ,
+            requiredFields: []
+        });
+    }
+</script>
+
+        
+
+        
+
+        
+
+    
+
+
+
+    <script src="/js/medium-zoom.min.js"></script>
+
+<script>
+    mediumZoom(document.querySelectorAll('div.post-body img'), {
+        background: 'hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.95)'
+    })
+</script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js" type="module" defer></script>
+
+
+
+
+    
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+
+
+    </body>
+</html>
