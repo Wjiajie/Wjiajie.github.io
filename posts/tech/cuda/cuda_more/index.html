@@ -21,7 +21,7 @@
 
     
     
-        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" defer></script><script src="/js/meme.min.676492ca3040bfb3b5a71a3219b105ed1327c8247bfff6b30bd0ee52aedde83a.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" defer></script><script src="/js/meme.min.0dcc2c623a04ff92ce77e8931cceb9c80f52b8b6b72812f3cf8010bdba7e9dce.js"></script>
 
     
 
@@ -1625,9 +1625,9 @@ _threadfence_block(): 一个线程调用__threadfence_block后，该线程在该
                     <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 
 <script>
-    var typeNumber = 0;
-    var errorCorrectionLevel = 'L';
-    var qr = qrcode(typeNumber, errorCorrectionLevel);
+    const typeNumber = 0;
+    const errorCorrectionLevel = 'L';
+    const qr = qrcode(typeNumber, errorCorrectionLevel);
     qr.addData('https:\/\/wjiajie.github.io\/posts\/tech\/cuda\/cuda_more\/');
     qr.make();
     document.getElementById('qrcode-img').innerHTML = qr.createImgTag();
@@ -1818,8 +1818,8 @@ _threadfence_block(): 一个线程调用__threadfence_block后，该线程在该
             }
         };
         (function() {
-            var script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+            const script = document.createElement('script');
+            script.src = 'https:\/\/cdn.jsdelivr.net\/npm\/mathjax@3.1.2\/es5\/tex-mml-chtml.js';
             script.defer = true;
             document.head.appendChild(script);
         })();
@@ -1841,9 +1841,12 @@ _threadfence_block(): 一个线程调用__threadfence_block后，该线程在该
         
             <script>
     function loadComments() {
+        if (!document.getElementById('vcomments')) {
+            return;
+        }
         if (typeof Valine === 'undefined') {
-            var getScript = (options) => {
-                var script = document.createElement('script');
+            const getScript = (options) => {
+                const script = document.createElement('script');
                 script.defer = true;
                 script.crossOrigin = 'anonymous';
                 Object.keys(options).forEach((key) => {
@@ -1852,7 +1855,7 @@ _threadfence_block(): 一个线程调用__threadfence_block后，该线程在该
                 document.body.appendChild(script);
             };
             getScript({
-                src: 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+                src: 'https:\/\/cdn.jsdelivr.net\/npm\/valine@1.4.14\/dist\/Valine.min.js',
                 onload: () => {
                     newValine();
                 }
@@ -1907,7 +1910,6 @@ _threadfence_block(): 一个线程调用__threadfence_block后，该线程在该
 
 
     <script src="https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js" type="module" defer></script>
-
 
 
 
