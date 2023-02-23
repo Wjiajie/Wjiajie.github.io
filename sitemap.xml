@@ -2,7 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://wjiajie.github.io/posts/</loc>
+    <loc>https://wjiajie.github.io/contents/</loc>
+    <lastmod>2023-02-24T01:13:37+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/day-day-up/</loc>
+    <lastmod>2023-02-24T01:13:37+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/day-day-up/2023-todo-list/</loc>
+    <lastmod>2023-02-24T01:13:37+08:00</lastmod>
+  </url><url>
+    <loc>https://wjiajie.github.io/tags/</loc>
+    <lastmod>2023-02-24T01:13:37+08:00</lastmod>
+  </url><url>
+    <loc>https://wjiajie.github.io/tags/%E8%A7%84%E5%88%92/</loc>
+    <lastmod>2023-02-24T01:13:37+08:00</lastmod>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/c&#43;&#43;/</loc>
     <lastmod>2023-02-12T01:19:40+08:00</lastmod>
     <priority>0</priority>
   </url><url>
@@ -12,19 +29,20 @@
     <loc>https://wjiajie.github.io/tags/cpp/</loc>
     <lastmod>2023-02-12T01:19:40+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/tags/</loc>
+    <loc>https://wjiajie.github.io/contents/c&#43;&#43;/emscripten_intro/</loc>
     <lastmod>2023-02-12T01:19:40+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/c&#43;&#43;/emscripten_intro/</loc>
-    <lastmod>2023-02-12T01:19:40+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/c&#43;&#43;/json_compare/</loc>
+    <loc>https://wjiajie.github.io/contents/c&#43;&#43;/json_compare/</loc>
     <lastmod>2023-02-12T00:00:27+08:00</lastmod>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/aigc/</loc>
+    <lastmod>2023-02-07T22:07:07+08:00</lastmod>
+    <priority>0</priority>
   </url><url>
     <loc>https://wjiajie.github.io/tags/aigc/</loc>
     <lastmod>2023-02-07T22:07:07+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/aigc/midjourneylearning/</loc>
+    <loc>https://wjiajie.github.io/contents/aigc/midjourneylearning/</loc>
     <lastmod>2023-02-07T22:07:07+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/</loc>
@@ -36,85 +54,116 @@
     <loc>https://wjiajie.github.io/tags/taichi/</loc>
     <lastmod>2023-02-07T23:09:18+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/cg/taichi_intro/</loc>
+    <loc>https://wjiajie.github.io/contents/cg/taichi_intro/</loc>
     <lastmod>2023-02-07T23:09:18+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/life/broken-thoughts/2022_05_20_to_xiaomai/</loc>
+    <loc>https://wjiajie.github.io/contents/broken-thoughts/</loc>
+    <lastmod>2022-05-26T23:00:52+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/broken-thoughts/2022_05_20_to_xiaomai/</loc>
     <lastmod>2022-05-26T23:00:52+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E7%A2%8E%E7%A2%8E%E5%BF%B5/</loc>
     <lastmod>2022-05-26T23:00:52+08:00</lastmod>
   </url><url>
+    <loc>https://wjiajie.github.io/contents/attention/</loc>
+    <lastmod>2022-04-16T09:53:22+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
     <loc>https://wjiajie.github.io/tags/dl/</loc>
     <lastmod>2022-04-16T17:30:18+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/attention/swim_transformer/</loc>
+    <loc>https://wjiajie.github.io/contents/attention/swim_transformer/</loc>
     <lastmod>2022-04-16T09:53:22+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/c&#43;&#43;/oop_sumary/</loc>
+    <loc>https://wjiajie.github.io/contents/c&#43;&#43;/oop_sumary/</loc>
     <lastmod>2022-04-24T11:37:40+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/</loc>
     <lastmod>2022-03-29T23:11:54+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/day-day-up/cg_and_cpp/</loc>
+    <loc>https://wjiajie.github.io/contents/day-day-up/cg_and_cpp/</loc>
     <lastmod>2022-03-29T23:11:54+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/photos/</loc>
-    <lastmod>2022-05-26T22:10:44+08:00</lastmod>
+    <loc>https://wjiajie.github.io/tags/albums/</loc>
+    <lastmod>2023-02-24T01:01:05+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/c&#43;&#43;/sort_sumary/</loc>
+    <loc>https://wjiajie.github.io/contents/photos/</loc>
+    <lastmod>2023-02-24T01:01:05+08:00</lastmod>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/c&#43;&#43;/sort_sumary/</loc>
     <lastmod>2021-06-02T04:13:04+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/tensorrt_intro/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/</loc>
+    <lastmod>2022-04-16T17:30:18+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/dl/tensorrt_intro/</loc>
     <lastmod>2021-05-28T10:09:12+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/c&#43;&#43;/c&#43;&#43;-designpattern/</loc>
+    <loc>https://wjiajie.github.io/contents/c&#43;&#43;/c&#43;&#43;-designpattern/</loc>
     <lastmod>2021-06-02T03:51:32+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/attention/att_intro/</loc>
+    <loc>https://wjiajie.github.io/contents/attention/att_intro/</loc>
     <lastmod>2021-06-12T03:22:24+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/deploy_torch_script/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/deploy_torch_script/</loc>
     <lastmod>2021-04-29T13:50:56+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/gnn/gin/</loc>
+    <loc>https://wjiajie.github.io/contents/gnn/</loc>
+    <lastmod>2021-06-11T05:03:46+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/gnn/gin/</loc>
     <lastmod>2021-01-29T09:10:32+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/plane_match/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/plane_match/</loc>
     <lastmod>2021-02-05T05:05:18+08:00</lastmod>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/datasets/</loc>
+    <lastmod>2022-03-23T22:17:08+08:00</lastmod>
+    <priority>0</priority>
   </url><url>
     <loc>https://wjiajie.github.io/tags/datasets/</loc>
     <lastmod>2022-03-23T22:17:08+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/datasets/scannet_process1/</loc>
+    <loc>https://wjiajie.github.io/contents/datasets/scannet_process1/</loc>
     <lastmod>2022-03-23T22:16:48+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/life/folk/down_by_the_salley_gardens/</loc>
+    <loc>https://wjiajie.github.io/contents/folk/</loc>
+    <lastmod>2022-04-15T15:58:24+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/folk/down_by_the_salley_gardens/</loc>
     <lastmod>2022-04-15T15:58:24+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/folk/</loc>
     <lastmod>2022-04-15T15:58:24+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/datasets/scannet/</loc>
+    <loc>https://wjiajie.github.io/contents/datasets/scannet/</loc>
     <lastmod>2022-03-23T22:17:08+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/basic_network_struct/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/basic_network_struct/</loc>
     <lastmod>2020-11-06T02:51:24+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/hugo/</loc>
     <lastmod>2022-03-23T22:15:44+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/life/timestamp/md_type/</loc>
+    <loc>https://wjiajie.github.io/contents/timestamp/md_type/</loc>
     <lastmod>2022-03-23T22:15:44+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E4%B8%BB%E9%A2%98/</loc>
     <lastmod>2022-04-15T15:58:10+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/hrnet/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/hrnet/</loc>
     <lastmod>2020-10-30T04:21:24+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/cuda/cuda_more/</loc>
+    <loc>https://wjiajie.github.io/contents/cuda/</loc>
+    <lastmod>2021-05-14T09:09:40+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/cuda/cuda_more/</loc>
     <lastmod>2021-05-14T09:09:40+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/cuda/</loc>
@@ -126,58 +175,70 @@
     <loc>https://wjiajie.github.io/tags/gnn/</loc>
     <lastmod>2021-06-11T05:03:46+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/gnn/model_fit/</loc>
+    <loc>https://wjiajie.github.io/contents/gnn/model_fit/</loc>
     <lastmod>2020-08-18T08:51:18+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/gnn/introducegcnn/</loc>
+    <loc>https://wjiajie.github.io/contents/gnn/introducegcnn/</loc>
     <lastmod>2021-06-11T05:03:46+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/c&#43;&#43;/templatefitdistanceandradius/</loc>
+    <loc>https://wjiajie.github.io/contents/c&#43;&#43;/templatefitdistanceandradius/</loc>
     <lastmod>2020-07-15T09:47:34+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/</loc>
     <lastmod>2022-03-29T21:38:08+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/c&#43;&#43;/binocularcalibration/</loc>
+    <loc>https://wjiajie.github.io/contents/c&#43;&#43;/binocularcalibration/</loc>
     <lastmod>2022-03-29T21:38:08+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/mask-rcnn/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/mask-rcnn/</loc>
     <lastmod>2022-04-16T17:30:18+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/sparse-ncnet/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/sparse-ncnet/</loc>
     <lastmod>2020-05-09T03:59:06+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E7%BC%96%E8%AF%91/</loc>
     <lastmod>2020-05-09T03:59:06+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/keypoint-rcnn-caffe2-c&#43;&#43;/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/keypoint-rcnn-caffe2-c&#43;&#43;/</loc>
     <lastmod>2020-05-09T03:58:22+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/mask-rcnn/</loc>
     <lastmod>2020-05-09T03:58:22+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/tools/detectron2_intro/</loc>
+    <loc>https://wjiajie.github.io/contents/tools/</loc>
+    <lastmod>2020-03-31T09:40:42+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/tools/detectron2_intro/</loc>
     <lastmod>2020-03-31T09:40:42+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/python/</loc>
     <lastmod>2020-03-31T09:40:42+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/tools/cvs2coco_format/</loc>
+    <loc>https://wjiajie.github.io/contents/tools/cvs2coco_format/</loc>
     <lastmod>2020-03-31T08:16:16+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/life/jazz/ain_t_got_no/</loc>
+    <loc>https://wjiajie.github.io/contents/jazz/</loc>
+    <lastmod>2020-03-28T17:59:34+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/jazz/ain_t_got_no/</loc>
     <lastmod>2020-03-28T17:59:34+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/jazz/</loc>
     <lastmod>2020-03-28T17:59:34+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/tools/robot/</loc>
+    <loc>https://wjiajie.github.io/contents/tools/robot/</loc>
     <lastmod>2020-03-13T15:25:20+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E7%88%AC%E8%99%AB/</loc>
     <lastmod>2020-03-13T15:25:20+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/slam-sfm/voltagelinereconstruction/</loc>
+    <loc>https://wjiajie.github.io/contents/slam-sfm/</loc>
+    <lastmod>2020-02-29T15:51:34+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/slam-sfm/voltagelinereconstruction/</loc>
     <lastmod>2020-02-29T09:56:14+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/sfm/</loc>
@@ -186,10 +247,10 @@
     <loc>https://wjiajie.github.io/tags/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/</loc>
     <lastmod>2020-02-29T09:56:14+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/c&#43;&#43;/c&#43;&#43;%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%BE%8B%E5%AD%90/</loc>
+    <loc>https://wjiajie.github.io/contents/c&#43;&#43;/c&#43;&#43;%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%BE%8B%E5%AD%90/</loc>
     <lastmod>2022-03-29T21:38:40+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/slam-sfm/kinectfusion/</loc>
+    <loc>https://wjiajie.github.io/contents/slam-sfm/kinectfusion/</loc>
     <lastmod>2020-02-29T15:51:34+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/</loc>
@@ -198,25 +259,26 @@
     <loc>https://wjiajie.github.io/tags/%E5%AE%9E%E6%97%B6%E9%87%8D%E5%BB%BA/</loc>
     <lastmod>2020-02-29T15:51:34+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/surfelwarp/</loc>
+    <loc>https://wjiajie.github.io/contents/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/</loc>
+    <lastmod>2020-02-07T08:56:28+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/surfelwarp/</loc>
     <lastmod>2020-02-07T08:56:28+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E4%BA%BA%E4%BD%93%E9%87%8D%E5%BB%BA/</loc>
     <lastmod>2020-02-07T08:56:28+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/life/broken-thoughts/hello/</loc>
+    <loc>https://wjiajie.github.io/contents/broken-thoughts/hello/</loc>
     <lastmod>2022-04-15T15:58:10+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/day-day-up/2020-todolist/</loc>
+    <loc>https://wjiajie.github.io/contents/day-day-up/2020-todolist/</loc>
     <lastmod>2019-12-27T15:23:40+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/tags/%E8%A7%84%E5%88%92/</loc>
-    <lastmod>2019-12-27T15:23:40+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/tools/add-share.js/</loc>
+    <loc>https://wjiajie.github.io/contents/tools/add-share.js/</loc>
     <lastmod>2019-12-26T13:13:40+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/life/jazz/norah-jones/</loc>
+    <loc>https://wjiajie.github.io/contents/jazz/norah-jones/</loc>
     <lastmod>2019-12-26T12:47:14+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E7%AC%94%E8%AE%B0/</loc>
@@ -225,19 +287,27 @@
     <loc>https://wjiajie.github.io/tags/%E8%8B%B1%E8%AF%AD/</loc>
     <lastmod>2019-12-26T12:48:02+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/day-day-up/%E8%8B%B1%E8%AF%AD%E8%AF%AD%E6%B3%95/</loc>
+    <loc>https://wjiajie.github.io/contents/day-day-up/%E8%8B%B1%E8%AF%AD%E8%AF%AD%E6%B3%95/</loc>
     <lastmod>2019-12-26T12:48:02+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/about/</loc>
     <lastmod>2023-01-30T23:16:15+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/face-reconstruction/3d-face-papers/</loc>
+    <loc>https://wjiajie.github.io/contents/face-reconstruction/</loc>
+    <lastmod>2019-12-28T01:46:26+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/face-reconstruction/3d-face-papers/</loc>
     <lastmod>2019-12-28T01:46:26+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/face-reconstruction/</loc>
     <lastmod>2019-12-28T01:46:26+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/human-body-reconstruction/monocular-total-capture-compile/</loc>
+    <loc>https://wjiajie.github.io/contents/human-body-reconstruction/</loc>
+    <lastmod>2019-12-28T08:39:22+08:00</lastmod>
+    <priority>0</priority>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/human-body-reconstruction/monocular-total-capture-compile/</loc>
     <lastmod>2019-12-28T08:39:22+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</loc>
@@ -246,199 +316,147 @@
     <loc>https://wjiajie.github.io/tags/slam/</loc>
     <lastmod>2019-12-28T10:54:34+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/slam-sfm/vo-2/</loc>
+    <loc>https://wjiajie.github.io/contents/slam-sfm/vo-2/</loc>
     <lastmod>2019-12-28T10:54:34+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/pytorch/</loc>
     <lastmod>2019-12-28T09:23:38+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/pytorch%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/pytorch%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/</loc>
     <lastmod>2019-12-28T09:15:58+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/pytorch%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/pytorch%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2019-12-28T09:23:38+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/pytorch%E7%89%B9%E6%80%A7/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/pytorch%E7%89%B9%E6%80%A7/</loc>
     <lastmod>2019-12-28T09:21:14+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/pytorch-%E4%BF%9D%E5%AD%98%E5%92%8C%E5%8A%A0%E8%BD%BD%E6%A8%A1%E5%9E%8B/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/pytorch-%E4%BF%9D%E5%AD%98%E5%92%8C%E5%8A%A0%E8%BD%BD%E6%A8%A1%E5%9E%8B/</loc>
     <lastmod>2019-12-28T09:14:24+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/pytorch-%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%A4%84%E7%90%86/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/pytorch-%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%A4%84%E7%90%86/</loc>
     <lastmod>2019-12-28T09:17:18+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/pytorch1-0-%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/pytorch1-0-%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4/</loc>
     <lastmod>2019-12-28T09:12:46+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/c&#43;&#43;/construct-function/</loc>
+    <loc>https://wjiajie.github.io/contents/c&#43;&#43;/construct-function/</loc>
     <lastmod>2019-12-28T07:01:30+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/slam-sfm/visual-odometer1/</loc>
+    <loc>https://wjiajie.github.io/contents/slam-sfm/visual-odometer1/</loc>
     <lastmod>2019-12-28T10:42:22+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/slam-sfm/nonlinear-optimization/</loc>
+    <loc>https://wjiajie.github.io/contents/slam-sfm/nonlinear-optimization/</loc>
     <lastmod>2019-12-28T09:07:38+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/slam-sfm/slam3/</loc>
+    <loc>https://wjiajie.github.io/contents/slam-sfm/slam3/</loc>
     <lastmod>2019-12-28T09:47:06+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/slam-sfm/slam2/</loc>
+    <loc>https://wjiajie.github.io/contents/slam-sfm/slam2/</loc>
     <lastmod>2019-12-28T09:43:38+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/slam-sfm/slam1/</loc>
+    <loc>https://wjiajie.github.io/contents/slam-sfm/slam1/</loc>
     <lastmod>2019-12-28T09:42:26+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/slam-total/</loc>
+    <loc>https://wjiajie.github.io/contents/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/slam-total/</loc>
     <lastmod>2019-12-28T09:48:22+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/slam-sfm/sfm-intro/</loc>
+    <loc>https://wjiajie.github.io/contents/slam-sfm/sfm-intro/</loc>
     <lastmod>2019-12-28T09:35:22+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/slam-sfm/openmvg-openmvs/</loc>
+    <loc>https://wjiajie.github.io/contents/slam-sfm/openmvg-openmvs/</loc>
     <lastmod>2019-12-28T09:10:48+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/day-day-up/signal-detect-and-estimate/</loc>
+    <loc>https://wjiajie.github.io/contents/day-day-up/signal-detect-and-estimate/</loc>
     <lastmod>2019-12-28T09:37:30+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2019-12-28T09:37:30+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/tools/ubuntu-and-windows/</loc>
+    <loc>https://wjiajie.github.io/contents/tools/ubuntu-and-windows/</loc>
     <lastmod>2019-12-28T10:15:20+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/resnet-densenet/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/resnet-densenet/</loc>
     <lastmod>2019-12-28T09:25:04+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</loc>
     <lastmod>2019-12-28T09:54:02+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/cnn-layer/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/cnn-layer/</loc>
     <lastmod>2019-12-28T06:58:38+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/barch-normal/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/barch-normal/</loc>
     <lastmod>2019-12-28T02:08:30+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/c&#43;&#43;/exception/</loc>
+    <loc>https://wjiajie.github.io/contents/c&#43;&#43;/exception/</loc>
     <lastmod>2022-03-29T21:39:00+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/life/broken-thoughts/graduate/</loc>
+    <loc>https://wjiajie.github.io/contents/broken-thoughts/graduate/</loc>
     <lastmod>2019-12-28T07:33:38+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/tips-for-overfit/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/tips-for-overfit/</loc>
     <lastmod>2019-12-28T10:03:48+08:00</lastmod>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/multi-view-geometry/</loc>
+    <lastmod>2019-12-26T12:47:42+08:00</lastmod>
+    <priority>0</priority>
   </url><url>
     <loc>https://wjiajie.github.io/tags/cv/</loc>
     <lastmod>2019-12-26T12:47:42+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/multi-view-geometry/epipolar-geametry-and-f/</loc>
+    <loc>https://wjiajie.github.io/contents/multi-view-geometry/epipolar-geametry-and-f/</loc>
     <lastmod>2019-12-26T12:47:42+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/</loc>
     <lastmod>2019-12-26T12:47:42+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/underfitandoverfit/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/underfitandoverfit/</loc>
     <lastmod>2019-12-28T10:17:22+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/softmax/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/softmax/</loc>
     <lastmod>2019-12-28T09:54:02+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/linear-regression/</loc>
+    <loc>https://wjiajie.github.io/contents/dl/linear-regression/</loc>
     <lastmod>2019-12-28T08:36:38+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/cuda/cuda-practice5/</loc>
+    <loc>https://wjiajie.github.io/contents/cuda/cuda-practice5/</loc>
     <lastmod>2019-12-28T07:16:56+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E7%82%B9%E4%BA%91%E9%85%8D%E5%87%86/</loc>
     <lastmod>2019-12-28T11:02:04+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/trimmed-icp/</loc>
+    <loc>https://wjiajie.github.io/contents/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/trimmed-icp/</loc>
     <lastmod>2019-12-28T11:02:04+08:00</lastmod>
+  </url><url>
+    <loc>https://wjiajie.github.io/contents/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</loc>
+    <lastmod>2019-12-28T09:56:36+08:00</lastmod>
+    <priority>0</priority>
   </url><url>
     <loc>https://wjiajie.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2019-12-28T09:56:36+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/suanfa1/</loc>
+    <loc>https://wjiajie.github.io/contents/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/suanfa1/</loc>
     <lastmod>2019-12-28T09:56:36+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/c&#43;&#43;/cpp-vector/</loc>
+    <loc>https://wjiajie.github.io/contents/c&#43;&#43;/cpp-vector/</loc>
     <lastmod>2019-12-28T07:04:52+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/cuda/cuda-practice4/</loc>
+    <loc>https://wjiajie.github.io/contents/cuda/cuda-practice4/</loc>
     <lastmod>2019-12-28T07:14:48+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/cuda/cuda-practice3/</loc>
+    <loc>https://wjiajie.github.io/contents/cuda/cuda-practice3/</loc>
     <lastmod>2019-12-28T07:13:22+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/cuda/cuda-practice2/</loc>
+    <loc>https://wjiajie.github.io/contents/cuda/cuda-practice2/</loc>
     <lastmod>2019-12-28T07:09:10+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/cuda/cuda-practice1/</loc>
+    <loc>https://wjiajie.github.io/contents/cuda/cuda-practice1/</loc>
     <lastmod>2019-12-28T07:06:46+08:00</lastmod>
   </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/c&#43;&#43;/cpp-string/</loc>
+    <loc>https://wjiajie.github.io/contents/c&#43;&#43;/cpp-string/</loc>
     <lastmod>2019-12-28T07:03:26+08:00</lastmod>
   </url><url>
     <loc>https://wjiajie.github.io/categories/</loc>
     <priority>0</priority>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/life/</loc>
-    <lastmod>2019-12-26T12:47:24+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/life/broken-thoughts/</loc>
-    <lastmod>2019-07-14T14:07:46+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/life/folk/</loc>
-    <lastmod>2019-07-14T14:07:46+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/life/jazz/</loc>
-    <lastmod>2019-07-14T14:07:46+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/</loc>
-    <lastmod>2019-12-26T12:47:32+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/aigc/</loc>
-    <lastmod>2019-12-20T01:59:30+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/attention/</loc>
-    <lastmod>2019-12-20T01:59:30+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/c&#43;&#43;/</loc>
-    <lastmod>2019-12-20T01:59:30+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/cuda/</loc>
-    <lastmod>2019-12-20T01:59:30+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/datasets/</loc>
-    <lastmod>2019-12-20T01:59:30+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/day-day-up/</loc>
-    <lastmod>2019-12-20T01:59:30+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/dl/</loc>
-    <lastmod>2019-12-20T01:59:30+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/face-reconstruction/</loc>
-    <lastmod>2019-12-20T01:59:30+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/gnn/</loc>
-    <lastmod>2019-12-20T01:59:30+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/human-body-reconstruction/</loc>
-    <lastmod>2019-12-20T01:59:30+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/multi-view-geometry/</loc>
-    <lastmod>2019-07-14T14:07:46+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/slam-sfm/</loc>
-    <lastmod>2019-07-14T14:07:46+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/tools/</loc>
-    <lastmod>2019-12-20T01:59:30+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</loc>
-    <lastmod>2019-12-20T01:59:30+08:00</lastmod>
-  </url><url>
-    <loc>https://wjiajie.github.io/posts/tech/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/</loc>
-    <lastmod>2019-12-20T01:59:30+08:00</lastmod>
   </url>
 </urlset>

@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+    <meta charset="UTF-8" />
+
+    <meta name="generator" content="Hugo 0.109.0"><meta name="theme-color" content="#fff" />
+    <meta name="color-scheme" content="light dark">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <title>视觉里程计2 | W</title>
+
+    <link rel="stylesheet" href="/css/meme.min.f694ecb248990c1307435cb6aa04a8e886bb1e065218bdd0b4f293ed3e681f23.css"/>
+
+    
+    
+        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" defer></script><script src="/js/meme.min.121e3c346747f9f45d3521ddd3f94f2f0e4861fc9e57e9b35c8421b2b0b30fd3.js"></script>
+
+    
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM&#43;Plex&#43;Serif:ital,wght@0,400;0,500;0,700;1,400;1,700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;family=Comfortaa:wght@700&amp;display=swap" media="print" onload="this.media='all'" />
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM&#43;Plex&#43;Serif:ital,wght@0,400;0,500;0,700;1,400;1,700&amp;family=Source&#43;Code&#43;Pro:ital,wght@0,400;0,700;1,400;1,700&amp;family=Comfortaa:wght@700&amp;display=swap" /></noscript>
+
+    <meta name="author" content="JiaJie" /><meta name="description" content="用光流跟踪特征点和用直接法计算相机位姿。
+" />
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#2a6df4" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="W" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="W" />
+    <meta name="msapplication-starturl" content="../../../" />
+    <meta name="msapplication-TileColor" content="#fff" />
+    <meta name="msapplication-TileImage" content="../../../icons/mstile-150x150.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    
+    
+
+    
+    <link rel="canonical" href="https://wjiajie.github.io/contents/slam-sfm/vo-2/" />
+    
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "datePublished": "2019-09-22T10:07:10+00:00",
+        "dateModified": "2019-12-28T10:54:34+08:00",
+        "url": "https://wjiajie.github.io/contents/slam-sfm/vo-2/",
+        "headline": "视觉里程计2",
+        "description": "用光流跟踪特征点和用直接法计算相机位姿。\n",
+        "inLanguage" : "zh-CN",
+        "articleSection": "contents",
+        "wordCount":  6668 ,
+        "image": ["https://i.loli.net/2019/09/22/OLCf42vRhzMIUYr.png"],
+        "author": {
+            "@type": "Person",
+            "description": "静心得意",
+            "email": "3208920286@qq.com",
+            "image": "https://images.cnblogs.com/cnblogs_com/jiajiewu/1756037/o_200502040806760242504.jpg",
+            "url": "https://wjiajie.github.io/",
+            "name": "JiaJie"
+        },
+        "license": "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)",
+        "publisher": {
+            "@type": "Organization",
+            "name": "W",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://wjiajie.github.io/icons/apple-touch-icon.png"
+            },
+            "url": "https://wjiajie.github.io/"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "@id": "https://wjiajie.github.io/"
+        }
+    }
+</script>
+
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+
+
+
+    
+
+
+
+<meta property="og:title" content="视觉里程计2" />
+<meta property="og:description" content="用光流跟踪特征点和用直接法计算相机位姿。
+" />
+<meta property="og:url" content="https://wjiajie.github.io/contents/slam-sfm/vo-2/" />
+<meta property="og:site_name" content="W" />
+<meta property="og:locale" content="zh-cn" /><meta property="og:image" content="https://i.loli.net/2019/09/22/OLCf42vRhzMIUYr.png" />
+<meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2019-09-22T10:07:10&#43;00:00" />
+    <meta property="article:modified_time" content="2019-12-28T10:54:34&#43;08:00" />
+    
+    <meta property="article:section" content="contents" />
+
+
+        <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
+
+        
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '');
+    </script>
+
+
+
+
+    
+    
+
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@700&amp;text=reuixiy&amp;display=swap" media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@700&amp;text=reuixiy&amp;display=swap" /></noscript>
+
+
+
+
+
+</head>
+
+    <body>
+        <div class="container">
+            
+    <header class="header">
+        
+            <div class="header-wrapper">
+                <div class="header-inner single">
+                    
+    <div class="site-brand">
+        
+            <a href="/" class="brand">W</a>
+        
+    </div>
+
+                    <nav class="nav">
+    <ul class="menu" id="menu">
+        
+            
+        
+        
+        
+        
+            
+                <li class="menu-item"><a href="/tags/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon folder"><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg><span class="menu-item-name">建筑群</span></a>
+                </li>
+            
+        
+            
+                
+                    
+                    
+                        <li class="menu-item">
+                            <a id="theme-switcher" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5l48.8-97.5a18 18 0 0128 0l48.8 97.5 103.4 -34.5a18 18 0 0119.8 19.8l-34.5 103.4l97.5 48.8a18 18 0 010 28l-97.5 48.8 34.5 103.4a18 18 0 01-19.8 19.8l-103.4-34.5-48.8 97.5a18 18 0 01-28 0l-48.8-97.5l-103.4 34.5a18 18 0 01-19.8-19.8l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8-34.5-103.4a18 18 0 0119.8-19.8zM256 128a128 128 0 10.01 0M256 160a96 96 0 10.01 0"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412a256 256 0 10154-407a11.5 11.5 0 00-5 20a201.5 201.5 0 01-134 374a11.5 11.5 0 00-15 13"/></svg></a>
+                        </li>
+                    
+                
+            
+        
+            
+                
+            
+        
+            
+                <li class="menu-item search-item">
+                        <form id="search" class="search" role="search">
+    <label for="search-input"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon search-icon"><path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg></label>
+    <input type="search" id="search-input" class="search-input">
+</form>
+
+<template id="search-result" hidden>
+    <article class="content post">
+        <h2 class="post-title"><a class="summary-title-link"></a></h2>
+        <summary class="summary"></summary>
+        <div class="read-more-container">
+            <a class="read-more-link"> »</a>
+        </div>
+    </article>
+</template>
+
+                    </li>
+                
+            
+        
+    </ul>
+</nav>
+
+                    
+                </div>
+            </div>
+            
+    <input type="checkbox" id="nav-toggle" aria-hidden="true" />
+    <label for="nav-toggle" class="nav-toggle"></label>
+    <label for="nav-toggle" class="nav-curtain"></label>
+
+
+        
+    </header>
+
+
+
+
+            
+            
+    <main class="main single" id="main">
+    <div class="main-inner">
+
+        
+
+        <article class="content post h-entry" data-small-caps="true" data-align="justify" data-type="contents" data-toc-num="true">
+
+            <h1 class="post-title p-name">视觉里程计2</h1>
+
+            
+
+            
+
+            
+                
+
+<div class="post-meta">
+    
+        
+        <time datetime="2019-09-22T10:07:10&#43;00:00" class="post-meta-item published dt-published"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"/></svg>&nbsp;2019.9.22</time>
+    
+    
+        
+        <time datetime="2019-12-28T10:54:34&#43;08:00" class="post-meta-item modified dt-updated"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon post-meta-icon"><path d="M400 64h-48V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H160V12c0-6.627-5.373-12-12-12h-40c-6.627 0-12 5.373-12 12v52H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V160h352v298a6 6 0 0 1-6 6zm-52.849-200.65L198.842 404.519c-4.705 4.667-12.303 4.637-16.971-.068l-75.091-75.699c-4.667-4.705-4.637-12.303.068-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l44.104 44.461 111.072-110.181c4.705-4.667 12.303-4.637 16.971.068l22.536 22.718c4.667 4.705 4.636 12.303-.069 16.97z"/></svg>&nbsp;2019.12.28</time>
+    
+    
+    
+        
+        
+            
+            
+                
+                
+                
+                
+                    
+                    
+                    
+                        
+                            
+                            
+                        
+                    
+                
+            
+            
+            
+                <span class="post-meta-item category"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M464 128H272l-54.63-54.63c-6-6-14.14-9.37-22.63-9.37H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V176c0-26.51-21.49-48-48-48zm0 272H48V112h140.12l54.63 54.63c6 6 14.14 9.37 22.63 9.37H464v224z"/></svg>&nbsp;<a href="/contents/slam-sfm/" class="category-link p-category">contents\SLAM-SFM\</a></span>
+            
+        
+        
+    
+    
+        
+        <span class="post-meta-item wordcount"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"/></svg>&nbsp;6668</span>
+    
+    
+        
+        <span class="post-meta-item reading-time"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon post-meta-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>&nbsp;14&nbsp;</span>
+    
+    
+        
+            
+            <span class="post-meta-item busuanzi-page-pv" id="busuanzi_container_page_pv"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="icon post-meta-icon"><path d="M288 144a110.94 110.94 0 0 0-31.24 5 55.4 55.4 0 0 1 7.24 27 56 56 0 0 1-56 56 55.4 55.4 0 0 1-27-7.24A111.71 111.71 0 1 0 288 144zm284.52 97.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400c-98.65 0-189.09-55-237.93-144C98.91 167 189.34 112 288 112s189.09 55 237.93 144C477.1 345 386.66 400 288 400z"/></svg>&nbsp;<span id="busuanzi_value_page_pv"></span></span>
+        
+    
+    
+</div>
+
+            
+
+            <nav class="contents">
+  <h2 id="contents" class="contents-title"></h2><ol class="toc">
+    <li><a id="contents:为什么用直接法" href="#为什么用直接法">为什么用直接法</a></li>
+    <li><a id="contents:光流optical-flow" href="#光流optical-flow">光流(Optical Flow)</a>
+      <ol>
+        <li><a id="contents:lucas-kanade-光流" href="#lucas-kanade-光流">Lucas-Kanade 光流</a></li>
+        <li><a id="contents:代码实践lk-光流" href="#代码实践lk-光流">代码实践：LK 光流</a></li>
+      </ol>
+    </li>
+    <li><a id="contents:直接法" href="#直接法">直接法</a>
+      <ol>
+        <li><a id="contents:理论" href="#理论">理论</a></li>
+        <li><a id="contents:直接法的分类" href="#直接法的分类">直接法的分类</a></li>
+        <li><a id="contents:代码实践" href="#代码实践">代码实践</a>
+          <ol>
+            <li><a id="contents:稀疏直接法" href="#稀疏直接法">稀疏直接法</a></li>
+            <li><a id="contents:半稠密" href="#半稠密">半稠密</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav><div class="post-body e-content">
+                <p>用光流跟踪特征点和用直接法计算相机位姿。</p>
+<h2 id="为什么用直接法"><a href="#为什么用直接法" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:为什么用直接法" class="headings">为什么用直接法</a></h2>
+<p>尽管特征点法在视觉里程计中占据主流地位,研究者们认识到它至少有以下几个缺点:</p>
+<ol>
+<li>
+<p>关键点的提取与描述子的计算非常耗时。实践当中,SIFT 目前在 CPU 上是无法实
+时计算的,而 ORB 也需要近 20 毫秒的计算。如果整个 SLAM 以 30 毫秒/帧的速
+度运行,那么一大半时间都花在计算特征点上。</p>
+</li>
+<li>
+<p>使用特征点时,忽略了除特征点以外的所有信息。一张图像有几十万个像素,而特征
+点只有几百个。只使用特征点丢弃了大部分可能有用的图像信息。</p>
+</li>
+<li>
+<p>相机有时会运动到特征缺失的地方,往往这些地方没有明显的纹理信息。例如,有时
+我们会面对一堵白墙,或者一个空荡荡的走廓。这些场景下特征点数量会明显减少,
+我们可能找不到足够的匹配点来计算相机运动。</p>
+</li>
+</ol>
+<p>我们看到使用特征点确实存在一些问题。有没有什么办法能够克服这些缺点呢?我们
+有以下几种思路:</p>
+<ul>
+<li>保留特征点,但只计算关键点,不计算描述子。同时,使用光流法(Optical Flow)来
+跟踪特征点的运动。这样可以回避计算和匹配描述子带来的时间,但光流本身的计算
+需要一定时间;</li>
+<li>只计算关键点,不计算描述子。同时,使用直接法(Direct Method)来计算特征点
+在下一时刻图像的位置。这同样可以跳过描述子的计算过程,而且直接法的计算更加
+简单。</li>
+<li>既不计算关键点、也不计算描述子,而是根据像素灰度的差异,直接计算相机运动。</li>
+</ul>
+<p>第一种方法仍然使用特征点,只是把匹配描述子替换成了光流跟踪,估计相机运动时
+仍使用对极几何、PnP 或 ICP 算法。而在后两个方法中,我们会根据图像的像素灰度信
+息来计算相机运动,它们都称为直接法。(在直接法中,我们并不需要知道点与点之间之间的对应关系,而是通过最小化光度误差(Photometric error)来求得它们。)</p>
+<h2 id="光流optical-flow"><a href="#光流optical-flow" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:光流optical-flow" class="headings">光流(Optical Flow)</a></h2>
+<p>直接法是从光流演变而来的。它们非常相似,具有相同的假设条件。光流描述了像素
+在图像中的运动,而直接法则附带着一个相机运动模型。
+<img src="https://i.loli.net/2019/09/22/OLCf42vRhzMIUYr.png" alt=""></p>
+<p>光流是一种描述像素随着时间,在图像之间运动的方法,如图 8-1 所示。随着时间的
+经过,同一个像素会在图像中运动,而我们希望追踪它的运动过程。计算部分像素运动的
+称为稀疏光流,计算所有像素的称为稠密光流。稀疏光流以 Lucas-Kanade 光流为代表,并
+可以在 SLAM 中用于跟踪特征点位置。</p>
+<h3 id="lucas-kanade-光流"><a href="#lucas-kanade-光流" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:lucas-kanade-光流" class="headings">Lucas-Kanade 光流</a></h3>
+<p>在 LK 光流中,我们认为来自相机的图像是随时间变化的。图像可以看作时间的函数:
+$\boldsymbol{I}(t)$。那么,一个在 t 时刻,位于 (x, y) 处的像素,它的灰度可以写成
+$$
+\boldsymbol{I}(x,y,t)
+$$
+这种方式把图像看成了关于位置与时间的函数,它的值域就是图像中像素的灰度。现在考
+虑某个固定的空间点,它在 t 时刻的像素坐标为 x, y。由于相机的运动,它的图像坐标将
+发生变化。我们希望估计这个空间点在其他时刻里图像的位置。怎么估计呢?这里要引入
+光流法的基本假设:</p>
+<p><strong>灰度不变假设</strong>:同一个空间点的像素灰度值,在各个图像中是固定不变的。
+对于 t 时刻位于 (x, y) 处的像素,我们设 t + dt 时刻,它运动到 (x + dx, y + dy) 处。
+由于灰度不变,我们有:
+$$
+\boldsymbol{I}(x + dx, y + dy, t + dt) = \mathbf{I}(x,y,t)
+$$
+灰度不变假设是一个很强的假设,实际当中很可能不成立。事实上,由于物体的材质
+不同,像素会出现高光和阴影部分;有时,相机会自动调整曝光参数,使得图像整体变亮
+或变暗。这些时候灰度不变假设都是不成立的,因此光流的结果也不一定可靠。
+对左边进行泰勒展开,保留一阶项,得:
+$$
+\boldsymbol{I}(x+\mathrm{d} x, y+\mathrm{d} y, t+\mathrm{d} t) \approx \boldsymbol{I}(x, y, t)+\frac{\partial \boldsymbol{I}}{\partial x} \mathrm{d} x+\frac{\partial \boldsymbol{I}}{\partial y} \mathrm{d} y+\frac{\partial \boldsymbol{I}}{\partial t} \mathrm{d} t
+$$
+因为我们假设了灰度不变,于是下一个时刻的灰度等于之前的灰度,从而
+$$
+\frac{\partial \boldsymbol{I}}{\partial x} \mathrm{d} x+\frac{\partial \boldsymbol{I}}{\partial y} \mathrm{d} y+\frac{\partial \boldsymbol{I}}{\partial t} \mathrm{d} t=0
+$$
+两边除以 dt,得:
+$$
+\frac{\partial \boldsymbol{I}}{\partial x} \frac{\mathrm{d} x}{\mathrm{d} t}+\frac{\partial \boldsymbol{I}}{\partial y} \frac{\mathrm{d} y}{\mathrm{d} t}=-\frac{\partial \boldsymbol{I}}{\partial t}
+$$
+其中 dx/dt 为像素在 x 轴上运动速度,而 dy/dt 为 y 轴速度,把它们记为 u, v。同
+时 $\frac{\partial \boldsymbol{I}}{\partial x}$为图像在该点处 x 方向的梯度,另一项则是在 y 方向的梯度,记为 $\boldsymbol{I} _x, \boldsymbol{I}_y$ 。把图像灰度对时间的变化量记为 $\boldsymbol{I}_t$ ,写成矩阵形式,有:</p>
+<p>$$
+\left[\begin{array}{ll}{\boldsymbol{I}_{x}} &amp; {\boldsymbol{I}_{y}}\end{array}\right]\left[\begin{array}{l}{u} \\ {v}\end{array}\right]=-\boldsymbol{I}_{t}
+$$
+我们想计算的是像素的运动 u, v,但是该式是带有两个变量的一次方程,仅凭它无法
+计算出 u, v。因此,必须引入额外的约束来计算 u, v。在 LK 光流中,<strong>我们假设某一个窗
+口内的像素具有相同的运动。</strong>
+考虑一个大小为 w × w 大小的窗口,它含有 $w^2$数量的像素。由于该窗口内像素具有
+同样的运动,因此我们共有 $w^2$ 个方程:</p>
+<p>$$
+\left[\begin{array}{ll}{\boldsymbol{I}_{x}} &amp; {\boldsymbol{I}_{y}}\end{array}\right]_{k}\left[\begin{array}{l}{u} \\ {v}\end{array}\right]=-\boldsymbol{I}_{t k}, \quad k=1, \ldots, w^{2}
+$$</p>
+<p>记：
+$$
+\boldsymbol{A}=\left[\begin{array}{c}{\left[\boldsymbol{I}_{x}, \boldsymbol{I}_{y}\right]_{1}} \\ {\vdots} \\ {\left[\boldsymbol{I}_{x}, \boldsymbol{I}_{y}\right]_{k}}\end{array}\right], \boldsymbol{b}=\left[\begin{array}{c}{\boldsymbol{I}_{t 1}} \\ {\vdots} \\ {\boldsymbol{I}_{t k}}\end{array}\right]
+$$
+于是整个方程：
+$$
+A\left[\begin{array}{l}{u} \ {v}\end{array}\right]=-b
+$$
+这是一个关于 u, v 的超定线性方程,传统解法是求最小二乘解。
+$$
+\left[\begin{array}{l}{u} \ {v}\end{array}\right]^{*}=-\left(\boldsymbol{A}^{T} \boldsymbol{A}\right)^{-1} \boldsymbol{A}^{T} \boldsymbol{b}
+$$
+这样就得到了像素在图像间的运动速度 u, v。当 t 取离散的时刻而不是连续时间时,我
+们可以估计某块像素在若干个图像中出现的位置。由于像素梯度仅在局部有效,所以如果
+一次迭代不够好的话,我们会多迭代几次这个方程。</p>
+<h3 id="代码实践lk-光流"><a href="#代码实践lk-光流" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:代码实践lk-光流" class="headings">代码实践：LK 光流</a></h3>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;list&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;opencv2/core/core.hpp&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;opencv2/highgui/highgui.hpp&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;opencv2/features2d/features2d.hpp&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;opencv2/video/tracking.hpp&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;usage: useLK path_to_dataset&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="n">path_to_dataset</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="n">associate_file</span> <span class="o">=</span> <span class="n">path_to_dataset</span> <span class="o">+</span> <span class="s">&#34;/associate.txt&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">ifstream</span> <span class="n">fin</span><span class="p">(</span> <span class="n">associate_file</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">fin</span> <span class="p">)</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cerr</span><span class="o">&lt;&lt;</span><span class="s">&#34;I cann&#39;t find associate.txt!&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="n">rgb_file</span><span class="p">,</span> <span class="n">depth_file</span><span class="p">,</span> <span class="n">time_rgb</span><span class="p">,</span> <span class="n">time_depth</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">list</span><span class="o">&lt;</span> <span class="n">cv</span><span class="o">::</span><span class="n">Point2f</span> <span class="o">&gt;</span> <span class="n">keypoints</span><span class="p">;</span>      <span class="c1">// 因为要删除跟踪失败的点，使用list
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span> <span class="n">color</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">last_color</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">index</span><span class="o">&lt;</span><span class="mi">100</span><span class="p">;</span> <span class="n">index</span><span class="o">++</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fin</span><span class="o">&gt;&gt;</span><span class="n">time_rgb</span><span class="o">&gt;&gt;</span><span class="n">rgb_file</span><span class="o">&gt;&gt;</span><span class="n">time_depth</span><span class="o">&gt;&gt;</span><span class="n">depth_file</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">color</span> <span class="o">=</span> <span class="n">cv</span><span class="o">::</span><span class="n">imread</span><span class="p">(</span> <span class="n">path_to_dataset</span><span class="o">+</span><span class="s">&#34;/&#34;</span><span class="o">+</span><span class="n">rgb_file</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">depth</span> <span class="o">=</span> <span class="n">cv</span><span class="o">::</span><span class="n">imread</span><span class="p">(</span> <span class="n">path_to_dataset</span><span class="o">+</span><span class="s">&#34;/&#34;</span><span class="o">+</span><span class="n">depth_file</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">==</span><span class="mi">0</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 对第一帧提取FAST特征点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">vector</span><span class="o">&lt;</span><span class="n">cv</span><span class="o">::</span><span class="n">KeyPoint</span><span class="o">&gt;</span> <span class="n">kps</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cv</span><span class="o">::</span><span class="n">Ptr</span><span class="o">&lt;</span><span class="n">cv</span><span class="o">::</span><span class="n">FastFeatureDetector</span><span class="o">&gt;</span> <span class="n">detector</span> <span class="o">=</span> <span class="n">cv</span><span class="o">::</span><span class="n">FastFeatureDetector</span><span class="o">::</span><span class="n">create</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">detector</span><span class="o">-&gt;</span><span class="n">detect</span><span class="p">(</span> <span class="n">color</span><span class="p">,</span> <span class="n">kps</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="nl">kp</span><span class="p">:</span><span class="n">kps</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">keypoints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">kp</span><span class="p">.</span><span class="n">pt</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">last_color</span> <span class="o">=</span> <span class="n">color</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="n">color</span><span class="p">.</span><span class="n">data</span><span class="o">==</span><span class="k">nullptr</span> <span class="o">||</span> <span class="n">depth</span><span class="p">.</span><span class="n">data</span><span class="o">==</span><span class="k">nullptr</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 对其他帧用LK跟踪特征点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">vector</span><span class="o">&lt;</span><span class="n">cv</span><span class="o">::</span><span class="n">Point2f</span><span class="o">&gt;</span> <span class="n">next_keypoints</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">        <span class="n">vector</span><span class="o">&lt;</span><span class="n">cv</span><span class="o">::</span><span class="n">Point2f</span><span class="o">&gt;</span> <span class="n">prev_keypoints</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="nl">kp</span><span class="p">:</span><span class="n">keypoints</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">prev_keypoints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">kp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="o">&gt;</span> <span class="n">status</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">error</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">        <span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">time_point</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cv</span><span class="o">::</span><span class="n">calcOpticalFlowPyrLK</span><span class="p">(</span> <span class="n">last_color</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">prev_keypoints</span><span class="p">,</span> <span class="n">next_keypoints</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">error</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">time_point</span> <span class="n">t2</span> <span class="o">=</span> <span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chrono</span><span class="o">::</span><span class="n">duration</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">time_used</span> <span class="o">=</span> <span class="n">chrono</span><span class="o">::</span><span class="n">duration_cast</span><span class="o">&lt;</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span><span class="p">(</span> <span class="n">t2</span><span class="o">-</span><span class="n">t1</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;LK Flow use time：&#34;</span><span class="o">&lt;&lt;</span><span class="n">time_used</span><span class="p">.</span><span class="n">count</span><span class="p">()</span><span class="o">&lt;&lt;</span><span class="s">&#34; seconds.&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 把跟丢的点删掉,因为要删除跟踪失败的点，使用list,而不是vector
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// keypoint 的数目会逐渐减少
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">iter</span><span class="o">=</span><span class="n">keypoints</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">iter</span><span class="o">!=</span><span class="n">keypoints</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span> <span class="n">status</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">iter</span> <span class="o">=</span> <span class="n">keypoints</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="o">*</span><span class="n">iter</span> <span class="o">=</span> <span class="n">next_keypoints</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="n">iter</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;tracked keypoints: &#34;</span><span class="o">&lt;&lt;</span><span class="n">keypoints</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">keypoints</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;all keypoints are lost.&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 画出 keypoints
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span> <span class="n">img_show</span> <span class="o">=</span> <span class="n">color</span><span class="p">.</span><span class="n">clone</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="nl">kp</span><span class="p">:</span><span class="n">keypoints</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cv</span><span class="o">::</span><span class="n">circle</span><span class="p">(</span><span class="n">img_show</span><span class="p">,</span> <span class="n">kp</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">cv</span><span class="o">::</span><span class="n">Scalar</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cv</span><span class="o">::</span><span class="n">imshow</span><span class="p">(</span><span class="s">&#34;corners&#34;</span><span class="p">,</span> <span class="n">img_show</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cv</span><span class="o">::</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">last_color</span> <span class="o">=</span> <span class="n">color</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p>LK 光流跟踪能够直接得到特征点的对应关系。这个对应关系就像是描述子的匹配,但实际上我们大多数时候只会碰到特征点跟丢的情况,而不太会遇到误匹配,这应该是光流相对于描述子的一点优势。但是,匹配描述子的方法在相机运动较大时仍能成功,而光流必须要求相机运动是微小的。从这方面来说,光流的鲁棒性比描述子差一些。</p>
+<h2 id="直接法"><a href="#直接法" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:直接法" class="headings">直接法</a></h2>
+<h3 id="理论"><a href="#理论" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:理论" class="headings">理论</a></h3>
+<p>考虑某个空间点$ P$ 和两个时刻的相机。$P$ 的世界坐标为 [X, Y, Z],它
+在两个相机上成像,记非齐次像素坐标为$ p_ 1 , p_ 2 $。我们的目标是求第一个相机到第二个相
+机的相对位姿变换。我们以第一个相机为参照系,设第二个相机旋转和平移为 $R, t$，对应李代数为$\xi$</p>
+<p>$$
+\begin{array}{l}{p_{1}=\left[\begin{array}{c}{u} \\ {v} \\ {1}\end{array}\right]_{1}=\frac{1}{Z_{1}} K P} \\ {p_{2}=\left[\begin{array}{c}{u} \\ {v} \\ {1}\end{array}\right]=\frac{1}{Z_{2}} K(R P+t)=\frac{1}{Z_{2}} K\left(\exp \left(\xi^{\wedge}\right) P\right)_{1 : 3}}\end{array}
+$$</p>
+<p>在直接法中,由于没有特征匹配,我们无从知道哪一个 $p _2$ 与 $p_1$ 对应
+着同一个点。直接法的思路是根据当前相机的位姿估计值,来寻找$ p_ 2$ 的位置。但若相机
+位姿不够好,$p_ 2 $的外观和$ p_ 1$ 会有明显差别。于是,为了减小这个差别,我们优化相机的
+位姿,来寻找与 $p_ 1$ 更相似的$ p_ 2$ 。这同样可以通过解一个优化问题,但此时最小化的不是
+重投影误差,而是光度误差(Photometric Error),也就是 $P$ 的两个像的亮度误差:</p>
+<p>$$
+e=\boldsymbol{I}_{1}\left(\boldsymbol{p}_{1}\right)-\boldsymbol{I}_{2}\left(\boldsymbol{p}_{2}\right)
+$$</p>
+<p>在直接法中,我们假设一个空间点
+在各个视角下,成像的灰度是不变的。能够做这种优化的理由,仍是基于灰度不变假设。我们有许多个(比如 N 个)空间点 P i ,那么,整
+个相机位姿估计问题变为:</p>
+<p>$$
+\min _{\xi} J(\boldsymbol{\xi})=\sum_{i=1}^{N} e_{i}^{T} e_{i}, \quad e_{i}=\boldsymbol{I}_{1}\left(\boldsymbol{p}_{1, i}\right)-\boldsymbol{I}_{2}\left(\boldsymbol{p}_{2, i}\right)
+$$</p>
+<p>注意这里的优化变量是相机位姿 $\boldsymbol{\xi}$。为了求解这个优化问题,我们关心误差 e 是如何
+随着相机位姿 $\boldsymbol{\xi}$变化的,需要分析它们的导数关系。因此,使用李代数上的扰动模型。我
+们给 $exp(\xi)$ 左乘一个小扰动$ exp(\delta \xi)$,得:</p>
+<p>$$
+\begin{aligned} e(\boldsymbol{\xi} \oplus \delta \boldsymbol{\xi}) &amp;=\boldsymbol{I}_{1}\left(\frac{1}{Z_{1}} \boldsymbol{K} \boldsymbol{P}\right)-\boldsymbol{I}_{2}\left(\frac{1}{Z_{2}} \boldsymbol{K} \exp \left(\delta \boldsymbol{\xi}^{\wedge}\right) \exp \left(\boldsymbol{\xi}^{\wedge}\right) \boldsymbol{P}\right) \\ &amp; \approx \boldsymbol{I}_{1}\left(\frac{1}{Z_{1}} \boldsymbol{K} \boldsymbol{P}\right)-\boldsymbol{I}_{2}\left(\frac{1}{Z_{2}} \boldsymbol{K}\left(1+\delta \boldsymbol{\xi}^{\wedge}\right) \exp \left(\boldsymbol{\xi}^{\wedge}\right) \boldsymbol{P}\right) \\ &amp;=\boldsymbol{I}_{1}\left(\frac{1}{Z_{1}} \boldsymbol{K} \boldsymbol{P}\right)-\boldsymbol{I}_{2}\left(\frac{1}{Z_{2}} \boldsymbol{K} \exp \left(\boldsymbol{\xi}^{\wedge}\right) \boldsymbol{P}+\frac{1}{Z_{2}} \boldsymbol{K} \delta \boldsymbol{\xi}^{\wedge} \exp \left(\boldsymbol{\xi}^{\wedge}\right) \boldsymbol{P}\right) \end{aligned}
+$$</p>
+<p>记：
+$$
+\begin{aligned} \boldsymbol{q} &amp;=\delta \boldsymbol{\xi}^{\wedge} \exp \left(\boldsymbol{\xi}^{\wedge}\right) \boldsymbol{P} \ \boldsymbol{u} &amp;=\frac{1}{Z_{2}} \boldsymbol{K} \boldsymbol{q} \end{aligned}
+$$
+这里的 $\boldsymbol{q}$ 为$\boldsymbol{ P}$ 在扰动之后,位于第二个相机坐标系下的坐标,而 $u$ 为它的像素坐标。</p>
+<p>利用一阶泰勒展开,有:</p>
+<p>$$
+\begin{aligned} e(\boldsymbol{\xi} \oplus \delta \boldsymbol{\xi}) &amp;=\boldsymbol{I}_{1}\left(\frac{1}{Z_{1}} \boldsymbol{K} \boldsymbol{P}\right)-\boldsymbol{I}_{2}\left(\frac{1}{Z_{2}} \boldsymbol{K} \exp \left(\boldsymbol{\xi}^{\wedge}\right) \boldsymbol{P}+\boldsymbol{u}\right) \\ &amp; \approx \boldsymbol{I}_{1}\left(\frac{1}{Z_{1}} \boldsymbol{K} \boldsymbol{P}\right)-\boldsymbol{I}_{2}\left(\frac{1}{Z_{2}} \boldsymbol{K} \exp \left(\boldsymbol{\xi}^{\wedge}\right) \boldsymbol{P}\right)-\frac{\partial \boldsymbol{I}_{2}}{\partial \boldsymbol{u}} \frac{\partial \boldsymbol{u}}{\partial \boldsymbol{q}} \frac{\partial \boldsymbol{q}}{\partial \boldsymbol{g}} \frac{\partial \boldsymbol{q}}{\partial \delta \xi} \delta \boldsymbol{\xi} \\ &amp;=e(\boldsymbol{\xi})-\frac{\partial \boldsymbol{I}_{2}}{\partial \boldsymbol{u}} \frac{\partial \boldsymbol{u}}{\partial \boldsymbol{q}} \frac{\partial \boldsymbol{q}}{\partial \delta \xi} \delta \boldsymbol{\xi} \end{aligned}
+$$</p>
+<p>我们看到,一阶导数由于链式法则分成了三项,而这三项都是容易计算的:</p>
+<p>1 . $\frac{\partial \boldsymbol{I}_{2}}{\partial \boldsymbol{u}}$ 为 $u$ 处的像素梯度;</p>
+<p>2 . $\frac{\partial \boldsymbol{u}}{\partial \boldsymbol{q}}$ 为投影方程关于相机坐标系下的三维点的导数。记 $q = [X, Y, Z] ^T$ ,根据上一
+节的推导,导数为:</p>
+<p>$$
+\frac{\partial \boldsymbol{u}}{\partial \boldsymbol{q}}=\left[\begin{array}{ccc}{\frac{\partial u}{\partial X}} &amp; {\frac{\partial u}{\partial Y}} &amp; {\frac{\partial u}{\partial Z}} \\ {\frac{\partial v}{\partial X}} &amp; {\frac{\partial v}{\partial Y}} &amp; {\frac{\partial v}{\partial Z}}\end{array}\right]=\left[\begin{array}{ccc}{\frac{f_{x}}{Z}} &amp; {0} &amp; {-\frac{f_{x} X}{Z^{2}}} \\ {0} &amp; {\frac{f_{y}}{Z}} &amp; {-\frac{f_{y} Y}{Z^{2}}}\end{array}\right]
+$$</p>
+<p>3 . $\frac{\partial \boldsymbol{q}}{\partial \delta \xi}$ 为变换后的三维点对变换的导数:</p>
+<p>$$
+\frac{\partial \boldsymbol{q}}{\partial \delta \boldsymbol{\xi}}=\left[\boldsymbol{I},-\boldsymbol{q}^{\wedge}\right]
+$$</p>
+<p>由于后两项只与三维点 q 有关,而与图像无关,我们经常把它合并在一起:</p>
+<p>$$
+\frac{\partial u}{\partial \delta \xi}=\left[\begin{array}{cccccc}{\frac{f_{x}}{Z}} &amp; {0} &amp; {-\frac{f_{x} X}{Z^{2}}} &amp; {-\frac{f_{x} X Y}{Z^{2}}} &amp; {f_{x}+\frac{f_{x} X^{2}}{Z^{2}}} &amp; {-\frac{f_{x} Y}{Z}} \\ {0} &amp; {\frac{f_{y}}{Z}} &amp; {-\frac{f_{y} Y}{Z^{2}}} &amp; {-f_{y}-\frac{f_{y} Y^{2}}{Z^{2}}} &amp; {\frac{f_{y} X Y}{Z^{2}}} &amp; {\frac{f_{y} X}{Z}}\end{array}\right]
+$$
+于是,我们推导了误差相对于李代数的雅可
+比矩阵:
+$$
+\boldsymbol{J}=-\frac{\partial \boldsymbol{I}_{2}}{\partial \boldsymbol{u}} \frac{\partial \boldsymbol{u}}{\partial \boldsymbol{\xi}}
+$$
+对于 N 个点的问题,我们可以用这种方法计算优化问题的雅可比,然后使用 G-N 或
+L-M 计算增量,迭代求解。</p>
+<h3 id="直接法的分类"><a href="#直接法的分类" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:直接法的分类" class="headings">直接法的分类</a></h3>
+<p>P 是一个已知位置的空间点，根据 P 的来源,我们可以把直接法进行分类:</p>
+<ol>
+<li>
+<p>P 来自于稀疏关键点,我们称之为稀疏直接法。通常我们使用数百个至上千个关键
+点,并且像 L-K 光流那样,假设它周围像素也是不变的。这种稀疏直接法不必计算
+描述子,并且只使用数百个像素,因此速度最快,但只能计算稀疏的重构。</p>
+</li>
+<li>
+<p>P 来自部分像素。我们看到式(8.16)中,如果像素梯度为零,整一项雅可比就为零,
+不会对计算运动增量有任何贡献。因此,可以考虑只使用带有梯度的像素点,舍弃像
+素梯度不明显的地方。这称之为半稠密(Semi-Dense)的直接法,可以重构一个半稠
+密结构。</p>
+</li>
+<li>
+<p>P 为所有像素,称为稠密直接法。稠密重构需要计算所有像素(一般几十万至几百万
+个),因此多数不能在现有的 CPU 上实时计算,需要 GPU 的加速。但是,如前面
+所讨论的,梯度不明显的点,在运动估计中不会有太大贡献,在重构时也会难以估计
+位置。</p>
+</li>
+</ol>
+<h3 id="代码实践"><a href="#代码实践" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:代码实践" class="headings">代码实践</a></h3>
+<h4 id="稀疏直接法"><a href="#稀疏直接法" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:稀疏直接法" class="headings">稀疏直接法</a></h4>
+<p>在使用 g2o之前,需要把直接法抽象成一个图优化问题。显然,直接法是由以下顶点和边组成的:</p>
+<ol>
+<li>
+<p>优化变量为一个相机位姿,因此需要一个位姿顶点。由于我们在推导中使用了李代
+数,故程序中使用李代数表达的 SE(3) 位姿顶点。与上一章一样,我们将使用“Ver-
+texSE3Expmap”作为相机位姿。</p>
+</li>
+<li>
+<p>误差项为单个像素的光度误差。由于整个优化过程中 I 1 (p 1 ) 保持不变,我们可以把
+它当成一个固定的预设值,然后调整相机位姿,使 I 2 (p 2 ) 接近这个值。于是,这种
+边只连接一个顶点,为一元边。由于 g2o 中本身没有计算光度误差的边,我们需要
+自己定义一种新的边。</p>
+</li>
+</ol>
+<p>在上述的建模中,直接法图优化问题是由一个相机位姿顶点与许多条一元边组成的。
+如果使用稀疏的直接法,那我们大约会有几百至几千条这样的边;稠密直接法则会有几十
+万条边。优化问题对应的线性方程是计算李代数增量,本身规模不大(6×6)
+,所以主要的
+计算时间会花费在每条边的误差与雅可比的计算上。下面的实验中,我们先来定义一种用
+于直接法位姿估计的边,然后,使用该边构建图优化问题并求解之。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span><span class="lnt">252
+</span><span class="lnt">253
+</span><span class="lnt">254
+</span><span class="lnt">255
+</span><span class="lnt">256
+</span><span class="lnt">257
+</span><span class="lnt">258
+</span><span class="lnt">259
+</span><span class="lnt">260
+</span><span class="lnt">261
+</span><span class="lnt">262
+</span><span class="lnt">263
+</span><span class="lnt">264
+</span><span class="lnt">265
+</span><span class="lnt">266
+</span><span class="lnt">267
+</span><span class="lnt">268
+</span><span class="lnt">269
+</span><span class="lnt">270
+</span><span class="lnt">271
+</span><span class="lnt">272
+</span><span class="lnt">273
+</span><span class="lnt">274
+</span><span class="lnt">275
+</span><span class="lnt">276
+</span><span class="lnt">277
+</span><span class="lnt">278
+</span><span class="lnt">279
+</span><span class="lnt">280
+</span><span class="lnt">281
+</span><span class="lnt">282
+</span><span class="lnt">283
+</span><span class="lnt">284
+</span><span class="lnt">285
+</span><span class="lnt">286
+</span><span class="lnt">287
+</span><span class="lnt">288
+</span><span class="lnt">289
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;list&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;ctime&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;climits&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;opencv2/core/core.hpp&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;opencv2/imgproc/imgproc.hpp&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;opencv2/highgui/highgui.hpp&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;opencv2/features2d/features2d.hpp&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;g2o/core/base_unary_edge.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;g2o/core/block_solver.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;g2o/core/optimization_algorithm_levenberg.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;g2o/solvers/dense/linear_solver_dense.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;g2o/core/robust_kernel.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;g2o/types/sba/types_six_dof_expmap.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">g2o</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/********************************************
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 本节演示了RGBD上的稀疏直接法 
+</span></span></span><span class="line"><span class="cl"><span class="cm"> ********************************************/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 一次测量的值，包括一个世界坐标系下三维点与一个灰度值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="nc">Measurement</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Measurement</span> <span class="p">(</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">p</span><span class="p">,</span> <span class="kt">float</span> <span class="n">g</span> <span class="p">)</span> <span class="o">:</span> <span class="n">pos_world</span> <span class="p">(</span> <span class="n">p</span> <span class="p">),</span> <span class="n">grayscale</span> <span class="p">(</span> <span class="n">g</span> <span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">pos_world</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">float</span> <span class="n">grayscale</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">project2Dto3D</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">d</span><span class="p">,</span> <span class="kt">float</span> <span class="n">fx</span><span class="p">,</span> <span class="kt">float</span> <span class="n">fy</span><span class="p">,</span> <span class="kt">float</span> <span class="n">cx</span><span class="p">,</span> <span class="kt">float</span> <span class="n">cy</span><span class="p">,</span> <span class="kt">float</span> <span class="n">scale</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">float</span> <span class="n">zz</span> <span class="o">=</span> <span class="kt">float</span> <span class="p">(</span> <span class="n">d</span> <span class="p">)</span> <span class="o">/</span><span class="n">scale</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">float</span> <span class="n">xx</span> <span class="o">=</span> <span class="n">zz</span><span class="o">*</span> <span class="p">(</span> <span class="n">x</span><span class="o">-</span><span class="n">cx</span> <span class="p">)</span> <span class="o">/</span><span class="n">fx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">float</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">zz</span><span class="o">*</span> <span class="p">(</span> <span class="n">y</span><span class="o">-</span><span class="n">cy</span> <span class="p">)</span> <span class="o">/</span><span class="n">fy</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="p">(</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">zz</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector2d</span> <span class="n">project3Dto2D</span> <span class="p">(</span> <span class="kt">float</span> <span class="n">x</span><span class="p">,</span> <span class="kt">float</span> <span class="n">y</span><span class="p">,</span> <span class="kt">float</span> <span class="n">z</span><span class="p">,</span> <span class="kt">float</span> <span class="n">fx</span><span class="p">,</span> <span class="kt">float</span> <span class="n">fy</span><span class="p">,</span> <span class="kt">float</span> <span class="n">cx</span><span class="p">,</span> <span class="kt">float</span> <span class="n">cy</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">float</span> <span class="n">u</span> <span class="o">=</span> <span class="n">fx</span><span class="o">*</span><span class="n">x</span><span class="o">/</span><span class="n">z</span><span class="o">+</span><span class="n">cx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">float</span> <span class="n">v</span> <span class="o">=</span> <span class="n">fy</span><span class="o">*</span><span class="n">y</span><span class="o">/</span><span class="n">z</span><span class="o">+</span><span class="n">cy</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector2d</span> <span class="p">(</span> <span class="n">u</span><span class="p">,</span><span class="n">v</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 直接法估计位姿
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 输入：测量值（空间点的灰度），新的灰度图，相机内参； 输出：相机位姿
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 返回：true为成功，false失败
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">bool</span> <span class="nf">poseEstimationDirect</span> <span class="p">(</span> <span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Measurement</span><span class="o">&gt;&amp;</span> <span class="n">measurements</span><span class="p">,</span> <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="o">*</span> <span class="n">gray</span><span class="p">,</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3f</span><span class="o">&amp;</span> <span class="n">intrinsics</span><span class="p">,</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Isometry3d</span><span class="o">&amp;</span> <span class="n">Tcw</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// project a 3d point into an image plane, the error is photometric error
+</span></span></span><span class="line"><span class="cl"><span class="c1">// an unary edge with one vertex SE3Expmap (the pose of camera)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">class</span> <span class="nc">EdgeSE3ProjectDirect</span><span class="o">:</span> <span class="k">public</span> <span class="n">BaseUnaryEdge</span><span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="kt">double</span><span class="p">,</span> <span class="n">VertexSE3Expmap</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">EIGEN_MAKE_ALIGNED_OPERATOR_NEW</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">EdgeSE3ProjectDirect</span><span class="p">()</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">EdgeSE3ProjectDirect</span> <span class="p">(</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">point</span><span class="p">,</span> <span class="kt">float</span> <span class="n">fx</span><span class="p">,</span> <span class="kt">float</span> <span class="n">fy</span><span class="p">,</span> <span class="kt">float</span> <span class="n">cx</span><span class="p">,</span> <span class="kt">float</span> <span class="n">cy</span><span class="p">,</span> <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="o">*</span> <span class="n">image</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">:</span> <span class="n">x_world_</span> <span class="p">(</span> <span class="n">point</span> <span class="p">),</span> <span class="n">fx_</span> <span class="p">(</span> <span class="n">fx</span> <span class="p">),</span> <span class="n">fy_</span> <span class="p">(</span> <span class="n">fy</span> <span class="p">),</span> <span class="n">cx_</span> <span class="p">(</span> <span class="n">cx</span> <span class="p">),</span> <span class="n">cy_</span> <span class="p">(</span> <span class="n">cy</span> <span class="p">),</span> <span class="n">image_</span> <span class="p">(</span> <span class="n">image</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//虚函数重写 误差项
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">computeError</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="n">VertexSE3Expmap</span><span class="o">*</span> <span class="n">v</span>  <span class="o">=</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">VertexSE3Expmap</span><span class="o">*&gt;</span> <span class="p">(</span> <span class="n">_vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">x_local</span> <span class="o">=</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">estimate</span><span class="p">().</span><span class="n">map</span> <span class="p">(</span> <span class="n">x_world_</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x_local</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">fx_</span><span class="o">/</span><span class="n">x_local</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">cx_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x_local</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">fy_</span><span class="o">/</span><span class="n">x_local</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">cy_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// check x,y is in the image
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span> <span class="n">x</span><span class="o">-</span><span class="mi">4</span><span class="o">&lt;</span><span class="mi">0</span> <span class="o">||</span> <span class="p">(</span> <span class="n">x</span><span class="o">+</span><span class="mi">4</span> <span class="p">)</span> <span class="o">&gt;</span><span class="n">image_</span><span class="o">-&gt;</span><span class="n">cols</span> <span class="o">||</span> <span class="p">(</span> <span class="n">y</span><span class="o">-</span><span class="mi">4</span> <span class="p">)</span> <span class="o">&lt;</span><span class="mi">0</span> <span class="o">||</span> <span class="p">(</span> <span class="n">y</span><span class="o">+</span><span class="mi">4</span> <span class="p">)</span> <span class="o">&gt;</span><span class="n">image_</span><span class="o">-&gt;</span><span class="n">rows</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">_error</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span> <span class="p">)</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="o">-&gt;</span><span class="n">setLevel</span> <span class="p">(</span> <span class="mi">1</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">_error</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span> <span class="p">)</span> <span class="o">=</span> <span class="n">getPixelValue</span> <span class="p">(</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="p">)</span> <span class="o">-</span> <span class="n">_measurement</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// plus in manifold
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">linearizeOplus</span><span class="p">(</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="n">level</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">_jacobianOplusXi</span> <span class="o">=</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="o">&gt;::</span><span class="n">Zero</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">VertexSE3Expmap</span><span class="o">*</span> <span class="n">vtx</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">VertexSE3Expmap</span><span class="o">*&gt;</span> <span class="p">(</span> <span class="n">_vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">xyz_trans</span> <span class="o">=</span> <span class="n">vtx</span><span class="o">-&gt;</span><span class="n">estimate</span><span class="p">().</span><span class="n">map</span> <span class="p">(</span> <span class="n">x_world_</span> <span class="p">);</span>   <span class="c1">// q in book
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">        <span class="kt">double</span> <span class="n">x</span> <span class="o">=</span> <span class="n">xyz_trans</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">double</span> <span class="n">y</span> <span class="o">=</span> <span class="n">xyz_trans</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">double</span> <span class="n">invz</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">xyz_trans</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">double</span> <span class="n">invz_2</span> <span class="o">=</span> <span class="n">invz</span><span class="o">*</span><span class="n">invz</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">float</span> <span class="n">u</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">fx_</span><span class="o">*</span><span class="n">invz</span> <span class="o">+</span> <span class="n">cx_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">float</span> <span class="n">v</span> <span class="o">=</span> <span class="n">y</span><span class="o">*</span><span class="n">fy_</span><span class="o">*</span><span class="n">invz</span> <span class="o">+</span> <span class="n">cy_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// jacobian from se3 to u,v
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// NOTE that in g2o the Lie algebra is (\omega, \epsilon), where \omega is so(3) and \epsilon the translation
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="o">&gt;</span> <span class="n">jacobian_uv_ksai</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_uv_ksai</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span> <span class="p">)</span> <span class="o">=</span> <span class="o">-</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="o">*</span><span class="n">invz_2</span> <span class="o">*</span><span class="n">fx_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_uv_ksai</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span> <span class="p">)</span> <span class="o">=</span> <span class="p">(</span> <span class="mi">1</span><span class="o">+</span> <span class="p">(</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">invz_2</span> <span class="p">)</span> <span class="p">)</span> <span class="o">*</span><span class="n">fx_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_uv_ksai</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">2</span> <span class="p">)</span> <span class="o">=</span> <span class="o">-</span> <span class="n">y</span><span class="o">*</span><span class="n">invz</span> <span class="o">*</span><span class="n">fx_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_uv_ksai</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">3</span> <span class="p">)</span> <span class="o">=</span> <span class="n">invz</span> <span class="o">*</span><span class="n">fx_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_uv_ksai</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">4</span> <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_uv_ksai</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">5</span> <span class="p">)</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span><span class="o">*</span><span class="n">invz_2</span> <span class="o">*</span><span class="n">fx_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_uv_ksai</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">0</span> <span class="p">)</span> <span class="o">=</span> <span class="o">-</span> <span class="p">(</span> <span class="mi">1</span><span class="o">+</span><span class="n">y</span><span class="o">*</span><span class="n">y</span><span class="o">*</span><span class="n">invz_2</span> <span class="p">)</span> <span class="o">*</span><span class="n">fy_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_uv_ksai</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">1</span> <span class="p">)</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="o">*</span><span class="n">invz_2</span> <span class="o">*</span><span class="n">fy_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_uv_ksai</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span> <span class="p">)</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">invz</span> <span class="o">*</span><span class="n">fy_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_uv_ksai</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">3</span> <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_uv_ksai</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">4</span> <span class="p">)</span> <span class="o">=</span> <span class="n">invz</span> <span class="o">*</span><span class="n">fy_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_uv_ksai</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">5</span> <span class="p">)</span> <span class="o">=</span> <span class="o">-</span><span class="n">y</span><span class="o">*</span><span class="n">invz_2</span> <span class="o">*</span><span class="n">fy_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">&gt;</span> <span class="n">jacobian_pixel_uv</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_pixel_uv</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span> <span class="p">)</span> <span class="o">=</span> <span class="p">(</span> <span class="n">getPixelValue</span> <span class="p">(</span> <span class="n">u</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">v</span> <span class="p">)</span><span class="o">-</span><span class="n">getPixelValue</span> <span class="p">(</span> <span class="n">u</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">v</span> <span class="p">)</span> <span class="p">)</span> <span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">jacobian_pixel_uv</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span> <span class="p">)</span> <span class="o">=</span> <span class="p">(</span> <span class="n">getPixelValue</span> <span class="p">(</span> <span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="o">+</span><span class="mi">1</span> <span class="p">)</span><span class="o">-</span><span class="n">getPixelValue</span> <span class="p">(</span> <span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">)</span> <span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//雅克比矩阵
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">_jacobianOplusXi</span> <span class="o">=</span> <span class="n">jacobian_pixel_uv</span><span class="o">*</span><span class="n">jacobian_uv_ksai</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// dummy read and write functions because we don&#39;t care...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">virtual</span> <span class="kt">bool</span> <span class="nf">read</span> <span class="p">(</span> <span class="n">std</span><span class="o">::</span><span class="n">istream</span><span class="o">&amp;</span> <span class="n">in</span> <span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">bool</span> <span class="nf">write</span> <span class="p">(</span> <span class="n">std</span><span class="o">::</span><span class="n">ostream</span><span class="o">&amp;</span> <span class="n">out</span> <span class="p">)</span> <span class="k">const</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// get a gray scale value from reference image (bilinear interpolated)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">inline</span> <span class="kt">float</span> <span class="n">getPixelValue</span> <span class="p">(</span> <span class="kt">float</span> <span class="n">x</span><span class="p">,</span> <span class="kt">float</span> <span class="n">y</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">uchar</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="o">&amp;</span> <span class="n">image_</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">[</span> <span class="kt">int</span> <span class="p">(</span> <span class="n">y</span> <span class="p">)</span> <span class="o">*</span> <span class="n">image_</span><span class="o">-&gt;</span><span class="n">step</span> <span class="o">+</span> <span class="kt">int</span> <span class="p">(</span> <span class="n">x</span> <span class="p">)</span> <span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">float</span> <span class="n">xx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">floor</span> <span class="p">(</span> <span class="n">x</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">float</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">floor</span> <span class="p">(</span> <span class="n">y</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">float</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">                   <span class="p">(</span> <span class="mi">1</span><span class="o">-</span><span class="n">xx</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">1</span><span class="o">-</span><span class="n">yy</span> <span class="p">)</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">xx</span><span class="o">*</span> <span class="p">(</span> <span class="mi">1</span><span class="o">-</span><span class="n">yy</span> <span class="p">)</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">                   <span class="p">(</span> <span class="mi">1</span><span class="o">-</span><span class="n">xx</span> <span class="p">)</span> <span class="o">*</span><span class="n">yy</span><span class="o">*</span><span class="n">data</span><span class="p">[</span> <span class="n">image_</span><span class="o">-&gt;</span><span class="n">step</span> <span class="p">]</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">                   <span class="n">xx</span><span class="o">*</span><span class="n">yy</span><span class="o">*</span><span class="n">data</span><span class="p">[</span><span class="n">image_</span><span class="o">-&gt;</span><span class="n">step</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">               <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">x_world_</span><span class="p">;</span>   <span class="c1">// 3D point in world frame
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">float</span> <span class="n">cx_</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cy_</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fx_</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fy_</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="c1">// Camera intrinsics
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="o">*</span> <span class="n">image_</span><span class="o">=</span><span class="k">nullptr</span><span class="p">;</span>    <span class="c1">// reference image
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;usage: useLK path_to_dataset&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">srand</span> <span class="p">(</span> <span class="p">(</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="p">)</span> <span class="n">time</span> <span class="p">(</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="n">path_to_dataset</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="n">associate_file</span> <span class="o">=</span> <span class="n">path_to_dataset</span> <span class="o">+</span> <span class="s">&#34;/associate.txt&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ifstream</span> <span class="n">fin</span> <span class="p">(</span> <span class="n">associate_file</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="n">rgb_file</span><span class="p">,</span> <span class="n">depth_file</span><span class="p">,</span> <span class="n">time_rgb</span><span class="p">,</span> <span class="n">time_depth</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span> <span class="n">color</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">gray</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="n">Measurement</span><span class="o">&gt;</span> <span class="n">measurements</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 相机内参
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">float</span> <span class="n">cx</span> <span class="o">=</span> <span class="mf">325.5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">float</span> <span class="n">cy</span> <span class="o">=</span> <span class="mf">253.5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">float</span> <span class="n">fx</span> <span class="o">=</span> <span class="mf">518.0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">float</span> <span class="n">fy</span> <span class="o">=</span> <span class="mf">519.0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">float</span> <span class="n">depth_scale</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3f</span> <span class="n">K</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">K</span><span class="o">&lt;&lt;</span><span class="n">fx</span><span class="p">,</span><span class="mf">0.f</span><span class="p">,</span><span class="n">cx</span><span class="p">,</span><span class="mf">0.f</span><span class="p">,</span><span class="n">fy</span><span class="p">,</span><span class="n">cy</span><span class="p">,</span><span class="mf">0.f</span><span class="p">,</span><span class="mf">0.f</span><span class="p">,</span><span class="mf">1.0f</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Eigen</span><span class="o">::</span><span class="n">Isometry3d</span> <span class="n">Tcw</span> <span class="o">=</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Isometry3d</span><span class="o">::</span><span class="n">Identity</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span> <span class="n">prev_color</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 我们以第一个图像为参考，对后续图像和参考图像做直接法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">index</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">index</span><span class="o">++</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;*********** loop &#34;</span><span class="o">&lt;&lt;</span><span class="n">index</span><span class="o">&lt;&lt;</span><span class="s">&#34; ************&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fin</span><span class="o">&gt;&gt;</span><span class="n">time_rgb</span><span class="o">&gt;&gt;</span><span class="n">rgb_file</span><span class="o">&gt;&gt;</span><span class="n">time_depth</span><span class="o">&gt;&gt;</span><span class="n">depth_file</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">color</span> <span class="o">=</span> <span class="n">cv</span><span class="o">::</span><span class="n">imread</span> <span class="p">(</span> <span class="n">path_to_dataset</span><span class="o">+</span><span class="s">&#34;/&#34;</span><span class="o">+</span><span class="n">rgb_file</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">depth</span> <span class="o">=</span> <span class="n">cv</span><span class="o">::</span><span class="n">imread</span> <span class="p">(</span> <span class="n">path_to_dataset</span><span class="o">+</span><span class="s">&#34;/&#34;</span><span class="o">+</span><span class="n">depth_file</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="n">color</span><span class="p">.</span><span class="n">data</span><span class="o">==</span><span class="k">nullptr</span> <span class="o">||</span> <span class="n">depth</span><span class="p">.</span><span class="n">data</span><span class="o">==</span><span class="k">nullptr</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">        <span class="n">cv</span><span class="o">::</span><span class="n">cvtColor</span> <span class="p">(</span> <span class="n">color</span><span class="p">,</span> <span class="n">gray</span><span class="p">,</span> <span class="n">cv</span><span class="o">::</span><span class="n">COLOR_BGR2GRAY</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">==</span><span class="mi">0</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 对第一帧提取FAST特征点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">vector</span><span class="o">&lt;</span><span class="n">cv</span><span class="o">::</span><span class="n">KeyPoint</span><span class="o">&gt;</span> <span class="n">keypoints</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cv</span><span class="o">::</span><span class="n">Ptr</span><span class="o">&lt;</span><span class="n">cv</span><span class="o">::</span><span class="n">FastFeatureDetector</span><span class="o">&gt;</span> <span class="n">detector</span> <span class="o">=</span> <span class="n">cv</span><span class="o">::</span><span class="n">FastFeatureDetector</span><span class="o">::</span><span class="n">create</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">detector</span><span class="o">-&gt;</span><span class="n">detect</span> <span class="p">(</span> <span class="n">color</span><span class="p">,</span> <span class="n">keypoints</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="nl">kp</span><span class="p">:</span><span class="n">keypoints</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 去掉邻近边缘处的点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="k">if</span> <span class="p">(</span> <span class="n">kp</span><span class="p">.</span><span class="n">pt</span><span class="p">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">20</span> <span class="o">||</span> <span class="n">kp</span><span class="p">.</span><span class="n">pt</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">20</span> <span class="o">||</span> <span class="p">(</span> <span class="n">kp</span><span class="p">.</span><span class="n">pt</span><span class="p">.</span><span class="n">x</span><span class="o">+</span><span class="mi">20</span> <span class="p">)</span> <span class="o">&gt;</span><span class="n">color</span><span class="p">.</span><span class="n">cols</span> <span class="o">||</span> <span class="p">(</span> <span class="n">kp</span><span class="p">.</span><span class="n">pt</span><span class="p">.</span><span class="n">y</span><span class="o">+</span><span class="mi">20</span> <span class="p">)</span> <span class="o">&gt;</span><span class="n">color</span><span class="p">.</span><span class="n">rows</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ushort</span> <span class="n">d</span> <span class="o">=</span> <span class="n">depth</span><span class="p">.</span><span class="n">ptr</span><span class="o">&lt;</span><span class="n">ushort</span><span class="o">&gt;</span> <span class="p">(</span> <span class="n">cvRound</span> <span class="p">(</span> <span class="n">kp</span><span class="p">.</span><span class="n">pt</span><span class="p">.</span><span class="n">y</span> <span class="p">)</span> <span class="p">)</span> <span class="p">[</span> <span class="n">cvRound</span> <span class="p">(</span> <span class="n">kp</span><span class="p">.</span><span class="n">pt</span><span class="p">.</span><span class="n">x</span> <span class="p">)</span> <span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">==</span><span class="mi">0</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">//获取第一帧特征点的世界坐标做参考坐标，后面帧的R,t都是相对于第一帧来讲
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">p3d</span> <span class="o">=</span> <span class="n">project2Dto3D</span> <span class="p">(</span> <span class="n">kp</span><span class="p">.</span><span class="n">pt</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">kp</span><span class="p">.</span><span class="n">pt</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">depth_scale</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">float</span> <span class="n">grayscale</span> <span class="o">=</span> <span class="kt">float</span> <span class="p">(</span> <span class="n">gray</span><span class="p">.</span><span class="n">ptr</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span> <span class="p">(</span> <span class="n">cvRound</span> <span class="p">(</span> <span class="n">kp</span><span class="p">.</span><span class="n">pt</span><span class="p">.</span><span class="n">y</span> <span class="p">)</span> <span class="p">)</span> <span class="p">[</span> <span class="n">cvRound</span> <span class="p">(</span> <span class="n">kp</span><span class="p">.</span><span class="n">pt</span><span class="p">.</span><span class="n">x</span> <span class="p">)</span> <span class="p">]</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">measurements</span><span class="p">.</span><span class="n">push_back</span> <span class="p">(</span> <span class="n">Measurement</span> <span class="p">(</span> <span class="n">p3d</span><span class="p">,</span> <span class="n">grayscale</span> <span class="p">)</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">prev_color</span> <span class="o">=</span> <span class="n">color</span><span class="p">.</span><span class="n">clone</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 使用直接法计算相机运动
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">time_point</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">poseEstimationDirect</span> <span class="p">(</span> <span class="n">measurements</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">gray</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">Tcw</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">time_point</span> <span class="n">t2</span> <span class="o">=</span> <span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chrono</span><span class="o">::</span><span class="n">duration</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">time_used</span> <span class="o">=</span> <span class="n">chrono</span><span class="o">::</span><span class="n">duration_cast</span><span class="o">&lt;</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span> <span class="p">(</span> <span class="n">t2</span><span class="o">-</span><span class="n">t1</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;direct method costs time: &#34;</span><span class="o">&lt;&lt;</span><span class="n">time_used</span><span class="p">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&lt;&lt;</span><span class="s">&#34; seconds.&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;Tcw=&#34;</span><span class="o">&lt;&lt;</span><span class="n">Tcw</span><span class="p">.</span><span class="n">matrix</span><span class="p">()</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// plot the feature points
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span> <span class="n">img_show</span> <span class="p">(</span> <span class="n">color</span><span class="p">.</span><span class="n">rows</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="p">.</span><span class="n">cols</span><span class="p">,</span> <span class="n">CV_8UC3</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">prev_color</span><span class="p">.</span><span class="n">copyTo</span> <span class="p">(</span> <span class="n">img_show</span> <span class="p">(</span> <span class="n">cv</span><span class="o">::</span><span class="n">Rect</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">color</span><span class="p">.</span><span class="n">cols</span><span class="p">,</span> <span class="n">color</span><span class="p">.</span><span class="n">rows</span> <span class="p">)</span> <span class="p">)</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">color</span><span class="p">.</span><span class="n">copyTo</span> <span class="p">(</span> <span class="n">img_show</span> <span class="p">(</span> <span class="n">cv</span><span class="o">::</span><span class="n">Rect</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="n">color</span><span class="p">.</span><span class="n">rows</span><span class="p">,</span><span class="n">color</span><span class="p">.</span><span class="n">cols</span><span class="p">,</span> <span class="n">color</span><span class="p">.</span><span class="n">rows</span> <span class="p">)</span> <span class="p">)</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span> <span class="n">Measurement</span> <span class="nl">m</span><span class="p">:</span><span class="n">measurements</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span> <span class="n">rand</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">RAND_MAX</span><span class="o">/</span><span class="mi">5</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">p</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">pos_world</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector2d</span> <span class="n">pixel_prev</span> <span class="o">=</span> <span class="n">project3Dto2D</span> <span class="p">(</span> <span class="n">p</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span> <span class="p">),</span> <span class="n">p</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">0</span> <span class="p">),</span> <span class="n">p</span> <span class="p">(</span> <span class="mi">2</span><span class="p">,</span><span class="mi">0</span> <span class="p">),</span> <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">Tcw</span><span class="o">*</span><span class="n">m</span><span class="p">.</span><span class="n">pos_world</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector2d</span> <span class="n">pixel_now</span> <span class="o">=</span> <span class="n">project3Dto2D</span> <span class="p">(</span> <span class="n">p2</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span> <span class="p">),</span> <span class="n">p2</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">0</span> <span class="p">),</span> <span class="n">p2</span> <span class="p">(</span> <span class="mi">2</span><span class="p">,</span><span class="mi">0</span> <span class="p">),</span> <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span> <span class="n">pixel_now</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">0</span> <span class="o">||</span> <span class="n">pixel_now</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="o">&gt;=</span><span class="n">color</span><span class="p">.</span><span class="n">cols</span> <span class="o">||</span> <span class="n">pixel_now</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">0</span> <span class="o">||</span> <span class="n">pixel_now</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="o">&gt;=</span><span class="n">color</span><span class="p">.</span><span class="n">rows</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">float</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">255</span><span class="o">*</span><span class="kt">float</span> <span class="p">(</span> <span class="n">rand</span><span class="p">()</span> <span class="p">)</span> <span class="o">/</span><span class="n">RAND_MAX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">float</span> <span class="n">g</span> <span class="o">=</span> <span class="mi">255</span><span class="o">*</span><span class="kt">float</span> <span class="p">(</span> <span class="n">rand</span><span class="p">()</span> <span class="p">)</span> <span class="o">/</span><span class="n">RAND_MAX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">float</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">255</span><span class="o">*</span><span class="kt">float</span> <span class="p">(</span> <span class="n">rand</span><span class="p">()</span> <span class="p">)</span> <span class="o">/</span><span class="n">RAND_MAX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cv</span><span class="o">::</span><span class="n">circle</span> <span class="p">(</span> <span class="n">img_show</span><span class="p">,</span> <span class="n">cv</span><span class="o">::</span><span class="n">Point2d</span> <span class="p">(</span> <span class="n">pixel_prev</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span> <span class="p">),</span> <span class="n">pixel_prev</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">0</span> <span class="p">)</span> <span class="p">),</span> <span class="mi">8</span><span class="p">,</span> <span class="n">cv</span><span class="o">::</span><span class="n">Scalar</span> <span class="p">(</span> <span class="n">b</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">r</span> <span class="p">),</span> <span class="mi">2</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cv</span><span class="o">::</span><span class="n">circle</span> <span class="p">(</span> <span class="n">img_show</span><span class="p">,</span> <span class="n">cv</span><span class="o">::</span><span class="n">Point2d</span> <span class="p">(</span> <span class="n">pixel_now</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span> <span class="p">),</span> <span class="n">pixel_now</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">0</span> <span class="p">)</span> <span class="o">+</span><span class="n">color</span><span class="p">.</span><span class="n">rows</span> <span class="p">),</span> <span class="mi">8</span><span class="p">,</span> <span class="n">cv</span><span class="o">::</span><span class="n">Scalar</span> <span class="p">(</span> <span class="n">b</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">r</span> <span class="p">),</span> <span class="mi">2</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cv</span><span class="o">::</span><span class="n">line</span> <span class="p">(</span> <span class="n">img_show</span><span class="p">,</span> <span class="n">cv</span><span class="o">::</span><span class="n">Point2d</span> <span class="p">(</span> <span class="n">pixel_prev</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span> <span class="p">),</span> <span class="n">pixel_prev</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">0</span> <span class="p">)</span> <span class="p">),</span> <span class="n">cv</span><span class="o">::</span><span class="n">Point2d</span> <span class="p">(</span> <span class="n">pixel_now</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span> <span class="p">),</span> <span class="n">pixel_now</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">0</span> <span class="p">)</span> <span class="o">+</span><span class="n">color</span><span class="p">.</span><span class="n">rows</span> <span class="p">),</span> <span class="n">cv</span><span class="o">::</span><span class="n">Scalar</span> <span class="p">(</span> <span class="n">b</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">r</span> <span class="p">),</span> <span class="mi">1</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cv</span><span class="o">::</span><span class="n">imshow</span> <span class="p">(</span> <span class="s">&#34;result&#34;</span><span class="p">,</span> <span class="n">img_show</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cv</span><span class="o">::</span><span class="n">waitKey</span> <span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">poseEstimationDirect</span> <span class="p">(</span> <span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span> <span class="n">Measurement</span> <span class="o">&gt;&amp;</span> <span class="n">measurements</span><span class="p">,</span> <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="o">*</span> <span class="n">gray</span><span class="p">,</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix3f</span><span class="o">&amp;</span> <span class="n">K</span><span class="p">,</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Isometry3d</span><span class="o">&amp;</span> <span class="n">Tcw</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 初始化g2o
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">typedef</span> <span class="n">g2o</span><span class="o">::</span><span class="n">BlockSolver</span><span class="o">&lt;</span><span class="n">g2o</span><span class="o">::</span><span class="n">BlockSolverTraits</span><span class="o">&lt;</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="o">&gt;&gt;</span> <span class="n">DirectBlock</span><span class="p">;</span>  <span class="c1">// 求解的向量是6＊1的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">DirectBlock</span><span class="o">::</span><span class="n">LinearSolverType</span><span class="o">*</span> <span class="n">linearSolver</span> <span class="o">=</span> <span class="k">new</span> <span class="n">g2o</span><span class="o">::</span><span class="n">LinearSolverDense</span><span class="o">&lt;</span> <span class="n">DirectBlock</span><span class="o">::</span><span class="n">PoseMatrixType</span> <span class="o">&gt;</span> <span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">DirectBlock</span><span class="o">*</span> <span class="n">solver_ptr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DirectBlock</span> <span class="p">(</span> <span class="n">linearSolver</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// g2o::OptimizationAlgorithmGaussNewton* solver = new g2o::OptimizationAlgorithmGaussNewton( solver_ptr ); // G-N
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">g2o</span><span class="o">::</span><span class="n">OptimizationAlgorithmLevenberg</span><span class="o">*</span> <span class="n">solver</span> <span class="o">=</span> <span class="k">new</span> <span class="n">g2o</span><span class="o">::</span><span class="n">OptimizationAlgorithmLevenberg</span> <span class="p">(</span> <span class="n">solver_ptr</span> <span class="p">);</span> <span class="c1">// L-M
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">g2o</span><span class="o">::</span><span class="n">SparseOptimizer</span> <span class="n">optimizer</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">optimizer</span><span class="p">.</span><span class="n">setAlgorithm</span> <span class="p">(</span> <span class="n">solver</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">optimizer</span><span class="p">.</span><span class="n">setVerbose</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">g2o</span><span class="o">::</span><span class="n">VertexSE3Expmap</span><span class="o">*</span> <span class="n">pose</span> <span class="o">=</span> <span class="k">new</span> <span class="n">g2o</span><span class="o">::</span><span class="n">VertexSE3Expmap</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pose</span><span class="o">-&gt;</span><span class="n">setEstimate</span> <span class="p">(</span> <span class="n">g2o</span><span class="o">::</span><span class="n">SE3Quat</span> <span class="p">(</span> <span class="n">Tcw</span><span class="p">.</span><span class="n">rotation</span><span class="p">(),</span> <span class="n">Tcw</span><span class="p">.</span><span class="n">translation</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pose</span><span class="o">-&gt;</span><span class="n">setId</span> <span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">optimizer</span><span class="p">.</span><span class="n">addVertex</span> <span class="p">(</span> <span class="n">pose</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 添加边
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span> <span class="n">Measurement</span> <span class="nl">m</span><span class="p">:</span> <span class="n">measurements</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">EdgeSE3ProjectDirect</span><span class="o">*</span> <span class="n">edge</span> <span class="o">=</span> <span class="k">new</span> <span class="n">EdgeSE3ProjectDirect</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">m</span><span class="p">.</span><span class="n">pos_world</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">K</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span> <span class="p">),</span> <span class="n">K</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">1</span> <span class="p">),</span> <span class="n">K</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span><span class="mi">2</span> <span class="p">),</span> <span class="n">K</span> <span class="p">(</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span> <span class="p">),</span> <span class="n">gray</span>
+</span></span><span class="line"><span class="cl">        <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">edge</span><span class="o">-&gt;</span><span class="n">setVertex</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pose</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">edge</span><span class="o">-&gt;</span><span class="n">setMeasurement</span> <span class="p">(</span> <span class="n">m</span><span class="p">.</span><span class="n">grayscale</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">edge</span><span class="o">-&gt;</span><span class="n">setInformation</span> <span class="p">(</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">&gt;::</span><span class="n">Identity</span><span class="p">()</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">edge</span><span class="o">-&gt;</span><span class="n">setId</span> <span class="p">(</span> <span class="n">id</span><span class="o">++</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">optimizer</span><span class="p">.</span><span class="n">addEdge</span> <span class="p">(</span> <span class="n">edge</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;edges in graph: &#34;</span><span class="o">&lt;&lt;</span><span class="n">optimizer</span><span class="p">.</span><span class="n">edges</span><span class="p">().</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">optimizer</span><span class="p">.</span><span class="n">initializeOptimization</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">optimizer</span><span class="p">.</span><span class="n">optimize</span> <span class="p">(</span> <span class="mi">30</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Tcw</span> <span class="o">=</span> <span class="n">pose</span><span class="o">-&gt;</span><span class="n">estimate</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div><p>我们的边继承自 g2o::BaseUnaryEdge。在继承时,需要在模板参数里填入测量值的维
+度、类型,以及连接此边的顶点,同时,我们把空间点 P 、相机内参和图像存储在该边的成
+员变量中。为了让 g2o 优化该边对应的误差,我们需要覆写两个虚函数:用 computeError()
+计算误差值,用 linearizeOplus() 计算雅可比。可以看到,这里的雅可比计算与式(8.16)
+是一致的。注意我们在程序中的误差计算里,使用了 I 2 (p 2 ) − I 1 (p 1 ) 的形式,因此前面的
+负号可以省去,只需把像素梯度乘以像素到李代数的梯度即可。</p>
+<h4 id="半稠密"><a href="#半稠密" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a><a href="#contents:半稠密" class="headings">半稠密</a></h4>
+<p>修改的部分：对参考帧中,先提取梯度较明显
+的像素,然后用直接法,以这些像素为图优化边,来估计相机运动。</p>
+<div class="highlight"><div class="chroma">
+<div class="table-container"><table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// select the pixels with high gradiants
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">gray</span><span class="p">.</span><span class="n">cols</span><span class="o">-</span><span class="mi">10</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span> <span class="n">y</span><span class="o">&lt;</span><span class="n">gray</span><span class="p">.</span><span class="n">rows</span><span class="o">-</span><span class="mi">10</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="n">Eigen</span><span class="o">::</span><span class="n">Vector2d</span> <span class="n">delta</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl"><span class="n">gray</span><span class="p">.</span><span class="n">ptr</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span><span class="p">(</span><span class="n">y</span><span class="p">)[</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">gray</span><span class="p">.</span><span class="n">ptr</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span><span class="p">(</span><span class="n">y</span><span class="p">)[</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl"><span class="n">gray</span><span class="p">.</span><span class="n">ptr</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="mi">1</span><span class="p">)[</span><span class="n">x</span><span class="p">]</span> <span class="o">-</span> <span class="n">gray</span><span class="p">.</span><span class="n">ptr</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="n">x</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span> <span class="n">delta</span><span class="p">.</span><span class="n">norm</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">50</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">ushort</span> <span class="n">d</span> <span class="o">=</span> <span class="n">depth</span><span class="p">.</span><span class="n">ptr</span><span class="o">&lt;</span><span class="n">ushort</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">y</span><span class="p">)[</span><span class="n">x</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">==</span><span class="mi">0</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3d</span> <span class="n">p3d</span> <span class="o">=</span> <span class="n">project2Dto3D</span> <span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">depth_scale</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">grayscale</span> <span class="o">=</span> <span class="kt">float</span> <span class="p">(</span> <span class="n">gray</span><span class="p">.</span><span class="n">ptr</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">measurements</span><span class="p">.</span><span class="n">push_back</span> <span class="p">(</span> <span class="n">Measurement</span> <span class="p">(</span> <span class="n">p3d</span><span class="p">,</span> <span class="n">grayscale</span> <span class="p">)</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table></div>
+</div>
+</div>
+            </div>
+
+            
+
+
+        </article>
+
+        
+
+        
+    <div class="updated-badge-container">
+        <span title="Updated @ 2019-12-28 10:54:34 CST" style="cursor:help">
+
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="20" class="updated-badge"><linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="a"><rect width="130" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#a)"><path class="updated-badge-left" d="M0 0h55v20H0z"/><path class="updated-badge-right" d="M55 0h75v20H55z"/><path fill="url(#b)" d="M0 0h130v20H0z"/></g><g fill="#fff" text-anchor="middle" font-size="110"><text x="285" y="150" fill="#010101" fill-opacity=".3" textLength="450" transform="scale(.1)">updated</text><text x="285" y="140" textLength="450" transform="scale(.1)">updated</text><text x="915" y="150" fill="#010101" fill-opacity=".3" textLength="650" transform="scale(.1)">2019-12-28</text><text x="915" y="140" textLength="650" transform="scale(.1)">2019-12-28</text></g></svg>
+        </span></div>
+
+
+
+        
+
+
+        <div class="post-share">
+
+        
+            <div class="share-text"></div>
+        
+
+        <div class="share-items">
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+                <div class="share-item qrcode">
+                    <div class="qrcode-container" title=""><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon qrcode-icon"><path d="M0 224h192V32H0v192zM64 96h64v64H64V96zm192-64v192h192V32H256zm128 128h-64V96h64v64zM0 480h192V288H0v192zm64-128h64v64H64v-64zm352-64h32v128h-96v-32h-32v96h-64V288h96v32h64v-32zm0 160h32v32h-32v-32zm-64 0h32v32h-32v-32z"/></svg><div id="qrcode-img"></div>
+                    </div>
+                    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+
+<script>
+    const typeNumber = 0;
+    const errorCorrectionLevel = 'L';
+    const qr = qrcode(typeNumber, errorCorrectionLevel);
+    qr.addData('https:\/\/wjiajie.github.io\/contents\/slam-sfm\/vo-2\/');
+    qr.make();
+    document.getElementById('qrcode-img').innerHTML = qr.createImgTag();
+</script>
+
+                </div>
+            
+
+        </div>
+
+    </div>
+
+
+
+
+        
+    
+    
+        <div class="related-posts">
+            <h2 class="related-title"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon related-icon"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"/></svg></h2>
+            <ul class="related-list">
+                
+                    <li class="related-item">
+                        <a href="/contents/slam-sfm/visual-odometer1/" class="related-link">视觉里程计1</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/contents/slam-sfm/nonlinear-optimization/" class="related-link">非线性优化</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/contents/slam-sfm/slam3/" class="related-link">李群与李代数</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/contents/slam-sfm/slam2/" class="related-link">三维空间刚体运动</a>
+                    </li>
+                
+                    <li class="related-item">
+                        <a href="/contents/slam-sfm/slam1/" class="related-link">SLAM的基本框架</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
+
+
+
+        
+
+
+        
+    <footer class="minimal-footer">
+        
+            <div class="post-tag"><a href="/tags/slam/" rel="tag" class="post-tag-link">#slam</a></div>
+        
+        
+            <div class="post-category">
+                <a href="/contents/" class="post-category-link active">contents</a>
+            </div>
+        
+        
+    </footer>
+
+
+
+        
+
+
+        
+    
+        
+        
+    
+    
+    
+    
+        <ul class="post-nav">
+            
+                <li class="post-nav-prev">
+                    <a href="/contents/slam-sfm/kinectfusion/" rel="prev">&lt; KinectFusion框架</a>
+                </li>
+            
+            
+                <li class="post-nav-next">
+                    <a href="/contents/slam-sfm/visual-odometer1/" rel="next">视觉里程计1 &gt;</a>
+                </li>
+            
+        </ul>
+    
+
+
+
+        
+    
+
+        
+
+        
+
+        
+            <div id="vcomments"></div>
+        
+
+        
+
+        
+    
+
+
+
+    </div>
+</main>
+
+
+            
+    <div id="back-to-top" class="back-to-top">
+        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a>
+    </div>
+
+
+            
+    <footer id="footer" class="footer">
+        <div class="footer-inner">
+            <div class="site-info">2019–2023&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon footer-icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>&nbsp;JiaJie</div>
+
+            
+    
+        <ul class="socials"><li class="socials-item">
+                    <a href="https://s2.loli.net/2022/03/20/f6lhgGukJ9QT2Yv.jpg" target="_blank" rel="external noopener" title="wechat"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon social-icon"><path d="M0 224h192V32H0v192zM64 96h64v64H64V96zm192-64v192h192V32H256zm128 128h-64V96h64v64zM0 480h192V288H0v192zm64-128h64v64H64v-64zm352-64h32v128h-96v-32h-32v96h-64V288h96v32h64v-32zm0 160h32v32h-32v-32zm-64 0h32v32h-32v-32z"/></svg></a>
+                </li><li class="socials-item">
+                    <a href="https://github.com/Wjiajie" target="_blank" rel="external noopener" title="GitHub"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon social-icon"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+                </li></ul>
+    
+
+
+
+            
+
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+           
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+              
+                
+                
+                <div class="social-share" data-initialized="true" data-wechat-qrcode-title="扫一扫分享到微信">
+    <center>
+    <font style="font-size:18px;color:darkcyan;">分享到：</font>
+    <a href=" " class="social-share-icon icon-weibo"></a >
+    <a href="#" class="social-share-icon icon-wechat"></a >
+    <a href="#" class="social-share-icon icon-twitter"></a >
+    <a href="#" class="social-share-icon icon-linkedin"></a >
+    <a href="#" class="social-share-icon icon-facebook"></a >
+    <a href="#" class="social-share-icon icon-qq"></a >
+    <a href="#" class="social-share-icon icon-qzone"></a >
+    </center>
+</div>
+
+
+<link rel="stylesheet" href="https://wjiajie.github.io/css/share.min.css" />
+<script src="https://hugo-picture.oss-cn-beijing.aliyuncs.com/social-share.min.js"></script>
+
+                
+                
+            </article>
+
+
+
+        </div>
+    </footer>
+
+
+        </div>
+        
+
+        
+
+
+    <script>
+    if (typeof MathJax === 'undefined') {
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/mhchem']
+            },
+            
+            tex: {
+                inlineMath: {'[+]': [['$', '$']]},
+                tags: 'ams',
+                packages: {'[+]': ['mhchem']}
+            }
+        };
+        (function() {
+            const script = document.createElement('script');
+            script.src = 'https:\/\/cdn.jsdelivr.net\/npm\/mathjax@3.1.2\/es5\/tex-mml-chtml.js';
+            script.defer = true;
+            document.head.appendChild(script);
+        })();
+    } else {
+        MathJax.texReset();
+        MathJax.typeset();
+    }
+</script>
+
+
+
+
+
+
+    
+
+        
+
+        
+            <script>
+    function loadComments() {
+        if (!document.getElementById('vcomments')) {
+            return;
+        }
+        if (typeof Valine === 'undefined') {
+            const getScript = (options) => {
+                const script = document.createElement('script');
+                script.defer = true;
+                script.crossOrigin = 'anonymous';
+                Object.keys(options).forEach((key) => {
+                    script[key] = options[key];
+                });
+                document.body.appendChild(script);
+            };
+            getScript({
+                src: 'https:\/\/cdn.jsdelivr.net\/npm\/valine@1.4.14\/dist\/Valine.min.js',
+                onload: () => {
+                    newValine();
+                }
+            });
+        } else {
+            newValine();
+        }
+    }
+    function newValine() {
+        new Valine({
+            el: '#vcomments',
+            appId: '89UvtzmC7wWPIQexRrnXe6i4-gzGzoHsz',
+            appKey: 'pX4vnA7XCr3nIrorngnNNHX8',
+            placeholder: 'Just go go',
+            path: location.pathname,
+            avatar: 'mm',
+            meta: ["nick","mail","link"],
+            pageSize:  10 ,
+            lang: 'zh-cn',
+            visitor:  false ,
+            highlight:  true ,
+            avatarForce:  false ,
+            recordIP:  false ,
+            serverURLs: '',
+            emojiCDN: '',
+            emojiMaps: {},
+            enableQQ:  false ,
+            requiredFields: []
+        });
+    }
+</script>
+
+        
+
+        
+
+        
+
+    
+
+
+
+    <script src="/js/medium-zoom.min.js"></script>
+
+<script>
+    mediumZoom(document.querySelectorAll('div.post-body img'), {
+        background: 'hsla(var(--color-bg-h), var(--color-bg-s), var(--color-bg-l), 0.95)'
+    })
+</script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js" type="module" defer></script>
+
+
+
+    
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+
+
+
+    </body>
+</html>
