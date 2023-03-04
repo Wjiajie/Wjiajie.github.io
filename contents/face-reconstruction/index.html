@@ -15,13 +15,13 @@
     
     <meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title> | W</title>
+    <title> | &gt;W&lt;</title>
 
     <link rel="stylesheet" href="/css/meme.min.f694ecb248990c1307435cb6aa04a8e886bb1e065218bdd0b4f293ed3e681f23.css"/>
 
     
     
-        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" defer></script><script src="/js/meme.min.121e3c346747f9f45d3521ddd3f94f2f0e4861fc9e57e9b35c8421b2b0b30fd3.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" defer></script><script src="/js/meme.min.d8d173e627fe32e2218852ae80f101216ff3cd58276e147d6f46c5dd245f9040.js"></script>
 
     
 
@@ -36,10 +36,10 @@
     <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#2a6df4" />
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="W" />
+    <meta name="apple-mobile-web-app-title" content="&gt;W&lt;" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="application-name" content="W" />
+    <meta name="application-name" content="&gt;W&lt;" />
     <meta name="msapplication-starturl" content="../../" />
     <meta name="msapplication-TileColor" content="#fff" />
     <meta name="msapplication-TileImage" content="../../icons/mstile-150x150.png" />
@@ -65,7 +65,7 @@
         "license": "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)",
         "publisher": {
             "@type": "Organization",
-            "name": "W",
+            "name": "\u003eW\u003c",
             "logo": {
                 "@type": "ImageObject",
                 "url": "https://wjiajie.github.io/icons/apple-touch-icon.png"
@@ -91,7 +91,7 @@
 <meta property="og:title" content="" />
 <meta property="og:description" content="JiaJie的个人博客" />
 <meta property="og:url" content="https://wjiajie.github.io/contents/face-reconstruction/" />
-<meta property="og:site_name" content="W" />
+<meta property="og:site_name" content="&gt;W&lt;" />
 <meta property="og:locale" content="zh-cn" /><meta property="og:image" content="https://wjiajie.github.io/icons/apple-touch-icon.png" />
     <meta property="og:type" content="website" />
 
@@ -143,7 +143,7 @@
                     
     <div class="site-brand">
         
-            <a href="/" class="brand">W</a>
+            <a href="/" class="brand">&gt;W&lt;</a>
         
     </div>
 
@@ -532,57 +532,32 @@
         
 
         
-            <script>
-    function loadComments() {
-        if (!document.getElementById('vcomments')) {
-            return;
-        }
-        if (typeof Valine === 'undefined') {
-            const getScript = (options) => {
-                const script = document.createElement('script');
-                script.defer = true;
-                script.crossOrigin = 'anonymous';
-                Object.keys(options).forEach((key) => {
-                    script[key] = options[key];
-                });
-                document.body.appendChild(script);
-            };
-            getScript({
-                src: 'https:\/\/cdn.jsdelivr.net\/npm\/valine@1.4.14\/dist\/Valine.min.js',
-                onload: () => {
-                    newValine();
-                }
-            });
-        } else {
-            newValine();
-        }
-    }
-    function newValine() {
-        new Valine({
-            el: '#vcomments',
-            appId: '89UvtzmC7wWPIQexRrnXe6i4-gzGzoHsz',
-            appKey: 'pX4vnA7XCr3nIrorngnNNHX8',
-            placeholder: 'Just go go',
-            path: location.pathname,
-            avatar: 'mm',
-            meta: ["nick","mail","link"],
-            pageSize:  10 ,
-            lang: 'zh-cn',
-            visitor:  false ,
-            highlight:  true ,
-            avatarForce:  false ,
-            recordIP:  false ,
-            serverURLs: '',
-            emojiCDN: '',
-            emojiMaps: {},
-            enableQQ:  false ,
-            requiredFields: []
-        });
-    }
-</script>
 
         
-
+            <script>
+    function loadComments() {
+        (function() {
+            const utterances = document.getElementById("utterances");
+            if (!utterances) {
+                return;
+            }
+            const script = document.createElement('script');
+            script.src = 'https:\/\/utteranc.es\/client.js';
+            script.async = true;
+            script.crossOrigin = 'anonymous';
+            script.setAttribute('repo', 'Wjiajie\/Wjiajie.github.io');
+            script.setAttribute('issue-term', 'pathname');
+            const isDark = getCurrentTheme() === 'dark';
+        if (isDark) {
+            script.setAttribute('theme', 'photon-dark');
+        } else {
+            script.setAttribute('theme', 'github-light');
+        }
+            
+            utterances.appendChild(script);
+        })();
+    }
+</script>
         
 
         
